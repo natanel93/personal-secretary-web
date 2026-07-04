@@ -69,6 +69,21 @@
   }
   #login .note { color: var(--gold); font-weight: 600; min-height: 20px; }
   .hidden { display: none !important; }
+  /* suggestion cards */
+  #suggestions { display: flex; flex-direction: column; gap: 8px; padding: 0 12px; }
+  .sug {
+    background: #fffdf5; border: 1px solid var(--gold); border-radius: 14px;
+    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 1px 3px rgba(201,164,76,.25);
+  }
+  .sug .icon { font-size: 20px; }
+  .sug .title { flex: 1; font-size: 14px; color: #333; line-height: 1.35; }
+  .sug button {
+    border: none; border-radius: 10px; padding: 8px 12px; font-size: 14px;
+    cursor: pointer; font-weight: 600;
+  }
+  .sug .ok { background: var(--navy); color: #fff; }
+  .sug .no { background: #eee; color: #666; }
 </style>
 </head>
 <body>
@@ -87,6 +102,7 @@
   </div>
 
   <div id="chat" class="hidden"></div>
+  <div id="suggestions" class="hidden"></div>
   <form id="composer" class="hidden">
     <input id="text" placeholder="כתוב למזכירה..." autocomplete="off">
     <button type="submit" id="send">שלח</button>
@@ -100,6 +116,7 @@ const sb = createClient(SUPABASE_URL, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJp
 
 const $ = (id) => document.getElementById(id);
 const chat = $("chat"), composer = $("composer"), topbar = $("topbar"), login = $("login");
+const sugBox = $("suggestions");
 let conversationId = localStorage.getItem("conversation_id") || null;
 
 function bubble(role, text) {
@@ -141,16 +158,68 @@ async function loadHistory() {
   renderedCount = list.length;
 }
 
-// Reminders are appended server-side by the dispatch worker; poll so they
-// show up without a manual refresh.
+// Proactive suggestions: pending proposals rendered as approve/dismiss cards.
+async function loadSuggestions() {
+  const { data } = await sb.from("suggestions")
+    .select("id, kind, title")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false })
+    .limit(5);
+  sugBox.innerHTML = "";
+  for (const s of data || []) {
+    const card = document.createElement("div");
+    card.className = "sug";
+    const icon = document.createElement("span");
+    icon.className = "icon";
+    icon.textContent = s.kind === "reminder" ? "⏰" : "📋";
+    const title = document.createElement("span");
+    title.className = "title";
+    title.textContent = s.title;
+    const ok = document.createElement("button");
+    ok.className = "ok"; ok.textContent = "אשר";
+    const no = document.createElement("button");
+    no.className = "no"; no.textContent = "לא";
+    ok.onclick = () => actOn(s.id, "accept", card);
+    no.onclick = () => actOn(s.id, "dismiss", card);
+    card.append(icon, title, ok, no);
+    sugBox.appendChild(card);
+  }
+}
+
+async function actOn(id, action, card) {
+  card.querySelectorAll("button").forEach((b) => (b.disabled = true));
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/act-on-suggestion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.access_token,
+      },
+      body: JSON.stringify({ suggestion_id: id, action }),
+    });
+    if (res.ok) {
+      card.remove();
+      await loadHistory(); // confirmation message appears in the chat
+    } else {
+      card.querySelectorAll("button").forEach((b) => (b.disabled = false));
+    }
+  } catch {
+    card.querySelectorAll("button").forEach((b) => (b.disabled = false));
+  }
+}
+
+// Reminders + suggestions are produced server-side by the workers; poll so
+// they show up without a manual refresh.
 let pollTimer = null;
+function refresh() { loadHistory(); loadSuggestions(); }
 function startPolling() {
   if (pollTimer) return;
   pollTimer = setInterval(() => {
-    if (document.visibilityState === "visible") loadHistory();
+    if (document.visibilityState === "visible") refresh();
   }, 15000);
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") loadHistory();
+    if (document.visibilityState === "visible") refresh();
   });
 }
 
@@ -158,9 +227,11 @@ async function showChat(session) {
   login.classList.add("hidden");
   topbar.classList.remove("hidden");
   chat.classList.remove("hidden");
+  sugBox.classList.remove("hidden");
   composer.classList.remove("hidden");
   await ensureProfile(session.user);
   await loadHistory();
+  await loadSuggestions();
   startPolling();
   if (!chat.children.length) {
     bubble("assistant", "היי! אני המזכירה האישית שלך 🙂 אפשר לבקש ממני לקבוע תזכורות, לנהל משימות, ולזכור דברים חשובים. במה נתחיל?");
