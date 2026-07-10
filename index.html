@@ -32,26 +32,78 @@
     background: none; border: 1px solid rgba(255,255,255,.3); color: #fff;
     border-radius: 8px; padding: 4px 12px; font-size: 13px; cursor: pointer;
   }
+  main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .view { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* ── chat ── */
   #chat { flex: 1; overflow-y: auto; padding: 16px 12px 8px; display: flex; flex-direction: column; gap: 8px; }
   .msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 15px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
   .user { align-self: flex-start; background: var(--bubble-user); color: #fff; border-bottom-right-radius: 4px; }
   .bot  { align-self: flex-end; background: var(--bubble-bot); color: #222; border-bottom-left-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
   .typing { align-self: flex-end; color: #888; font-size: 13px; padding: 4px 14px; }
-  form#composer {
-    display: flex; gap: 8px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  #suggestions { display: flex; flex-direction: column; gap: 8px; padding: 0 12px 4px; }
+  .sug {
+    background: #fffdf5; border: 1px solid var(--gold); border-radius: 14px;
+    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 1px 3px rgba(201,164,76,.25);
+  }
+  .sug .icon { font-size: 20px; }
+  .sug .title { flex: 1; font-size: 14px; color: #333; line-height: 1.35; }
+  .sug button { border: none; border-radius: 10px; padding: 8px 12px; font-size: 14px; cursor: pointer; font-weight: 600; }
+  .sug .ok { background: var(--navy); color: #fff; }
+  .sug .no { background: #eee; color: #666; }
+  form.composer {
+    display: flex; gap: 8px; padding: 10px 12px;
     background: #fff; border-top: 1px solid #e3e5e8;
   }
-  #composer input {
+  .composer input {
     flex: 1; border: 1px solid #d6d9de; border-radius: 22px; padding: 11px 16px;
     font-size: 16px; outline: none;
   }
-  #composer input:focus { border-color: var(--gold); }
-  #composer button {
+  .composer input:focus { border-color: var(--gold); }
+  .composer button {
     background: var(--navy); color: #fff; border: none; border-radius: 22px;
     padding: 0 20px; font-size: 15px; cursor: pointer;
   }
-  #composer button:disabled { opacity: .5; }
-  /* login screen */
+  .composer button:disabled { opacity: .5; }
+
+  /* ── lists (tasks / inbox) ── */
+  .list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .row {
+    background: #fff; border-radius: 14px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.06);
+  }
+  .row.unread { border-inline-start: 4px solid var(--gold); }
+  .row .grow { flex: 1; min-width: 0; }
+  .row .t { font-size: 15px; color: #222; line-height: 1.35; }
+  .row .s { font-size: 12.5px; color: #889; margin-top: 2px; }
+  .row .overdue { color: #c0392b; font-weight: 600; }
+  .check {
+    width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--gold);
+    background: none; cursor: pointer; flex-shrink: 0; font-size: 14px; color: var(--navy);
+  }
+  .srcbadge { font-size: 18px; flex-shrink: 0; }
+  .empty { text-align: center; color: #99a; padding: 40px 20px; font-size: 15px; }
+
+  /* ── bottom nav ── */
+  nav {
+    display: flex; background: #fff; border-top: 1px solid #e3e5e8;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  nav button {
+    flex: 1; background: none; border: none; padding: 9px 0 7px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    font-size: 11.5px; color: #98a; position: relative;
+  }
+  nav button.active { color: var(--navy); font-weight: 700; }
+  nav button .ico { font-size: 21px; }
+  nav .badge {
+    position: absolute; top: 4px; inset-inline-end: calc(50% - 24px);
+    background: #c0392b; color: #fff; font-size: 10px; font-weight: 700;
+    border-radius: 9px; min-width: 17px; height: 17px; line-height: 17px;
+  }
+
+  /* ── login ── */
   #login {
     flex: 1; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 14px; padding: 24px; text-align: center;
@@ -69,21 +121,6 @@
   }
   #login .note { color: var(--gold); font-weight: 600; min-height: 20px; }
   .hidden { display: none !important; }
-  /* suggestion cards */
-  #suggestions { display: flex; flex-direction: column; gap: 8px; padding: 0 12px; }
-  .sug {
-    background: #fffdf5; border: 1px solid var(--gold); border-radius: 14px;
-    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 1px 3px rgba(201,164,76,.25);
-  }
-  .sug .icon { font-size: 20px; }
-  .sug .title { flex: 1; font-size: 14px; color: #333; line-height: 1.35; }
-  .sug button {
-    border: none; border-radius: 10px; padding: 8px 12px; font-size: 14px;
-    cursor: pointer; font-weight: 600;
-  }
-  .sug .ok { background: var(--navy); color: #fff; }
-  .sug .no { background: #eee; color: #666; }
 </style>
 </head>
 <body>
@@ -101,12 +138,37 @@
     <div class="note" id="login-note"></div>
   </div>
 
-  <div id="chat" class="hidden"></div>
-  <div id="suggestions" class="hidden"></div>
-  <form id="composer" class="hidden">
-    <input id="text" placeholder="כתוב למזכירה..." autocomplete="off">
-    <button type="submit" id="send">שלח</button>
-  </form>
+  <main class="hidden" id="app">
+    <!-- chat -->
+    <section class="view" id="view-chat">
+      <div id="chat"></div>
+      <div id="suggestions"></div>
+      <form class="composer" id="composer">
+        <input id="text" placeholder="כתוב למזכירה..." autocomplete="off">
+        <button type="submit" id="send">שלח</button>
+      </form>
+    </section>
+
+    <!-- tasks -->
+    <section class="view hidden" id="view-tasks">
+      <div class="list" id="tasks-list"></div>
+      <form class="composer" id="task-form">
+        <input id="task-input" placeholder="משימה חדשה..." autocomplete="off">
+        <button type="submit">הוסף</button>
+      </form>
+    </section>
+
+    <!-- inbox -->
+    <section class="view hidden" id="view-inbox">
+      <div class="list" id="inbox-list"></div>
+    </section>
+
+    <nav>
+      <button data-view="chat" class="active"><span class="ico">💬</span>צ'אט</button>
+      <button data-view="tasks"><span class="ico">📋</span>משימות<span class="badge hidden" id="badge-tasks"></span></button>
+      <button data-view="inbox"><span class="ico">📥</span>דואר נכנס<span class="badge hidden" id="badge-inbox"></span></button>
+    </nav>
+  </main>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -115,10 +177,21 @@ const SUPABASE_URL = "https://xzglitsbmpgryserphmb.supabase.co";
 const sb = createClient(SUPABASE_URL, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6Z2xpdHNibXBncnlzZXJwaG1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODQ2MzgsImV4cCI6MjA5ODU2MDYzOH0.Lmqyc-9ITGL1q3xGvofiTrPBeBwDqcW--sSeRZ2RKKU");
 
 const $ = (id) => document.getElementById(id);
-const chat = $("chat"), composer = $("composer"), topbar = $("topbar"), login = $("login");
-const sugBox = $("suggestions");
+const chat = $("chat"), sugBox = $("suggestions");
 let conversationId = localStorage.getItem("conversation_id") || null;
+let renderedCount = 0;
 
+/* ── tabs ─────────────────────────────────────────────────────────────── */
+document.querySelectorAll("nav button").forEach((b) => {
+  b.onclick = () => {
+    document.querySelectorAll("nav button").forEach((x) => x.classList.toggle("active", x === b));
+    ["chat", "tasks", "inbox"].forEach((v) =>
+      $("view-" + v).classList.toggle("hidden", v !== b.dataset.view));
+    refresh();
+  };
+});
+
+/* ── chat ─────────────────────────────────────────────────────────────── */
 function bubble(role, text) {
   const div = document.createElement("div");
   div.className = "msg " + (role === "user" ? "user" : "bot");
@@ -127,20 +200,6 @@ function bubble(role, text) {
   chat.scrollTop = chat.scrollHeight;
   return div;
 }
-
-async function ensureProfile(user) {
-  const { data } = await sb.from("profiles").select("id").eq("id", user.id).maybeSingle();
-  if (!data) {
-    await sb.from("profiles").insert({
-      id: user.id,
-      display_name: (user.email || "").split("@")[0],
-      locale: "he",
-      timezone: "Asia/Jerusalem",
-    });
-  }
-}
-
-let renderedCount = 0;
 
 async function loadHistory() {
   const { data: convo } = await sb.from("conversations").select("id")
@@ -158,27 +217,56 @@ async function loadHistory() {
   renderedCount = list.length;
 }
 
-// Proactive suggestions: pending proposals rendered as approve/dismiss cards.
+$("composer").onsubmit = async (e) => {
+  e.preventDefault();
+  const input = $("text"), btn = $("send");
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = ""; btn.disabled = true;
+  bubble("user", text);
+  const typing = document.createElement("div");
+  typing.className = "typing"; typing.textContent = "המזכירה כותבת...";
+  chat.appendChild(typing); chat.scrollTop = chat.scrollHeight;
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/assistant-core", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ channel: "app", conversation_id: conversationId, text }),
+    });
+    const data = await res.json();
+    typing.remove();
+    if (res.ok) {
+      conversationId = data.conversation_id;
+      localStorage.setItem("conversation_id", conversationId);
+      bubble("assistant", data.reply);
+      renderedCount += 2;
+    } else {
+      bubble("assistant", "אופס, משהו השתבש: " + (data.error || res.status));
+    }
+  } catch {
+    typing.remove();
+    bubble("assistant", "אופס, בעיית תקשורת. נסה שוב.");
+  } finally {
+    btn.disabled = false; input.focus();
+  }
+};
+
+/* ── suggestions ──────────────────────────────────────────────────────── */
 async function loadSuggestions() {
   const { data } = await sb.from("suggestions")
-    .select("id, kind, title")
-    .eq("status", "pending")
-    .order("created_at", { ascending: false })
-    .limit(5);
+    .select("id, kind, title").eq("status", "pending")
+    .order("created_at", { ascending: false }).limit(5);
   sugBox.innerHTML = "";
   for (const s of data || []) {
     const card = document.createElement("div");
     card.className = "sug";
     const icon = document.createElement("span");
-    icon.className = "icon";
-    icon.textContent = s.kind === "reminder" ? "⏰" : "📋";
+    icon.className = "icon"; icon.textContent = s.kind === "reminder" ? "⏰" : "📋";
     const title = document.createElement("span");
-    title.className = "title";
-    title.textContent = s.title;
-    const ok = document.createElement("button");
-    ok.className = "ok"; ok.textContent = "אשר";
-    const no = document.createElement("button");
-    no.className = "no"; no.textContent = "לא";
+    title.className = "title"; title.textContent = s.title;
+    const ok = document.createElement("button"); ok.className = "ok"; ok.textContent = "אשר";
+    const no = document.createElement("button"); no.className = "no"; no.textContent = "לא";
     ok.onclick = () => actOn(s.id, "accept", card);
     no.onclick = () => actOn(s.id, "dismiss", card);
     card.append(icon, title, ok, no);
@@ -192,27 +280,129 @@ async function actOn(id, action, card) {
     const { data: { session } } = await sb.auth.getSession();
     const res = await fetch(SUPABASE_URL + "/functions/v1/act-on-suggestion", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + session.access_token,
-      },
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
       body: JSON.stringify({ suggestion_id: id, action }),
     });
-    if (res.ok) {
-      card.remove();
-      await loadHistory(); // confirmation message appears in the chat
-    } else {
-      card.querySelectorAll("button").forEach((b) => (b.disabled = false));
-    }
+    if (res.ok) { card.remove(); await loadHistory(); await loadTasks(); }
+    else card.querySelectorAll("button").forEach((b) => (b.disabled = false));
   } catch {
     card.querySelectorAll("button").forEach((b) => (b.disabled = false));
   }
 }
 
-// Reminders + suggestions are produced server-side by the workers; poll so
-// they show up without a manual refresh.
+/* ── tasks ────────────────────────────────────────────────────────────── */
+function fmtDay(iso) {
+  return new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric" }).format(new Date(iso));
+}
+
+async function loadTasks() {
+  const { data } = await sb.from("tasks")
+    .select("id, title, due_at").eq("status", "open")
+    .order("due_at", { ascending: true, nullsFirst: false }).limit(50);
+  const box = $("tasks-list");
+  box.innerHTML = "";
+  const badge = $("badge-tasks");
+  const overdueCount = (data || []).filter((t) => t.due_at && new Date(t.due_at) < new Date()).length;
+  badge.classList.toggle("hidden", !overdueCount);
+  badge.textContent = overdueCount;
+  if (!data || !data.length) {
+    box.innerHTML = '<div class="empty">אין משימות פתוחות 🙌</div>';
+    return;
+  }
+  for (const t of data) {
+    const row = document.createElement("div");
+    row.className = "row";
+    const check = document.createElement("button");
+    check.className = "check"; check.title = "סמן כבוצע";
+    check.onclick = async () => {
+      check.textContent = "✓";
+      await sb.from("tasks").update({ status: "done" }).eq("id", t.id);
+      loadTasks();
+    };
+    const grow = document.createElement("div");
+    grow.className = "grow";
+    const title = document.createElement("div");
+    title.className = "t"; title.textContent = t.title;
+    grow.appendChild(title);
+    if (t.due_at) {
+      const sub = document.createElement("div");
+      const late = new Date(t.due_at) < new Date();
+      sub.className = "s" + (late ? " overdue" : "");
+      sub.textContent = (late ? "באיחור — היה עד " : "עד ") + fmtDay(t.due_at);
+      grow.appendChild(sub);
+    }
+    row.append(check, grow);
+    box.appendChild(row);
+  }
+}
+
+$("task-form").onsubmit = async (e) => {
+  e.preventDefault();
+  const input = $("task-input");
+  const title = input.value.trim();
+  if (!title) return;
+  input.value = "";
+  const { data: { user } } = await sb.auth.getUser();
+  await sb.from("tasks").insert({ user_id: user.id, title, source: "manual" });
+  loadTasks();
+};
+
+/* ── inbox ────────────────────────────────────────────────────────────── */
+const SRC_ICON = { email: "✉️", whatsapp: "🟢", sms: "📱", calendar: "📅" };
+
+async function loadInbox() {
+  const { data } = await sb.from("inbox_items")
+    .select("id, source, sender, subject, body, received_at, is_read")
+    .order("received_at", { ascending: false }).limit(50);
+  const box = $("inbox-list");
+  box.innerHTML = "";
+  const unread = (data || []).filter((i) => !i.is_read).length;
+  const badge = $("badge-inbox");
+  badge.classList.toggle("hidden", !unread);
+  badge.textContent = unread;
+  if (!data || !data.length) {
+    box.innerHTML = '<div class="empty">התיבה ריקה.\nחבר את המייל והוואטסאפ כדי שהמזכירה תתחיל לקרוא בשבילך 📬</div>';
+    return;
+  }
+  for (const i of data) {
+    const row = document.createElement("div");
+    row.className = "row" + (i.is_read ? "" : " unread");
+    const src = document.createElement("span");
+    src.className = "srcbadge"; src.textContent = SRC_ICON[i.source] ?? "📄";
+    const grow = document.createElement("div");
+    grow.className = "grow";
+    const t = document.createElement("div");
+    t.className = "t"; t.textContent = i.subject || (i.body ?? "").slice(0, 80);
+    const s = document.createElement("div");
+    s.className = "s";
+    s.textContent = (i.sender ?? "") + " · " +
+      new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })
+        .format(new Date(i.received_at));
+    grow.append(t, s);
+    row.append(src, grow);
+    row.onclick = async () => {
+      if (!i.is_read) { await sb.from("inbox_items").update({ is_read: true }).eq("id", i.id); loadInbox(); }
+    };
+    box.appendChild(row);
+  }
+}
+
+/* ── profile + auth + polling ─────────────────────────────────────────── */
+async function ensureProfile(user) {
+  const { data } = await sb.from("profiles").select("id").eq("id", user.id).maybeSingle();
+  if (!data) {
+    await sb.from("profiles").insert({
+      id: user.id,
+      display_name: (user.email || "").split("@")[0],
+      locale: "he",
+      timezone: "Asia/Jerusalem",
+    });
+  }
+}
+
+function refresh() { loadHistory(); loadSuggestions(); loadTasks(); loadInbox(); }
+
 let pollTimer = null;
-function refresh() { loadHistory(); loadSuggestions(); }
 function startPolling() {
   if (pollTimer) return;
   pollTimer = setInterval(() => {
@@ -223,22 +413,20 @@ function startPolling() {
   });
 }
 
-async function showChat(session) {
-  login.classList.add("hidden");
-  topbar.classList.remove("hidden");
-  chat.classList.remove("hidden");
-  sugBox.classList.remove("hidden");
-  composer.classList.remove("hidden");
+async function showApp(session) {
+  $("login").classList.add("hidden");
+  $("topbar").classList.remove("hidden");
+  $("app").classList.remove("hidden");
   await ensureProfile(session.user);
-  await loadHistory();
-  await loadSuggestions();
+  refresh();
   startPolling();
-  if (!chat.children.length) {
-    bubble("assistant", "היי! אני המזכירה האישית שלך 🙂 אפשר לבקש ממני לקבוע תזכורות, לנהל משימות, ולזכור דברים חשובים. במה נתחיל?");
-  }
+  setTimeout(() => {
+    if (!chat.children.length) {
+      bubble("assistant", "היי! אני המזכירה האישית שלך 🙂 אפשר לבקש ממני לקבוע תזכורות, לנהל משימות, ולזכור דברים חשובים. במה נתחיל?");
+    }
+  }, 1200);
 }
 
-// ── auth wiring ──────────────────────────────────────────────────────────────
 $("send-link").onclick = async () => {
   const email = $("email").value.trim();
   if (!email) return;
@@ -252,51 +440,9 @@ $("send-link").onclick = async () => {
 
 $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
 
-sb.auth.onAuthStateChange((_event, session) => {
-  if (session) showChat(session);
-});
+sb.auth.onAuthStateChange((_e, session) => { if (session) showApp(session); });
 const { data: { session } } = await sb.auth.getSession();
-if (session) showChat(session);
-
-// ── chat wiring ──────────────────────────────────────────────────────────────
-composer.onsubmit = async (e) => {
-  e.preventDefault();
-  const input = $("text"), btn = $("send");
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = ""; btn.disabled = true;
-  bubble("user", text);
-  const typing = document.createElement("div");
-  typing.className = "typing"; typing.textContent = "המזכירה כותבת...";
-  chat.appendChild(typing); chat.scrollTop = chat.scrollHeight;
-
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    const res = await fetch(SUPABASE_URL + "/functions/v1/assistant-core", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + session.access_token,
-      },
-      body: JSON.stringify({ channel: "app", conversation_id: conversationId, text }),
-    });
-    const data = await res.json();
-    typing.remove();
-    if (res.ok) {
-      conversationId = data.conversation_id;
-      localStorage.setItem("conversation_id", conversationId);
-      bubble("assistant", data.reply);
-      renderedCount += 2; // keep the poll diff in sync with what we rendered
-    } else {
-      bubble("assistant", "אופס, משהו השתבש: " + (data.error || res.status));
-    }
-  } catch (err) {
-    typing.remove();
-    bubble("assistant", "אופס, בעיית תקשורת. נסה שוב.");
-  } finally {
-    btn.disabled = false; input.focus();
-  }
-};
+if (session) showApp(session);
 </script>
 </body>
 </html>
