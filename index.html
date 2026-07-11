@@ -163,10 +163,33 @@
       <div class="list" id="inbox-list"></div>
     </section>
 
+    <!-- connections / settings -->
+    <section class="view hidden" id="view-settings">
+      <div class="list" id="accounts-list"></div>
+      <div style="padding: 0 12px 12px">
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <div style="font-weight:700;color:var(--navy);margin-bottom:4px">חיבור Gmail 📧</div>
+          <div style="font-size:12.5px;color:#889;line-height:1.5;margin-bottom:10px">
+            צור <a href="https://myaccount.google.com/apppasswords" target="_blank" style="color:var(--gold)">סיסמת אפליקציה</a>
+            בחשבון Google (נקרא לה "המזכירה") והדבק אותה כאן. המזכירה קוראת בלבד — שום מייל לא מסומן כנקרא ולא נמחק.
+          </div>
+          <form id="connect-form" style="display:flex;flex-direction:column;gap:8px">
+            <input id="acc-email" type="email" placeholder="you@gmail.com" autocomplete="email"
+              style="border:1px solid #d6d9de;border-radius:10px;padding:10px 12px;font-size:15px;direction:ltr">
+            <input id="acc-pass" type="password" placeholder="סיסמת אפליקציה (16 תווים)"
+              style="border:1px solid #d6d9de;border-radius:10px;padding:10px 12px;font-size:15px;direction:ltr">
+            <button id="acc-btn" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:11px;font-size:15px;cursor:pointer">חבר חשבון</button>
+            <div id="acc-note" style="font-size:13px;font-weight:600;min-height:18px;color:var(--gold)"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <nav>
       <button data-view="chat" class="active"><span class="ico">💬</span>צ'אט</button>
       <button data-view="tasks"><span class="ico">📋</span>משימות<span class="badge hidden" id="badge-tasks"></span></button>
       <button data-view="inbox"><span class="ico">📥</span>דואר נכנס<span class="badge hidden" id="badge-inbox"></span></button>
+      <button data-view="settings"><span class="ico">🔗</span>חיבורים</button>
     </nav>
   </main>
 
@@ -185,7 +208,7 @@ let renderedCount = 0;
 document.querySelectorAll("nav button").forEach((b) => {
   b.onclick = () => {
     document.querySelectorAll("nav button").forEach((x) => x.classList.toggle("active", x === b));
-    ["chat", "tasks", "inbox"].forEach((v) =>
+    ["chat", "tasks", "inbox", "settings"].forEach((v) =>
       $("view-" + v).classList.toggle("hidden", v !== b.dataset.view));
     refresh();
   };
@@ -387,6 +410,83 @@ async function loadInbox() {
   }
 }
 
+/* ── connections ──────────────────────────────────────────────────────── */
+const KIND_LABEL = { imap: "📧 מייל", gmail: "📧 Gmail", google_calendar: "📅 יומן", sms_forward: "📱 SMS" };
+
+async function loadAccounts() {
+  const { data } = await sb.from("connected_accounts")
+    .select("id, kind, identifier, status, last_sync_at, last_error")
+    .neq("status", "revoked")
+    .order("created_at");
+  const box = $("accounts-list");
+  box.innerHTML = "";
+  if (!data || !data.length) {
+    box.innerHTML = '<div class="empty">אין חיבורים עדיין.\nחבר את המייל שלך למטה — ומשם המזכירה כבר תיקח את זה 👇</div>';
+    return;
+  }
+  for (const a of data) {
+    const row = document.createElement("div");
+    row.className = "row";
+    const grow = document.createElement("div");
+    grow.className = "grow";
+    const t = document.createElement("div");
+    t.className = "t";
+    t.textContent = `${KIND_LABEL[a.kind] ?? a.kind} · ${a.identifier}`;
+    const s = document.createElement("div");
+    s.className = "s" + (a.status === "error" ? " overdue" : "");
+    s.textContent = a.status === "error"
+      ? "שגיאה: " + (a.last_error ?? "").slice(0, 60)
+      : a.last_sync_at
+        ? "סונכרן " + new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(a.last_sync_at))
+        : "ממתין לסנכרון ראשון...";
+    grow.append(t, s);
+    const del = document.createElement("button");
+    del.className = "check"; del.textContent = "✕"; del.title = "נתק";
+    del.onclick = async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      await fetch(SUPABASE_URL + "/functions/v1/connect-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+        body: JSON.stringify({ action: "disconnect", account_id: a.id }),
+      });
+      loadAccounts();
+    };
+    row.append(grow, del);
+    box.appendChild(row);
+  }
+}
+
+$("connect-form").onsubmit = async (e) => {
+  e.preventDefault();
+  const email = $("acc-email").value.trim();
+  const password = $("acc-pass").value.trim();
+  if (!email || !password) return;
+  const btn = $("acc-btn"), note = $("acc-note");
+  btn.disabled = true; note.textContent = "מתחבר ובודק מול השרת...";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/connect-account", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ action: "connect", kind: "imap", email, password }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      note.textContent = "✓ " + (data.message || "מחובר!");
+      $("acc-email").value = ""; $("acc-pass").value = "";
+      loadAccounts();
+    } else {
+      note.textContent = "✗ " + (data.error === "login failed"
+        ? "ההתחברות נכשלה — ודא שזו סיסמת אפליקציה (לא הסיסמה הרגילה)"
+        : data.error);
+    }
+  } catch {
+    note.textContent = "✗ בעיית תקשורת, נסה שוב";
+  } finally {
+    btn.disabled = false;
+  }
+};
+
 /* ── profile + auth + polling ─────────────────────────────────────────── */
 async function ensureProfile(user) {
   const { data } = await sb.from("profiles").select("id").eq("id", user.id).maybeSingle();
@@ -400,7 +500,7 @@ async function ensureProfile(user) {
   }
 }
 
-function refresh() { loadHistory(); loadSuggestions(); loadTasks(); loadInbox(); }
+function refresh() { loadHistory(); loadSuggestions(); loadTasks(); loadInbox(); loadAccounts(); }
 
 let pollTimer = null;
 function startPolling() {
