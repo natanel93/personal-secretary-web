@@ -196,9 +196,25 @@
               style="border:1px solid #d6d9de;border-radius:10px;padding:10px 12px;font-size:15px;direction:ltr">
             <input id="acc-pass" type="password" placeholder="סיסמת אפליקציה (16 תווים)"
               style="border:1px solid #d6d9de;border-radius:10px;padding:10px 12px;font-size:15px;direction:ltr">
+            <input id="acc-host" type="text" placeholder="שרת IMAP (אופציונלי — רק לספק לא מזוהה)"
+              style="border:1px solid #d6d9de;border-radius:10px;padding:10px 12px;font-size:14px;direction:ltr">
             <button id="acc-btn" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:11px;font-size:15px;cursor:pointer">חבר חשבון</button>
             <div id="acc-note" style="font-size:13px;font-weight:600;min-height:18px;color:var(--gold)"></div>
           </form>
+        </div>
+      </div>
+
+      <!-- account: export + delete + legal -->
+      <div style="padding: 0 12px 24px">
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <div style="font-weight:700;color:var(--navy);margin-bottom:10px">החשבון שלי 🔐</div>
+          <button id="export-btn" style="width:100%;background:#eef0f3;color:var(--navy);border:none;border-radius:10px;padding:11px;font-size:14px;cursor:pointer;margin-bottom:8px">הורד את כל הנתונים שלי (JSON)</button>
+          <button id="delete-btn" style="width:100%;background:#fff;color:#c0392b;border:1px solid #c0392b;border-radius:10px;padding:11px;font-size:14px;cursor:pointer">מחק את החשבון והנתונים לצמיתות</button>
+          <div id="acct-note" style="font-size:13px;font-weight:600;min-height:18px;color:#c0392b;margin-top:8px;text-align:center"></div>
+          <div style="font-size:12px;color:#99a;text-align:center;margin-top:10px">
+            <a href="privacy.html" target="_blank" style="color:#889">פרטיות</a> ·
+            <a href="terms.html" target="_blank" style="color:#889">תנאי שימוש</a>
+          </div>
         </div>
       </div>
     </section>
@@ -478,15 +494,18 @@ $("connect-form").onsubmit = async (e) => {
   e.preventDefault();
   const email = $("acc-email").value.trim();
   const password = $("acc-pass").value.trim();
+  const host = $("acc-host").value.trim();
   if (!email || !password) return;
   const btn = $("acc-btn"), note = $("acc-note");
   btn.disabled = true; note.textContent = "מתחבר ובודק מול השרת...";
   try {
     const { data: { session } } = await sb.auth.getSession();
+    const payload = { action: "connect", kind: "imap", email, password };
+    if (host) payload.host = host;
     const res = await fetch(SUPABASE_URL + "/functions/v1/connect-account", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
-      body: JSON.stringify({ action: "connect", kind: "imap", email, password }),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
     if (res.ok) {
@@ -503,6 +522,40 @@ $("connect-form").onsubmit = async (e) => {
   } finally {
     btn.disabled = false;
   }
+};
+
+/* ── account: export + delete ─────────────────────────────────────────── */
+$("export-btn").onclick = async () => {
+  const note = $("acct-note");
+  note.style.color = "var(--gold)"; note.textContent = "מכין את הקובץ...";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/export-data", {
+      method: "POST", headers: { Authorization: "Bearer " + session.access_token },
+    });
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "noga-export.json"; a.click();
+    URL.revokeObjectURL(url);
+    note.textContent = "✓ הורד";
+  } catch { note.textContent = "✗ שגיאה, נסה שוב"; }
+  setTimeout(() => (note.textContent = ""), 3000);
+};
+
+$("delete-btn").onclick = async () => {
+  if (!confirm("למחוק את החשבון וכל הנתונים לצמיתות? פעולה זו בלתי הפיכה.")) return;
+  if (!confirm("בטוח לגמרי? כל המשימות, התזכורות והזיכרון יימחקו.")) return;
+  const note = $("acct-note");
+  note.style.color = "#c0392b"; note.textContent = "מוחק...";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/delete-account", {
+      method: "POST", headers: { Authorization: "Bearer " + session.access_token },
+    });
+    if (res.ok) { await sb.auth.signOut(); localStorage.clear(); location.reload(); }
+    else note.textContent = "✗ שגיאה, נסה שוב";
+  } catch { note.textContent = "✗ בעיית תקשורת"; }
 };
 
 /* ── profile + auth + polling ─────────────────────────────────────────── */

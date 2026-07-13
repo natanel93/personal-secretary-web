@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1e2a4a">
+<meta name="description" content="נוגה — מזכירה אישית חכמה שקוראת את המייל והוואטסאפ שלך, מזכירה, מנהלת משימות, ומציעה לך מה לעשות. בעברית, לפני שביקשת.">
+<title>נוגה — המזכירה האישית החכמה שלך</title>
+<style>
+  :root { --navy:#1e2a4a; --navy2:#16203a; --gold:#c9a44c; --bg:#f7f8fa; --ink:#222; }
+  * { box-sizing:border-box; margin:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:-apple-system,"Segoe UI",Roboto,"Heebo",sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 20px; }
+  a { color:inherit; }
+
+  /* hero */
+  header.hero { background:linear-gradient(160deg,var(--navy),var(--navy2)); color:#fff; padding:64px 0 72px; text-align:center; }
+  .logo { font-size:52px; }
+  .brand { font-size:15px; letter-spacing:.5px; color:var(--gold); font-weight:700; margin-top:6px; }
+  h1 { font-size:40px; line-height:1.2; margin:18px auto 14px; max-width:760px; }
+  h1 span { color:var(--gold); }
+  .sub { font-size:19px; color:#cdd3df; max-width:620px; margin:0 auto 30px; }
+  .cta { display:inline-block; background:var(--gold); color:var(--navy2); font-weight:700; font-size:17px; padding:15px 34px; border-radius:30px; text-decoration:none; box-shadow:0 6px 20px rgba(201,164,76,.35); }
+  .cta.ghost { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.4); box-shadow:none; margin-inline-start:10px; }
+  .hero-note { margin-top:16px; font-size:13.5px; color:#9aa3b5; }
+
+  section { padding:56px 0; }
+  h2 { font-size:28px; text-align:center; color:var(--navy); margin-bottom:8px; }
+  .lead { text-align:center; color:#667; max-width:620px; margin:0 auto 36px; font-size:16px; }
+
+  /* how it works */
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .step { background:#fff; border-radius:16px; padding:24px; box-shadow:0 2px 10px rgba(0,0,0,.05); text-align:center; }
+  .step .n { width:34px; height:34px; border-radius:50%; background:var(--navy); color:#fff; font-weight:700; line-height:34px; margin:0 auto 12px; }
+  .step h3 { color:var(--navy); font-size:18px; margin-bottom:6px; }
+  .step p { color:#667; font-size:14.5px; }
+
+  /* features */
+  .features { background:#fff; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .feat { padding:18px; }
+  .feat .ico { font-size:30px; }
+  .feat h3 { color:var(--navy); font-size:17px; margin:8px 0 4px; }
+  .feat p { color:#667; font-size:14.5px; }
+
+  /* trust */
+  .trust { background:var(--navy); color:#fff; border-radius:20px; padding:36px; text-align:center; }
+  .trust h2 { color:#fff; }
+  .trust p { color:#cdd3df; max-width:640px; margin:0 auto; }
+  .trust .row { display:flex; gap:26px; justify-content:center; flex-wrap:wrap; margin-top:22px; font-size:14px; color:#e6e9f0; }
+  .trust .row b { color:var(--gold); }
+
+  /* pricing */
+  .plans { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
+  .plan { background:#fff; border-radius:16px; padding:26px; box-shadow:0 2px 10px rgba(0,0,0,.05); text-align:center; border:2px solid transparent; display:flex; flex-direction:column; }
+  .plan.best { border-color:var(--gold); }
+  .plan .name { color:var(--navy); font-weight:700; font-size:18px; }
+  .plan .price { font-size:34px; font-weight:800; color:var(--navy); margin:10px 0 2px; }
+  .plan .price small { font-size:15px; font-weight:500; color:#889; }
+  .plan ul { list-style:none; text-align:start; margin:16px 0; padding:0; color:#556; font-size:14.5px; }
+  .plan li { padding:5px 0; }
+  .plan li::before { content:"✓ "; color:var(--gold); font-weight:700; }
+  .plan .tag { font-size:12px; color:var(--gold); font-weight:700; height:16px; }
+  .plan .cta { margin-top:auto; font-size:15px; padding:12px 0; }
+  .pricing-note { text-align:center; color:#99a; font-size:13px; margin-top:18px; }
+
+  footer { background:var(--navy2); color:#9aa3b5; text-align:center; padding:34px 0; font-size:14px; }
+  footer a { color:#cdd3df; text-decoration:none; margin:0 8px; }
+
+  @media (max-width:720px){
+    h1{font-size:30px;} .steps,.grid,.plans{grid-template-columns:1fr;}
+    .cta.ghost{display:block; margin:12px auto 0; width:fit-content;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="logo">👩🏻‍💼</div>
+    <div class="brand">נוגה</div>
+    <h1>המזכירה האישית ש<span>עובדת בשבילך</span> — גם כשאתה ישן</h1>
+    <p class="sub">נוגה קוראת את המייל והוואטסאפ שלך, מזכירה לך מה חשוב, מנהלת את המשימות, ומציעה לך מה לעשות — בעברית, לפני שביקשת.</p>
+    <a class="cta" href="./">התחל עכשיו — בחינם</a>
+    <a class="cta ghost" href="#how">איך זה עובד</a>
+    <div class="hero-note">בלי סיסמאות · התחברות במייל · מוכן תוך דקה</div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <h2>שלושה צעדים, ונוגה מתחילה לעבוד</h2>
+    <p class="lead">בלי הגדרות מסובכות. מתחברים, מחברים תיבה, ונוגה כבר מתחילה לדאוג לך.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>נכנסים במייל</h3><p>קישור כניסה למייל — בלי סיסמאות, בלי טפסים.</p></div>
+      <div class="step"><div class="n">2</div><h3>מחברים תיבות</h3><p>Gmail, Outlook, וואטסאפ ועוד — נוגה קוראת בשבילך.</p></div>
+      <div class="step"><div class="n">3</div><h3>נוגה מציעה</h3><p>תזכורות, משימות וסיכומים — אתה רק מאשר בלחיצה.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="wrap">
+    <h2>מה נוגה עושה בשבילך</h2>
+    <p class="lead">כל מה שמזכירה טובה עושה — רק שהיא זמינה 24/7 וזוכרת הכל.</p>
+    <div class="grid">
+      <div class="feat"><div class="ico">📥</div><h3>קוראת את הכל</h3><p>מייל, וואטסאפ, SMS — במקום אחד. שום דבר חשוב לא נופל.</p></div>
+      <div class="feat"><div class="ico">💡</div><h3>מציעה מראש</h3><p>"נכנסה פגישה ליום ג' — לקבוע תזכורת?" אתה רק מאשר.</p></div>
+      <div class="feat"><div class="ico">⏰</div><h3>מזכירה בזמן</h3><p>תזכורות ומשימות שקופצות בדיוק כשצריך.</p></div>
+      <div class="feat"><div class="ico">🧠</div><h3>זוכרת אותך</h3><p>שמות, העדפות, ימי הולדת — נוגה מכירה אותך ומתייחסת בהתאם.</p></div>
+      <div class="feat"><div class="ico">🗓️</div><h3>דוחות יומי/שבועי</h3><p>סיכום מסודר לפי השעה שאתה בוחר. מתחילים כל בוקר מסודרים.</p></div>
+      <div class="feat"><div class="ico">🤝</div><h3>ליחידים ולעסקים</h3><p>מתאימה לך פרטית ולעסק הקטן שלך — בלי צוות מזכירות.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="trust">
+      <h2>הפרטיות שלך — לא מוצר</h2>
+      <p>נוגה קוראת את המייל בקריאה בלבד — לא מסמנת, לא מוחקת, לא שולחת בשמך. גוף המיילים לא נשמר אצלנו, והסיסמאות מוצפנות במפתח שלא נמצא במסד הנתונים.</p>
+      <div class="row">
+        <div>🔒 <b>הצפנה</b> מקצה לקצה</div>
+        <div>🗑️ <b>גוף מייל</b> לא נשמר</div>
+        <div>✋ <b>אתה מאשר</b> כל פעולה</div>
+        <div>📤 <b>מחיקה</b> וייצוא בכל רגע</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <h2>תמחור פשוט</h2>
+    <p class="lead">מתחילים בחינם. משדרגים כשנוגה כבר חלק מהיום שלך.</p>
+    <div class="plans">
+      <div class="plan">
+        <div class="tag">&nbsp;</div>
+        <div class="name">חינם</div>
+        <div class="price">₪0</div>
+        <ul><li>צ'אט עם נוגה</li><li>משימות ותזכורות</li><li>תיבת מייל אחת</li></ul>
+        <a class="cta ghost" style="border-color:var(--navy);color:var(--navy)" href="./">התחל</a>
+      </div>
+      <div class="plan best">
+        <div class="tag">הכי פופולרי</div>
+        <div class="name">פרטי</div>
+        <div class="price">₪49<small>/חודש</small></div>
+        <ul><li>הכל בחינם, ובנוסף:</li><li>כל התיבות (מייל+וואטסאפ)</li><li>הצעות יזומות</li><li>דוחות יומי/שבועי/חודשי</li></ul>
+        <a class="cta" href="./">נסה 14 יום</a>
+      </div>
+      <div class="plan">
+        <div class="tag">&nbsp;</div>
+        <div class="name">עסקי</div>
+        <div class="price">₪149<small>/חודש</small></div>
+        <ul><li>הכל בפרטי, ובנוסף:</li><li>מספר תיבות עסקיות</li><li>עדיפות בתמיכה</li><li>מותאם לעסק הקטן</li></ul>
+        <a class="cta ghost" style="border-color:var(--navy);color:var(--navy)" href="./">דבר איתנו</a>
+      </div>
+    </div>
+    <p class="pricing-note">המחירים לצורך המחשה ועשויים להשתנות · תקופת בטא · לא תחויב בלי אישור מפורש</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div style="color:var(--gold);font-weight:700;font-size:16px;margin-bottom:8px">נוגה</div>
+    <a href="./">האפליקציה</a> ·
+    <a href="privacy.html">פרטיות</a> ·
+    <a href="terms.html">תנאי שימוש</a>
+    <div style="margin-top:12px;font-size:12.5px;color:#6b7488">© 2026 נוגה · המזכירה האישית שלך</div>
+  </div>
+</footer>
+
+</body>
+</html>
