@@ -171,6 +171,18 @@
 
     <!-- connections / settings -->
     <section class="view hidden" id="view-settings" style="overflow-y:auto">
+      <!-- plan / billing -->
+      <div style="padding: 12px 12px 0">
+        <div style="background:linear-gradient(160deg,#1e2a4a,#16203a);color:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">החבילה שלי</div>
+            <div id="plan-badge" style="background:#c9a44c;color:#16203a;font-weight:700;font-size:12.5px;padding:3px 10px;border-radius:20px">…</div>
+          </div>
+          <div id="plan-desc" style="font-size:12.5px;color:#cdd3df;line-height:1.5;margin-top:8px"></div>
+          <button id="plan-btn" class="hidden" style="margin-top:12px;width:100%;background:#c9a44c;color:#16203a;border:none;border-radius:10px;padding:11px;font-size:15px;font-weight:700;cursor:pointer"></button>
+          <div id="plan-note" style="font-size:12.5px;font-weight:600;min-height:16px;color:#c9a44c;margin-top:8px;text-align:center"></div>
+        </div>
+      </div>
       <!-- reports -->
       <div style="padding: 12px 12px 0">
         <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
@@ -213,7 +225,8 @@
           <div id="acct-note" style="font-size:13px;font-weight:600;min-height:18px;color:#c0392b;margin-top:8px;text-align:center"></div>
           <div style="font-size:12px;color:#99a;text-align:center;margin-top:10px">
             <a href="privacy.html" target="_blank" style="color:#889">פרטיות</a> ·
-            <a href="terms.html" target="_blank" style="color:#889">תנאי שימוש</a>
+            <a href="terms.html" target="_blank" style="color:#889">תנאי שימוש</a> ·
+            <span style="color:#b9bec7">נוגה v1.1.0</span>
           </div>
         </div>
       </div>
@@ -512,6 +525,9 @@ $("connect-form").onsubmit = async (e) => {
       note.textContent = "✓ " + (data.message || "מחובר!");
       $("acc-email").value = ""; $("acc-pass").value = "";
       loadAccounts();
+    } else if (res.status === 402 && data.error === "mailbox_limit") {
+      note.style.color = "#c9a44c";
+      note.textContent = "🔒 " + (data.message || "הגעת למכסת התיבות בחבילה שלך.");
     } else {
       note.textContent = "✗ " + (data.error === "login failed"
         ? "ההתחברות נכשלה — ודא שזו סיסמת אפליקציה (לא הסיסמה הרגילה)"
@@ -523,6 +539,61 @@ $("connect-form").onsubmit = async (e) => {
     btn.disabled = false;
   }
 };
+
+/* ── plan / billing ───────────────────────────────────────────────────── */
+const PLAN_LABELS = { free: "חינם", personal: "פרטי", business: "עסקי" };
+async function loadPlan() {
+  const badge = $("plan-badge"), desc = $("plan-desc"), btn = $("plan-btn"), note = $("plan-note");
+  note.textContent = "";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/billing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ action: "get_status" }),
+    });
+    const s = await res.json();
+    if (!res.ok) return;
+    badge.textContent = PLAN_LABELS[s.plan] || s.plan;
+    if (s.trialing && s.trial_ends_at) {
+      const days = Math.max(0, Math.ceil((new Date(s.trial_ends_at) - new Date()) / 86400000));
+      badge.textContent = "ניסיון";
+      desc.textContent = `ניסיון חבילת ${PLAN_LABELS[s.plan]} — נותרו ${days} ימים. אחרי הניסיון אפשר להמשיך בתשלום.`;
+    } else if (s.plan === "free") {
+      desc.textContent = "חבילה חינמית: צ'אט, משימות ותזכורות, ותיבת מייל אחת. שדרגי כדי לחבר את כל התיבות, לקבל הצעות יזומות ודוחות.";
+    } else {
+      desc.textContent = `חבילת ${PLAN_LABELS[s.plan]} פעילה. תודה שאת/ה איתנו 💛`;
+    }
+    if (s.plan === "free") {
+      btn.textContent = "התחל 14 יום ניסיון חינם";
+      btn.classList.remove("hidden");
+      btn.onclick = startTrial;
+    } else {
+      btn.classList.add("hidden");
+    }
+  } catch { /* silent — settings still usable without the plan card */ }
+}
+
+async function startTrial() {
+  const btn = $("plan-btn"), note = $("plan-note");
+  btn.disabled = true; note.textContent = "מפעיל...";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/billing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ action: "start_trial" }),
+    });
+    const data = await res.json();
+    if (res.ok) { note.textContent = data.message || "הניסיון הופעל 🎉"; loadPlan(); }
+    else if (data.error === "trial_already_used") note.textContent = "כבר השתמשת בניסיון בעבר.";
+    else note.textContent = "לא הצלחנו להפעיל — נסה שוב מאוחר יותר.";
+  } catch {
+    note.textContent = "בעיית תקשורת, נסה שוב.";
+  } finally {
+    btn.disabled = false;
+  }
+}
 
 /* ── account: export + delete ─────────────────────────────────────────── */
 $("export-btn").onclick = async () => {
@@ -642,6 +713,7 @@ async function showApp(session) {
   $("app").classList.remove("hidden");
   await ensureProfile(session.user);
   refresh();
+  loadPlan();
   startPolling();
   setTimeout(() => {
     if (!chat.children.length) {
