@@ -556,6 +556,15 @@ async function loadPlan() {
     if (!res.ok) return;
     badge.textContent = PLAN_LABELS[s.plan] || s.plan;
     btn.classList.add("hidden");
+    // Reports are a paid feature — reflect that honestly in the reports card.
+    const repNote = $("reports-note"), repSave = $("reports-save");
+    if (s.limits && !s.limits.reports) {
+      repSave.disabled = true; repSave.style.opacity = "0.5";
+      repNote.textContent = "🔒 דוחות מתוזמנים זמינים בחבילת פרטי — נסי 14 יום חינם למעלה";
+    } else {
+      repSave.disabled = false; repSave.style.opacity = "";
+      if (repNote.textContent.startsWith("🔒")) repNote.textContent = "";
+    }
     if (s.trialing && s.trial_ends_at) {
       const days = Math.max(0, Math.ceil((new Date(s.trial_ends_at) - new Date()) / 86400000));
       badge.textContent = "ניסיון";
