@@ -555,23 +555,59 @@ async function loadPlan() {
     const s = await res.json();
     if (!res.ok) return;
     badge.textContent = PLAN_LABELS[s.plan] || s.plan;
+    btn.classList.add("hidden");
     if (s.trialing && s.trial_ends_at) {
       const days = Math.max(0, Math.ceil((new Date(s.trial_ends_at) - new Date()) / 86400000));
       badge.textContent = "ניסיון";
-      desc.textContent = `ניסיון חבילת ${PLAN_LABELS[s.plan]} — נותרו ${days} ימים. אחרי הניסיון אפשר להמשיך בתשלום.`;
+      desc.textContent = `ניסיון חבילת ${PLAN_LABELS[s.plan]} — נותרו ${days} ימים. אפשר לעבור למנוי בתשלום כבר עכשיו.`;
+      btn.textContent = `המשך בתשלום — ₪49/חודש`;
+      btn.classList.remove("hidden");
+      btn.onclick = () => startCheckout(s.plan);
+    } else if (s.plan !== "free" && !s.active) {
+      // trial ended / payment failed / canceled — the stored plan is kept but
+      // limits fell back to free; invite them back.
+      badge.textContent = "לא פעיל";
+      desc.textContent = s.status === "past_due"
+        ? "התשלום האחרון נכשל, אז החבילה הושהתה. חדשי את המנוי כדי לחזור לכל היכולות."
+        : `הניסיון של חבילת ${PLAN_LABELS[s.plan]} הסתיים. רוצה להמשיך? המנוי מחזיר את כל היכולות.`;
+      btn.textContent = `חזרה לחבילת ${PLAN_LABELS[s.plan]}`;
+      btn.classList.remove("hidden");
+      btn.onclick = () => startCheckout(s.plan);
     } else if (s.plan === "free") {
       desc.textContent = "חבילה חינמית: צ'אט, משימות ותזכורות, ותיבת מייל אחת. שדרגי כדי לחבר את כל התיבות, לקבל הצעות יזומות ודוחות.";
-    } else {
-      desc.textContent = `חבילת ${PLAN_LABELS[s.plan]} פעילה. תודה שאת/ה איתנו 💛`;
-    }
-    if (s.plan === "free") {
       btn.textContent = "התחל 14 יום ניסיון חינם";
       btn.classList.remove("hidden");
       btn.onclick = startTrial;
     } else {
-      btn.classList.add("hidden");
+      desc.textContent = `חבילת ${PLAN_LABELS[s.plan]} פעילה. תודה שאת/ה איתנו 💛`;
     }
   } catch { /* silent — settings still usable without the plan card */ }
+}
+
+async function startCheckout(plan) {
+  const btn = $("plan-btn"), note = $("plan-note");
+  btn.disabled = true; note.textContent = "פותח דף תשלום...";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/billing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ action: "create_checkout", plan }),
+    });
+    const data = await res.json();
+    if (res.ok && data.configured && data.url) {
+      note.textContent = "מעבירה לדף תשלום מאובטח...";
+      window.location.href = data.url;
+    } else if (data.configured === false) {
+      note.textContent = data.message || "התשלומים עוד לא מחוברים — בקרוב ממש.";
+    } else {
+      note.textContent = "לא הצלחנו לפתוח דף תשלום — נסי שוב מאוחר יותר.";
+    }
+  } catch {
+    note.textContent = "בעיית תקשורת, נסי שוב.";
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 async function startTrial() {
