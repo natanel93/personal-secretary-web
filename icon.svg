@@ -1,7 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-  <rect width="180" height="180" rx="40" fill="#1e2a4a"/>
-  <circle cx="90" cy="66" r="26" fill="#c9a44c"/>
-  <path d="M42 138c0-26 21-42 48-42s48 16 48 42v6H42z" fill="#c9a44c"/>
-  <circle cx="128" cy="52" r="17" fill="#1e2a4a" stroke="#c9a44c" stroke-width="5"/>
-  <path d="M128 43v9l7 5" stroke="#c9a44c" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <!-- נוגה — Venus mark: a glowing gold point over the horizon, on deep night -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#25335E"/>
+      <stop offset="0.7" stop-color="#0F1729"/>
+    </linearGradient>
+    <radialGradient id="star" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="#FFF3D6"/>
+      <stop offset="0.5" stop-color="#F0C97A"/>
+      <stop offset="1" stop-color="#D4A94E"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#F0C97A" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#F0C97A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hor" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D4A94E" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#D4A94E"/>
+      <stop offset="1" stop-color="#D4A94E" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="40" fill="url(#bg)"/>
+  <circle cx="46" cy="42" r="2.5" fill="#EADFC4" opacity="0.7"/>
+  <circle cx="138" cy="56" r="2" fill="#EADFC4" opacity="0.5"/>
+  <circle cx="120" cy="30" r="1.6" fill="#EADFC4" opacity="0.45"/>
+  <circle cx="90" cy="74" r="46" fill="url(#glow)"/>
+  <circle cx="90" cy="74" r="17" fill="url(#star)"/>
+  <rect x="22" y="115" width="136" height="3" rx="1.5" fill="url(#hor)"/>
 </svg>
