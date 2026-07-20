@@ -294,7 +294,7 @@
             <a href="privacy.html" target="_blank" style="color:#5F6678">פרטיות</a> ·
             <a href="terms.html" target="_blank" style="color:#5F6678">תנאי שימוש</a> ·
             <a href="accessibility.html" target="_blank" style="color:#5F6678">נגישות</a> ·
-            <span style="color:#b9bec7">נוגה v1.5.0</span>
+            <span style="color:#b9bec7">נוגה v1.5.1</span>
           </div>
         </div>
       </div>
@@ -498,7 +498,7 @@ async function loadToday() {
 
   const [{ data: prof }, { data: tasks }, { data: rems }, { data: people }] = await Promise.all([
     sb.from("profiles").select("display_name").maybeSingle(),
-    sb.from("tasks").select("id, title, due_at, waiting_on, waiting_since")
+    sb.from("tasks").select("id, title, due_at, waiting_on, waiting_since, prepared_at")
       .eq("status", "open").limit(100),
     sb.from("reminders").select("body, remind_at").eq("status", "scheduled")
       .gte("remind_at", dayStart.toISOString()).lte("remind_at", dayEnd.toISOString())
@@ -536,7 +536,7 @@ async function loadToday() {
   if (top3.length) {
     html += `<div class="sect">הדברים של היום</div>`;
     top3.forEach((x, i) => {
-      html += `<div class="row"><div class="pri-row" style="flex:1"><div class="n">${i + 1}</div><div class="grow"><div class="t">${escapeHtml(x.t.title)}</div>${x.why ? `<div class="s${x.score === 0 ? " overdue" : ""}">${escapeHtml(x.why)}</div>` : ""}</div></div></div>`;
+      html += `<div class="row"><div class="pri-row" style="flex:1"><div class="n">${i + 1}</div><div class="grow"><div class="t">${escapeHtml(x.t.title)}${x.t.prepared_at ? " <span title=\"נוגה הכינה ערכת פתיחה — בצ'אט\">✨</span>" : ""}</div>${x.why ? `<div class="s${x.score === 0 ? " overdue" : ""}">${escapeHtml(x.why)}</div>` : ""}</div></div></div>`;
     });
   }
 
