@@ -130,8 +130,10 @@
     border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700;
   }
   .chips-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
-  button.pchip { cursor: pointer; font-family: inherit; }
-  button.pchip:active { background: #F2E6C8; }
+  .pwrap { padding-inline-end: 4px; gap: 2px; }
+  button.pchip { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; font-size: inherit; font-weight: inherit; padding: 0; }
+  button.pdel { cursor: pointer; background: none; border: none; color: #B9A46C; font-size: 12px; padding: 0 2px; }
+  button.pdel:active { color: var(--coral); }
   .timeline .tl { display: flex; justify-content: space-between; align-items: center; padding: 7px 2px; border-bottom: 1px dashed var(--line); font-size: 14px; }
   .timeline .tl:last-child { border-bottom: none; }
   .timeline .hh { color: #8A90A5; font-size: 12.5px; font-variant-numeric: tabular-nums; direction: ltr; }
@@ -280,7 +282,7 @@
           <div style="font-size:12px;color:#99a;text-align:center;margin-top:10px">
             <a href="privacy.html" target="_blank" style="color:#889">פרטיות</a> ·
             <a href="terms.html" target="_blank" style="color:#889">תנאי שימוש</a> ·
-            <span style="color:#b9bec7">נוגה v1.3.0</span>
+            <span style="color:#b9bec7">נוגה v1.4.0</span>
           </div>
         </div>
       </div>
@@ -550,9 +552,10 @@ async function loadToday() {
       const silent = p.last_heard_at
         ? Math.floor((now - new Date(p.last_heard_at)) / 864e5)
         : null;
-      html += `<button class="wchip pchip" data-person="${escapeHtml(p.name)}">` +
+      html += `<span class="wchip pwrap"><button class="pchip" data-person="${escapeHtml(p.name)}">` +
         `${escapeHtml(p.name)}${p.relation ? " · " + escapeHtml(p.relation) : ""}` +
-        `${silent !== null && silent >= 10 ? ` · שקט ${silent} ימים` : ""}</button>`;
+        `${silent !== null && silent >= 10 ? ` · שקט ${silent} ימים` : ""}</button>` +
+        `<button class="pdel" data-person="${escapeHtml(p.name)}" title="מחיקה">✕</button></span>`;
     }
     html += `</div></div>`;
   }
@@ -569,6 +572,16 @@ async function loadToday() {
       const inp = $("text");
       inp.value = `מה פתוח מול ${b.dataset.person}?`;
       inp.focus();
+    };
+  });
+  // ✕ → delete the person (privacy promise; RLS scopes to own rows)
+  box.querySelectorAll(".pdel").forEach((b) => {
+    b.onclick = async (e) => {
+      e.stopPropagation();
+      const name = b.dataset.person;
+      if (!confirm(`למחוק את ${name} מהאנשים של נוגה? (משימות והודעות לא נמחקות)`)) return;
+      const { error } = await sb.from("people").delete().eq("name", name);
+      if (!error) loadToday();
     };
   });
 }
