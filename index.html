@@ -257,6 +257,19 @@
         </div>
       </div>
 
+      <!-- contacts import (visible only inside the native iOS shell) -->
+      <div style="padding: 0 12px 12px" class="hidden" id="contacts-card">
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <div style="font-weight:700;color:var(--navy);margin-bottom:4px">אנשי קשר מהטלפון 📇</div>
+          <div style="font-size:12.5px;color:#889;line-height:1.5;margin-bottom:10px">
+            ייבוא חד-פעמי ביוזמתך: שם, מייל וטלפון בלבד, כדי שנוגה תזהה את האנשים
+            שאתה עובד איתם ותעקוב אחרי מה שפתוח מולם. אפשר למחוק כל אחד בכל רגע.
+          </div>
+          <button id="contacts-btn" style="width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:11px;font-size:15px;cursor:pointer">ייבא אנשי קשר</button>
+          <div id="contacts-note" style="font-size:13px;font-weight:600;min-height:18px;color:var(--gold);margin-top:6px;text-align:center"></div>
+        </div>
+      </div>
+
       <!-- account: export + delete + legal -->
       <div style="padding: 0 12px 24px">
         <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
@@ -793,6 +806,42 @@ async function startTrial() {
     btn.disabled = false;
   }
 }
+
+/* ── contacts import (native shell bridge) ────────────────────────────── */
+const inNativeShell = !!window.ReactNativeWebView;
+if (inNativeShell) $("contacts-card").classList.remove("hidden");
+$("contacts-btn").onclick = () => {
+  if (!inNativeShell) return;
+  $("contacts-note").textContent = "מבקשת גישה לאנשי הקשר...";
+  window.ReactNativeWebView.postMessage(JSON.stringify({ type: "pick_contacts" }));
+};
+async function onNativeMessage(e) {
+  let msg; try { msg = JSON.parse(e.data); } catch { return; }
+  if (msg?.type !== "contacts_result") return;
+  const note = $("contacts-note");
+  if (!msg.ok) {
+    note.textContent = msg.reason === "denied"
+      ? "לא אושרה גישה — אפשר לאשר דרך הגדרות iOS ← נוגה ← אנשי קשר"
+      : "הייבוא נכשל, נסה שוב";
+    return;
+  }
+  if (!msg.contacts?.length) { note.textContent = "לא נמצאו אנשי קשר עם מייל או טלפון"; return; }
+  note.textContent = `מייבאת ${msg.contacts.length} אנשי קשר...`;
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/import-contacts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+      body: JSON.stringify({ contacts: msg.contacts }),
+    });
+    const data = await res.json();
+    if (res.ok) { note.textContent = `✓ ${data.imported} אנשים נוספו לנוגה`; loadToday(); }
+    else note.textContent = "✗ " + (data.error || "שגיאה בייבוא");
+  } catch { note.textContent = "✗ בעיית תקשורת, נסה שוב"; }
+}
+// RN WebView delivers on window (Android) and document (iOS) — listen on both.
+window.addEventListener("message", onNativeMessage);
+document.addEventListener("message", onNativeMessage);
 
 /* ── account: export + delete ─────────────────────────────────────────── */
 $("export-btn").onclick = async () => {
