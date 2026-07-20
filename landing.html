@@ -10,6 +10,8 @@
   :root { --navy:#1e2a4a; --navy2:#16203a; --gold:#c9a44c; --bg:#f7f8fa; --ink:#222; }
   * { box-sizing:border-box; margin:0; }
   html { scroll-behavior:smooth; }
+  :focus-visible { outline:2.5px solid var(--gold); outline-offset:2px; border-radius:4px; }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
   body { font-family:-apple-system,"Segoe UI",Roboto,"Heebo",sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
   .wrap { max-width:1080px; margin:0 auto; padding:0 20px; }
   a { color:inherit; }
@@ -23,7 +25,7 @@
   .sub { font-size:19px; color:#cdd3df; max-width:620px; margin:0 auto 30px; }
   .cta { display:inline-block; background:var(--gold); color:var(--navy2); font-weight:700; font-size:17px; padding:15px 34px; border-radius:30px; text-decoration:none; box-shadow:0 6px 20px rgba(201,164,76,.35); }
   .cta.ghost { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.4); box-shadow:none; margin-inline-start:10px; }
-  .hero-note { margin-top:16px; font-size:13.5px; color:#9aa3b5; }
+  .hero-note { margin-top:16px; font-size:13.5px; color:#B7C0D4; }
 
   section { padding:56px 0; }
   h2 { font-size:28px; text-align:center; color:var(--navy); margin-bottom:8px; }
@@ -34,7 +36,7 @@
   .step { background:#fff; border-radius:16px; padding:24px; box-shadow:0 2px 10px rgba(0,0,0,.05); text-align:center; }
   .step .n { width:34px; height:34px; border-radius:50%; background:var(--navy); color:#fff; font-weight:700; line-height:34px; margin:0 auto 12px; }
   .step h3 { color:var(--navy); font-size:18px; margin-bottom:6px; }
-  .step p { color:#667; font-size:14.5px; }
+  .step p { color:#5A6170; font-size:14.5px; }
 
   /* features */
   .features { background:#fff; }
@@ -42,7 +44,7 @@
   .feat { padding:18px; }
   .feat .ico { font-size:30px; }
   .feat h3 { color:var(--navy); font-size:17px; margin:8px 0 4px; }
-  .feat p { color:#667; font-size:14.5px; }
+  .feat p { color:#5A6170; font-size:14.5px; }
 
   /* trust */
   .trust { background:var(--navy); color:#fff; border-radius:20px; padding:36px; text-align:center; }
@@ -58,12 +60,12 @@
   .plan .name { color:var(--navy); font-weight:700; font-size:18px; }
   .plan .price { font-size:34px; font-weight:800; color:var(--navy); margin:10px 0 2px; }
   .plan .price small { font-size:15px; font-weight:500; color:#889; }
-  .plan ul { list-style:none; text-align:start; margin:16px 0; padding:0; color:#556; font-size:14.5px; }
+  .plan ul { list-style:none; text-align:start; margin:16px 0; padding:0; color:#4A5162; font-size:14.5px; }
   .plan li { padding:5px 0; }
   .plan li::before { content:"✓ "; color:var(--gold); font-weight:700; }
   .plan .tag { font-size:12px; color:var(--gold); font-weight:700; height:16px; }
   .plan .cta { margin-top:auto; font-size:15px; padding:12px 0; }
-  .pricing-note { text-align:center; color:#99a; font-size:13px; margin-top:18px; }
+  .pricing-note { text-align:center; color:#5F6678; font-size:13px; margin-top:18px; }
 
   footer { background:var(--navy2); color:#9aa3b5; text-align:center; padding:34px 0; font-size:14px; }
   footer a { color:#cdd3df; text-decoration:none; margin:0 8px; }
@@ -166,7 +168,8 @@
     <div style="color:var(--gold);font-weight:700;font-size:16px;margin-bottom:8px">נוגה</div>
     <a href="./">האפליקציה</a> ·
     <a href="privacy.html">פרטיות</a> ·
-    <a href="terms.html">תנאי שימוש</a>
+    <a href="terms.html">תנאי שימוש</a> ·
+    <a href="accessibility.html">הצהרת נגישות</a>
     <div style="margin-top:12px;font-size:12.5px;color:#6b7488">© 2026 נוגה · המנהלת האישית שלך</div>
   </div>
 </footer>
