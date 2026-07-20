@@ -130,6 +130,8 @@
     border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700;
   }
   .chips-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+  button.pchip { cursor: pointer; font-family: inherit; }
+  button.pchip:active { background: #F2E6C8; }
   .timeline .tl { display: flex; justify-content: space-between; align-items: center; padding: 7px 2px; border-bottom: 1px dashed var(--line); font-size: 14px; }
   .timeline .tl:last-child { border-bottom: none; }
   .timeline .hh { color: #8A90A5; font-size: 12.5px; font-variant-numeric: tabular-nums; direction: ltr; }
@@ -189,7 +191,7 @@
       <div id="chat"></div>
       <div id="suggestions"></div>
       <form class="composer" id="composer">
-        <input id="text" placeholder="כתוב למזכירה..." autocomplete="off">
+        <input id="text" placeholder="כתבו לנוגה..." autocomplete="off">
         <button type="submit" id="send">שלח</button>
       </form>
     </section>
@@ -295,7 +297,7 @@ let renderedCount = 0;
 document.querySelectorAll("nav button").forEach((b) => {
   b.onclick = () => {
     document.querySelectorAll("nav button").forEach((x) => x.classList.toggle("active", x === b));
-    ["chat", "tasks", "inbox", "settings"].forEach((v) =>
+    ["today", "chat", "tasks", "inbox", "settings"].forEach((v) =>
       $("view-" + v).classList.toggle("hidden", v !== b.dataset.view));
     refresh();
   };
@@ -467,13 +469,15 @@ async function loadToday() {
   const dayStart = new Date(now); dayStart.setHours(0, 0, 0, 0);
   const dayEnd = new Date(now); dayEnd.setHours(23, 59, 59, 999);
 
-  const [{ data: prof }, { data: tasks }, { data: rems }] = await Promise.all([
+  const [{ data: prof }, { data: tasks }, { data: rems }, { data: people }] = await Promise.all([
     sb.from("profiles").select("display_name").maybeSingle(),
     sb.from("tasks").select("id, title, due_at, waiting_on, waiting_since")
       .eq("status", "open").limit(100),
     sb.from("reminders").select("body, remind_at").eq("status", "scheduled")
       .gte("remind_at", dayStart.toISOString()).lte("remind_at", dayEnd.toISOString())
       .order("remind_at").limit(10),
+    sb.from("people").select("name, relation, last_heard_at")
+      .order("updated_at", { ascending: false }).limit(8),
   ]);
 
   // Rank: overdue → due today → stale waiting → the rest. Top 3 only.
@@ -527,11 +531,33 @@ async function loadToday() {
     html += `</div>`;
   }
 
+  if (people && people.length) {
+    html += `<div class="sect">האנשים שלך</div><div class="row"><div class="chips-wrap">`;
+    for (const p of people) {
+      const silent = p.last_heard_at
+        ? Math.floor((now - new Date(p.last_heard_at)) / 864e5)
+        : null;
+      html += `<button class="wchip pchip" data-person="${escapeHtml(p.name)}">` +
+        `${escapeHtml(p.name)}${p.relation ? " · " + escapeHtml(p.relation) : ""}` +
+        `${silent !== null && silent >= 10 ? ` · שקט ${silent} ימים` : ""}</button>`;
+    }
+    html += `</div></div>`;
+  }
+
   if (!top3.length && !waiting.length && (!rems || !rems.length)) {
     html += `<div class="empty">אין כלום על הרדאר להיום 🙌<br>ספר לנוגה בצ'אט מה על הראש שלך</div>`;
   }
 
   box.innerHTML = html;
+  // person chip → jump to chat with a ready question for Noga
+  box.querySelectorAll(".pchip").forEach((b) => {
+    b.onclick = () => {
+      document.querySelector('nav button[data-view="chat"]')?.click();
+      const inp = $("text");
+      inp.value = `מה פתוח מול ${b.dataset.person}?`;
+      inp.focus();
+    };
+  });
 }
 
 $("task-form").onsubmit = async (e) => {
