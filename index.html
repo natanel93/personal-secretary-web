@@ -705,7 +705,7 @@ const SRC_ICON = { email: "✉️", whatsapp: "🟢", sms: "📱", calendar: "�
 
 async function loadInbox() {
   const { data } = await sb.from("inbox_items")
-    .select("id, source, sender, subject, body, received_at, is_read")
+    .select("id, source, sender, subject, body, preview, received_at, is_read")
     .order("received_at", { ascending: false }).limit(50);
   const box = $("inbox-list");
   box.innerHTML = "";
@@ -725,7 +725,7 @@ async function loadInbox() {
     const grow = document.createElement("div");
     grow.className = "grow";
     const t = document.createElement("div");
-    t.className = "t"; t.textContent = i.subject || (i.body ?? "").slice(0, 80);
+    t.className = "t"; t.textContent = i.subject || i.preview || (i.body ?? "").slice(0, 80);
     const s = document.createElement("div");
     s.className = "s";
     s.textContent = (i.sender ?? "") + " · " +
