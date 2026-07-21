@@ -233,6 +233,16 @@
           <div id="lang-note" role="status" style="font-size:12.5px;font-weight:600;min-height:16px;color:var(--gold);margin-top:6px;text-align:center"></div>
         </div>
       </div>
+      <!-- AI consent (required before any model call) -->
+      <div style="padding: 12px 12px 0" id="consent-card">
+        <div id="consent-box" style="background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <div id="consent-head" style="font-weight:800;color:var(--navy);margin-bottom:6px"></div>
+          <div style="font-size:13px;color:#5F6678;line-height:1.6;margin-bottom:10px" data-i18n="consent_body"></div>
+          <a href="privacy.html" target="_blank" style="font-size:12.5px;color:#8A6E2F" data-i18n="consent_policy_link"></a>
+          <button id="consent-btn" style="margin-top:12px;width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer"></button>
+          <div id="consent-note" role="status" style="font-size:12.5px;font-weight:600;min-height:16px;color:var(--gold);margin-top:6px;text-align:center"></div>
+        </div>
+      </div>
       <!-- plan / billing -->
       <div style="padding: 12px 12px 0">
         <div style="background:linear-gradient(160deg,#1e2a4a,#16203a);color:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
@@ -327,6 +337,12 @@ const sb = createClient(SUPABASE_URL, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJp
 /* ── i18n (15 languages) ──────────────────────────────────────────────── */
 const I18N_LANGS = ["he", "en", "ar", "ru", "es", "fr", "de", "pt", "it", "nl", "pl", "tr", "uk", "hi", "zh"];
 const I18N = {
+  "consent_title": ["רגע לפני שמתחילים","One moment before we start","لحظة قبل أن نبدأ","Один момент перед началом","Un momento antes de empezar","Un instant avant de commencer","Kurz bevor es losgeht","Um momento antes de começar","Un attimo prima di iniziare","Even voordat we beginnen","Chwila przed startem","Başlamadan önce bir saniye","Хвилинку перед початком","शुरू करने से पहले एक पल","开始前稍等一下"],
+  "consent_body": ["כדי להבין את מה שאת/ה כותב/ת ואת מה שנכנס לתיבה, נוגה שולחת את התוכן לעיבוד אצל ספק בינה מלאכותית (Google Gemini, ובגיבוי Anthropic). התוכן לא משמש לאימון מודלים, ואפשר לבטל את ההסכמה בכל רגע במסך הזה.","To understand what you write and what arrives in your inbox, Noga sends that content for processing to an AI provider (Google Gemini, with Anthropic as backup). Your content is not used to train models, and you can withdraw this consent at any time on this screen.","لفهم ما تكتبه وما يصل إلى بريدك، ترسل نوغا المحتوى للمعالجة لدى مزوّد ذكاء اصطناعي (Google Gemini وAnthropic كاحتياطي). لا يُستخدم المحتوى لتدريب النماذج، ويمكنك سحب الموافقة في أي وقت.","Чтобы понимать, что вы пишете и что приходит во входящие, Нога отправляет содержимое на обработку ИИ-провайдеру (Google Gemini, резервно Anthropic). Содержимое не используется для обучения моделей, согласие можно отозвать в любой момент.","Para entender lo que escribes y lo que llega a tu bandeja, Noga envía ese contenido a un proveedor de IA (Google Gemini, con Anthropic como respaldo). Tu contenido no se usa para entrenar modelos y puedes retirar el consentimiento cuando quieras.","Pour comprendre ce que vous écrivez et ce qui arrive dans votre boîte, Noga envoie ce contenu à un fournisseur d IA (Google Gemini, Anthropic en secours). Votre contenu ne sert pas à entraîner les modèles et vous pouvez retirer ce consentement à tout moment.","Um zu verstehen, was du schreibst und was in deinem Postfach ankommt, sendet Noga diese Inhalte an einen KI-Anbieter (Google Gemini, Anthropic als Backup). Deine Inhalte werden nicht zum Training verwendet, und du kannst die Zustimmung jederzeit widerrufen.","Para entender o que você escreve e o que chega à sua caixa, a Noga envia esse conteúdo para um provedor de IA (Google Gemini, com Anthropic como reserva). Seu conteúdo não é usado para treinar modelos e você pode retirar o consentimento quando quiser.","Per capire ciò che scrivi e ciò che arriva nella tua casella, Noga invia quel contenuto a un fornitore di IA (Google Gemini, con Anthropic come riserva). I tuoi contenuti non vengono usati per addestrare modelli e puoi revocare il consenso quando vuoi.","Om te begrijpen wat je schrijft en wat er binnenkomt, stuurt Noga die inhoud naar een AI-aanbieder (Google Gemini, met Anthropic als back-up). Je inhoud wordt niet gebruikt om modellen te trainen en je kunt de toestemming altijd intrekken.","Aby rozumieć, co piszesz i co trafia do skrzynki, Noga wysyła tę treść do dostawcy AI (Google Gemini, zapasowo Anthropic). Treści nie służą do trenowania modeli, a zgodę możesz wycofać w każdej chwili.","Ne yazdığını ve gelen kutuna ne düştüğünü anlayabilmek için Noga bu içeriği bir yapay zeka sağlayıcısına (Google Gemini, yedek Anthropic) gönderir. İçeriğin model eğitiminde kullanılmaz ve onayı istediğin an geri alabilirsin.","Щоб розуміти, що ви пишете і що надходить у вхідні, Нога надсилає цей вміст постачальнику ШІ (Google Gemini, резервно Anthropic). Вміст не використовується для навчання моделей, згоду можна відкликати будь-коли.","आप जो लिखते हैं और इनबॉक्स में जो आता है उसे समझने के लिए नोगा वह सामग्री एक AI प्रदाता (Google Gemini, बैकअप Anthropic) को भेजती है। आपकी सामग्री मॉडल प्रशिक्षण में उपयोग नहीं होती, सहमति कभी भी वापस ले सकते हैं।","为了理解你写的内容和收件箱里的内容，Noga 会将这些内容发送给 AI 服务商处理（Google Gemini，备用 Anthropic）。你的内容不会用于训练模型，你随时可以撤回同意。"],
+  "consent_accept": ["אני מאשר/ת","I agree","أوافق","Согласен","Acepto","J accepte","Ich stimme zu","Eu concordo","Accetto","Ik ga akkoord","Zgadzam się","Kabul ediyorum","Погоджуюсь","मैं सहमत हूँ","我同意"],
+  "consent_granted": ["הסכמה לעיבוד AI — פעילה","AI processing consent — active","الموافقة على معالجة الذكاء الاصطناعي — فعّالة","Согласие на обработку ИИ — активно","Consentimiento de IA — activo","Consentement IA — actif","KI-Zustimmung — aktiv","Consentimento de IA — ativo","Consenso IA — attivo","AI-toestemming — actief","Zgoda na AI — aktywna","Yapay zeka onayı — etkin","Згода на ШІ — активна","AI सहमति — सक्रिय","AI 处理同意 — 已启用"],
+  "consent_revoke": ["בטל הסכמה","Withdraw consent","سحب الموافقة","Отозвать согласие","Retirar consentimiento","Retirer le consentement","Zustimmung widerrufen","Retirar consentimento","Revoca consenso","Toestemming intrekken","Wycofaj zgodę","Onayı geri al","Відкликати згоду","सहमति वापस लें","撤回同意"],
+  "consent_policy_link": ["קרא/י את מדיניות הפרטיות","Read the privacy policy","اقرأ سياسة الخصوصية","Политика конфиденциальности","Ver la política de privacidad","Lire la politique de confidentialité","Datenschutzerklärung lesen","Ler a política de privacidade","Leggi l informativa privacy","Lees het privacybeleid","Przeczytaj politykę prywatności","Gizlilik politikasını oku","Читати політику приватності","गोपनीयता नीति पढ़ें","阅读隐私政策"],
   "lang_label": ["שפה","Language","اللغة","Язык","Idioma","Langue","Sprache","Idioma","Lingua","Taal","Język","Dil","Мова","भाषा","语言"],
   "app_name": ["נוגה","Noga","نوغا","Нога","Noga","Noga","Noga","Noga","Noga","Noga","Noga","Noga","Нога","नोगा","Noga"],
   "tagline": ["המנהלת האישית שלך","your personal manager","مديرتك الشخصية","ваш личный менеджер","tu gestora personal","votre manager personnelle","deine persönliche Managerin","sua gestora pessoal","la tua manager personale","je persoonlijke manager","twoja osobista menedżerka","kişisel yöneticin","ваша особиста менеджерка","आपकी निजी प्रबंधक","你的私人管家"],
@@ -830,6 +846,44 @@ function buildLangPicker() {
   };
 }
 
+/* -- AI consent (server enforces; this records and revokes it) ------------ */
+let CONSENT_OK = false;
+async function loadConsent() {
+  const box = $("consent-box"), head = $("consent-head"), btn = $("consent-btn"), note = $("consent-note");
+  note.textContent = "";
+  const { data } = await sb.from("profiles").select("consents").maybeSingle();
+  const ai = (data && data.consents && data.consents.ai) || null;
+  CONSENT_OK = !!(ai && ai.granted_at && !ai.revoked_at);
+  if (CONSENT_OK) {
+    box.style.borderColor = "#ECE6D8";
+    head.textContent = T("consent_granted");
+    btn.textContent = T("consent_revoke");
+    btn.style.background = "#fff"; btn.style.color = "#c0392b"; btn.style.border = "1px solid #c0392b";
+    btn.onclick = function () { setConsent(false); };
+  } else {
+    box.style.borderColor = "var(--gold)";
+    head.textContent = T("consent_title");
+    btn.textContent = T("consent_accept");
+    btn.style.background = "var(--navy)"; btn.style.color = "#fff"; btn.style.border = "none";
+    btn.onclick = function () { setConsent(true); };
+  }
+}
+async function setConsent(grant) {
+  const btn = $("consent-btn"), note = $("consent-note");
+  btn.disabled = true;
+  const { data: me } = await sb.auth.getUser();
+  const { data } = await sb.from("profiles").select("consents").maybeSingle();
+  const consents = (data && data.consents) || {};
+  consents.ai = grant
+    ? { granted_at: new Date().toISOString(), policy_version: "2.0",
+        vendors: ["google-gemini", "anthropic"], revoked_at: null }
+    : Object.assign({}, consents.ai || {}, { revoked_at: new Date().toISOString() });
+  const { error } = await sb.from("profiles").update({ consents: consents }).eq("id", me.user.id);
+  btn.disabled = false;
+  if (error) { note.textContent = "\u2717 " + error.message; return; }
+  loadConsent();
+}
+
 /* ── plan / billing ───────────────────────────────────────────────────── */
 const PLAN_LABELS = { free: "חינם", personal: "פרטי", business: "עסקי" };
 async function loadPlan() {
@@ -1087,6 +1141,7 @@ async function showApp(session) {
   applyLocale(myProfile?.locale || (navigator.language || "en").slice(0, 2));
   buildLangPicker();
   refresh();
+  loadConsent();
   loadPlan();
   startPolling();
   setTimeout(() => {
