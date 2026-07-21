@@ -177,7 +177,7 @@
 <body>
   <header class="hidden" id="topbar">
     <h1>נוגה <span>· המנהלת האישית</span></h1>
-    <button id="logout">יציאה</button>
+    <button id="logout" data-i18n="logout">יציאה</button>
   </header>
 
   <div id="login">
@@ -204,8 +204,8 @@
       <div id="chat" role="log" aria-live="polite" aria-label="שיחה עם נוגה"></div>
       <div id="suggestions" aria-live="polite" aria-label="הצעות של נוגה"></div>
       <form class="composer" id="composer">
-        <input id="text" placeholder="כתבו לנוגה..." aria-label="הודעה לנוגה" autocomplete="off">
-        <button type="submit" id="send">שלח</button>
+        <input id="text" placeholder="כתבו לנוגה..." data-i18n="chat_ph" data-i18n-attr="placeholder" aria-label="Noga" autocomplete="off">
+        <button type="submit" id="send" data-i18n="send">שלח</button>
       </form>
     </section>
 
@@ -225,6 +225,14 @@
 
     <!-- connections / settings -->
     <section class="view hidden" id="view-settings" style="overflow-y:auto">
+      <!-- language -->
+      <div style="padding: 12px 12px 0">
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <label for="lang-select" style="display:block;font-weight:700;color:var(--navy);margin-bottom:8px">🌍 <span data-i18n="lang_label">שפה</span></label>
+          <select id="lang-select" style="width:100%;border:1px solid #d6d9de;border-radius:10px;padding:11px 12px;font-size:15px;background:#fff;color:var(--navy)"></select>
+          <div id="lang-note" role="status" style="font-size:12.5px;font-weight:600;min-height:16px;color:var(--gold);margin-top:6px;text-align:center"></div>
+        </div>
+      </div>
       <!-- plan / billing -->
       <div style="padding: 12px 12px 0">
         <div style="background:linear-gradient(160deg,#1e2a4a,#16203a);color:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
@@ -294,18 +302,18 @@
             <a href="privacy.html" target="_blank" style="color:#5F6678">פרטיות</a> ·
             <a href="terms.html" target="_blank" style="color:#5F6678">תנאי שימוש</a> ·
             <a href="accessibility.html" target="_blank" style="color:#5F6678">נגישות</a> ·
-            <span style="color:#b9bec7">נוגה v1.5.1</span>
+            <span style="color:#b9bec7">נוגה v1.6.0</span>
           </div>
         </div>
       </div>
     </section>
 
     <nav aria-label="ניווט ראשי">
-      <button data-view="today" class="active" aria-current="page"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><line x1="3" y1="18.5" x2="21" y2="18.5"/><circle class="dot" cx="12" cy="11" r="3.2"/><line x1="12" y1="4.5" x2="12" y2="3"/><line x1="6.2" y1="6.8" x2="5.1" y2="5.7"/><line x1="17.8" y1="6.8" x2="18.9" y2="5.7"/></svg>היום</button>
-      <button data-view="chat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="13" rx="4"/><path d="M8.5 17.5v3l3.5-3"/><circle class="dot" cx="16.5" cy="11" r="1.7"/></svg>צ'אט</button>
-      <button data-view="tasks"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><polyline points="8.4,12.3 11,14.8 15.8,9.6"/><circle class="dot" cx="19.5" cy="4.5" r="1.6"/></svg>משימות<span class="badge hidden" id="badge-tasks"></span></button>
-      <button data-view="inbox"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13.5" rx="3"/><polyline points="4,7 12,13.5 20,7"/><circle class="dot" cx="19" cy="17" r="1.6"/></svg>דואר<span class="badge hidden" id="badge-inbox"></span></button>
-      <button data-view="settings"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="2.3"/><circle cx="18.5" cy="5.5" r="2.3"/><circle cx="18.5" cy="18.5" r="2.3"/><line x1="7.6" y1="11" x2="16.4" y2="6.5"/><line x1="7.6" y1="13" x2="16.4" y2="17.5"/><circle class="dot" cx="5.5" cy="12" r="1.1"/></svg>חיבורים</button>
+      <button data-view="today" class="active" aria-current="page"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><line x1="3" y1="18.5" x2="21" y2="18.5"/><circle class="dot" cx="12" cy="11" r="3.2"/><line x1="12" y1="4.5" x2="12" y2="3"/><line x1="6.2" y1="6.8" x2="5.1" y2="5.7"/><line x1="17.8" y1="6.8" x2="18.9" y2="5.7"/></svg><span data-i18n="nav_today">היום</span></button>
+      <button data-view="chat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="13" rx="4"/><path d="M8.5 17.5v3l3.5-3"/><circle class="dot" cx="16.5" cy="11" r="1.7"/></svg><span data-i18n="nav_chat">צ'אט</span></button>
+      <button data-view="tasks"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><polyline points="8.4,12.3 11,14.8 15.8,9.6"/><circle class="dot" cx="19.5" cy="4.5" r="1.6"/></svg><span data-i18n="nav_tasks">משימות</span><span class="badge hidden" id="badge-tasks"></span></button>
+      <button data-view="inbox"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13.5" rx="3"/><polyline points="4,7 12,13.5 20,7"/><circle class="dot" cx="19" cy="17" r="1.6"/></svg><span data-i18n="nav_inbox">דואר</span><span class="badge hidden" id="badge-inbox"></span></button>
+      <button data-view="settings"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="2.3"/><circle cx="18.5" cy="5.5" r="2.3"/><circle cx="18.5" cy="18.5" r="2.3"/><line x1="7.6" y1="11" x2="16.4" y2="6.5"/><line x1="7.6" y1="13" x2="16.4" y2="17.5"/><circle class="dot" cx="5.5" cy="12" r="1.1"/></svg><span data-i18n="nav_settings">חיבורים</span></button>
     </nav>
   </main>
 
@@ -314,6 +322,74 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = "https://xzglitsbmpgryserphmb.supabase.co";
 const sb = createClient(SUPABASE_URL, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6Z2xpdHNibXBncnlzZXJwaG1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODQ2MzgsImV4cCI6MjA5ODU2MDYzOH0.Lmqyc-9ITGL1q3xGvofiTrPBeBwDqcW--sSeRZ2RKKU");
+
+/* ── i18n (15 languages) ──────────────────────────────────────────────── */
+const I18N_LANGS = ["he", "en", "ar", "ru", "es", "fr", "de", "pt", "it", "nl", "pl", "tr", "uk", "hi", "zh"];
+const I18N = {
+  "lang_label": ["שפה","Language","اللغة","Язык","Idioma","Langue","Sprache","Idioma","Lingua","Taal","Język","Dil","Мова","भाषा","语言"],
+  "app_name": ["נוגה","Noga","نوغا","Нога","Noga","Noga","Noga","Noga","Noga","Noga","Noga","Noga","Нога","नोगा","Noga"],
+  "tagline": ["המנהלת האישית שלך","your personal manager","مديرتك الشخصية","ваш личный менеджер","tu gestora personal","votre manager personnelle","deine persönliche Managerin","sua gestora pessoal","la tua manager personale","je persoonlijke manager","twoja osobista menedżerka","kişisel yöneticin","ваша особиста менеджерка","आपकी निजी प्रबंधक","你的私人管家"],
+  "logout": ["יציאה","Log out","خروج","Выйти","Salir","Se déconnecter","Abmelden","Sair","Esci","Uitloggen","Wyloguj","Çıkış","Вийти","लॉग आउट","退出"],
+  "nav_today": ["היום","Today","اليوم","Сегодня","Hoy","Aujourd'hui","Heute","Hoje","Oggi","Vandaag","Dziś","Bugün","Сьогодні","आज","今天"],
+  "nav_chat": ["צ'אט","Chat","محادثة","Чат","Chat","Chat","Chat","Chat","Chat","Chat","Czat","Sohbet","Чат","चैट","聊天"],
+  "nav_tasks": ["משימות","Tasks","مهام","Задачи","Tareas","Tâches","Aufgaben","Tarefas","Attività","Taken","Zadania","Görevler","Завдання","कार्य","任务"],
+  "nav_inbox": ["דואר","Inbox","الوارد","Входящие","Bandeja","Boîte","Posteingang","Caixa","In arrivo","Inbox","Skrzynka","Gelen","Вхідні","इनबॉक्स","收件箱"],
+  "nav_settings": ["חיבורים","Settings","الإعدادات","Настройки","Ajustes","Réglages","Einstellungen","Ajustes","Impostazioni","Instellingen","Ustawienia","Ayarlar","Налаштування","सेटिंग्स","设置"],
+  "login_title": ["המנהלת האישית שלך","Your personal manager","مديرتك الشخصية","Ваш личный менеджер","Tu gestora personal","Votre manager personnelle","Deine persönliche Managerin","Sua gestora pessoal","La tua manager personale","Je persoonlijke manager","Twoja osobista menedżerka","Kişisel yöneticin","Ваша особиста менеджерка","आपकी निजी प्रबंधक","你的私人管家"],
+  "login_sub": ["הכנס את המייל שלך ונשלח לך קישור כניסה — בלי סיסמאות.","Enter your email and we'll send a sign-in link — no passwords.","أدخل بريدك وسنرسل رابط دخول — بلا كلمات مرور.","Введите e-mail — пришлём ссылку для входа, без паролей.","Escribe tu email y te enviamos un enlace de acceso, sin contraseñas.","Saisissez votre e-mail : nous envoyons un lien de connexion, sans mot de passe.","E-Mail eingeben — wir senden einen Login-Link, ganz ohne Passwort.","Digite seu e-mail e enviamos um link de acesso — sem senhas.","Inserisci l'email e ti inviamo un link di accesso, senza password.","Vul je e-mail in; we sturen een inloglink — geen wachtwoorden.","Podaj e-mail, wyślemy link logowania — bez haseł.","E-postanı gir, giriş bağlantısı gönderelim — şifre yok.","Введіть e-mail — надішлемо посилання для входу, без паролів.","अपना ईमेल दें, हम साइन-इन लिंक भेजेंगे — कोई पासवर्ड नहीं।","输入邮箱，我们发送登录链接——无需密码。"],
+  "login_btn": ["שלח לי קישור","Send me a link","أرسل لي رابطًا","Отправить ссылку","Enviarme un enlace","Envoyez-moi un lien","Link senden","Enviar link","Inviami un link","Stuur me een link","Wyślij link","Bağlantı gönder","Надіслати посилання","मुझे लिंक भेजें","发送登录链接"],
+  "login_sent": ["✓ נשלח! בדוק את המייל ולחץ על הקישור","✓ Sent! Check your email and click the link","✓ أُرسل! تفقد بريدك واضغط الرابط","✓ Отправлено! Проверьте почту и перейдите по ссылке","✓ ¡Enviado! Revisa tu correo y pulsa el enlace","✓ Envoyé ! Consultez vos e-mails et cliquez sur le lien","✓ Gesendet! E-Mail prüfen und Link klicken","✓ Enviado! Confira seu e-mail e clique no link","✓ Inviato! Controlla l'email e clicca sul link","✓ Verstuurd! Check je mail en klik op de link","✓ Wysłano! Sprawdź pocztę i kliknij link","✓ Gönderildi! E-postanı kontrol et ve bağlantıya tıkla","✓ Надіслано! Перевірте пошту та натисніть посилання","✓ भेजा गया! ईमेल देखें और लिंक पर क्लिक करें","✓ 已发送！查收邮件并点击链接"],
+  "login_sending": ["שולח...","Sending...","جارٍ الإرسال...","Отправляем...","Enviando...","Envoi...","Senden...","Enviando...","Invio...","Versturen...","Wysyłanie...","Gönderiliyor...","Надсилаємо...","भेज रहे हैं...","发送中..."],
+  "chat_ph": ["כתבו לנוגה...","Write to Noga...","اكتب لنوغا...","Напишите Ноге...","Escribe a Noga...","Écrivez à Noga...","Schreib an Noga...","Escreva para a Noga...","Scrivi a Noga...","Schrijf naar Noga...","Napisz do Nogi...","Noga'ya yaz...","Напишіть Нозі...","नोगा को लिखें...","给 Noga 留言..."],
+  "send": ["שלח","Send","إرسال","Отправить","Enviar","Envoyer","Senden","Enviar","Invia","Versturen","Wyślij","Gönder","Надіслати","भेजें","发送"],
+  "greet_night": ["לילה טוב","Good night","مساء الخير","Доброй ночи","Buenas noches","Bonne nuit","Gute Nacht","Boa noite","Buonanotte","Goedenacht","Dobranoc","İyi geceler","Доброї ночі","शुभ रात्रि","晚安"],
+  "greet_morning": ["בוקר טוב","Good morning","صباح الخير","Доброе утро","Buenos días","Bonjour","Guten Morgen","Bom dia","Buongiorno","Goedemorgen","Dzień dobry","Günaydın","Доброго ранку","सुप्रभात","早上好"],
+  "greet_noon": ["צהריים טובים","Good afternoon","طاب يومك","Добрый день","Buenas tardes","Bon après-midi","Guten Tag","Boa tarde","Buon pomeriggio","Goedemiddag","Dzień dobry","İyi günler","Доброго дня","नमस्ते","下午好"],
+  "greet_evening": ["ערב טוב","Good evening","مساء الخير","Добрый вечер","Buenas tardes","Bonsoir","Guten Abend","Boa noite","Buonasera","Goedenavond","Dobry wieczór","İyi akşamlar","Доброго вечора","शुभ संध्या","晚上好"],
+  "focus_n": ["{n} דברים חשובים על הרדאר","{n} important things on the radar","{n} أمور مهمة على الرادار","{n} важных дел на радаре","{n} cosas importantes en el radar","{n} choses importantes au radar","{n} wichtige Dinge auf dem Radar","{n} coisas importantes no radar","{n} cose importanti sul radar","{n} belangrijke dingen op de radar","{n} ważnych rzeczy na radarze","Radarda {n} önemli şey","{n} важливих справ на радарі","रडार पर {n} ज़रूरी चीज़ें","雷达上有 {n} 件要事"],
+  "all_clear": ["הכל נקי — יום פתוח לפניך","All clear — an open day ahead","كل شيء صافٍ — يوم مفتوح","Всё чисто — свободный день","Todo despejado: día libre","Tout est clair — journée libre","Alles frei — offener Tag","Tudo limpo — dia livre","Tutto libero — giornata aperta","Alles vrij — open dag","Wszystko czyste — wolny dzień","Her şey temiz — açık bir gün","Все чисто — вільний день","सब साफ़ — खुला दिन","一切清爽——今天很轻松"],
+  "sec_today": ["הדברים של היום","Today's priorities","أولويات اليوم","Приоритеты дня","Prioridades de hoy","Priorités du jour","Heutige Prioritäten","Prioridades de hoje","Priorità di oggi","Prioriteiten vandaag","Priorytety na dziś","Bugünün öncelikleri","Пріоритети дня","आज की प्राथमिकताएँ","今日要务"],
+  "sec_waiting": ["ממתין לאחרים","Waiting on others","بانتظار الآخرين","Ждём других","Esperando a otros","En attente des autres","Wartet auf andere","Aguardando outros","In attesa di altri","Wachten op anderen","Czeka na innych","Başkaları bekleniyor","Чекаємо на інших","दूसरों का इंतज़ार","等待他人"],
+  "sec_schedule": ["היום בלוח","On the schedule","في الجدول","В расписании","En la agenda","Au programme","Im Terminplan","Na agenda","In agenda","Op de agenda","W harmonogramie","Programda","У розкладі","शेड्यूल में","今日日程"],
+  "sec_people": ["האנשים שלך","Your people","أشخاصك","Ваши люди","Tus personas","Vos contacts","Deine Leute","Suas pessoas","Le tue persone","Jouw mensen","Twoi ludzie","İnsanların","Ваші люди","आपके लोग","你的人脉"],
+  "today_empty": ["אין כלום על הרדאר להיום 🙌<br>ספר לנוגה בצ'אט מה על הראש שלך","Nothing on the radar today 🙌<br>Tell Noga in chat what's on your mind","لا شيء على الرادار اليوم 🙌<br>أخبر نوغا في المحادثة بما يشغلك","Сегодня на радаре пусто 🙌<br>Расскажите Ноге в чате, что вас занимает","Nada en el radar hoy 🙌<br>Cuéntale a Noga qué tienes en mente","Rien au radar aujourd'hui 🙌<br>Dites à Noga ce qui vous préoccupe","Heute nichts auf dem Radar 🙌<br>Sag Noga im Chat, was dich beschäftigt","Nada no radar hoje 🙌<br>Conte à Noga o que está na sua cabeça","Niente in vista oggi 🙌<br>Racconta a Noga cosa hai in mente","Niets op de radar vandaag 🙌<br>Vertel Noga wat je bezighoudt","Dziś nic na radarze 🙌<br>Powiedz Nodze, co masz na głowie","Bugün radarda bir şey yok 🙌<br>Aklındakini Noga'ya yaz","Сьогодні на радарі порожньо 🙌<br>Розкажіть Нозі, що вас турбує","आज रडार पर कुछ नहीं 🙌<br>नोगा को बताएं क्या चल रहा है","今天雷达上空空如也 🙌<br>在聊天里告诉 Noga 你在想什么"],
+  "days_short": ["ימים","days","أيام","дн.","días","jours","Tage","dias","giorni","dagen","dni","gün","дн.","दिन","天"],
+  "silent_days": ["שקט {n} ימים","quiet {n} days","صمت {n} يومًا","тишина {n} дн.","{n} días en silencio","silence {n} jours","{n} Tage still","{n} dias em silêncio","{n} giorni di silenzio","{n} dagen stil","cisza {n} dni","{n} gündür sessiz","тиша {n} дн.","{n} दिन से चुप","已 {n} 天没消息"],
+  "del_person_q": ["למחוק את {name} מהאנשים של נוגה? (משימות והודעות לא נמחקות)","Remove {name} from Noga's people? (tasks and messages stay)","إزالة {name} من أشخاص نوغا؟ (تبقى المهام والرسائل)","Удалить {name} из людей Ноги? (задачи и сообщения останутся)","¿Quitar a {name} de las personas de Noga? (tareas y mensajes se mantienen)","Retirer {name} des contacts de Noga ? (tâches et messages conservés)","{name} aus Nogas Leuten entfernen? (Aufgaben und Nachrichten bleiben)","Remover {name} das pessoas da Noga? (tarefas e mensagens permanecem)","Rimuovere {name} dalle persone di Noga? (attività e messaggi restano)","{name} verwijderen uit Noga's mensen? (taken en berichten blijven)","Usunąć {name} z ludzi Nogi? (zadania i wiadomości zostają)","{name} Noga'nın kişilerinden çıkarılsın mı? (görevler ve mesajlar kalır)","Видалити {name} з людей Ноги? (завдання й повідомлення лишаться)","{name} को नोगा के लोगों से हटाएँ? (कार्य और संदेश रहेंगे)","将 {name} 从 Noga 的人脉中移除？（任务和消息保留）"],
+  "ask_open_with": ["מה פתוח מול {name}?","What's open with {name}?","ما المفتوح مع {name}؟","Что открыто с {name}?","¿Qué hay pendiente con {name}?","Qu'est-ce qui est en cours avec {name} ?","Was ist offen mit {name}?","O que está em aberto com {name}?","Cosa è aperto con {name}?","Wat loopt er met {name}?","Co jest otwarte z {name}?","{name} ile ne açık?","Що відкрито з {name}?","{name} के साथ क्या लंबित है?","和 {name} 还有什么未了？"],
+};
+
+const LANG_NAMES = { he:"עברית", en:"English", ar:"العربية", ru:"Русский", es:"Español",
+  fr:"Français", de:"Deutsch", pt:"Português", it:"Italiano", nl:"Nederlands",
+  pl:"Polski", tr:"Türkçe", uk:"Українська", hi:"हिन्दी", zh:"中文" };
+const RTL_LANGS = ["he","ar"];
+let LOCALE = "he";
+
+function T(key, params) {
+  const idx = I18N_LANGS.indexOf(LOCALE);
+  const row = I18N[key];
+  if (!row) return key;
+  let out = row[idx >= 0 ? idx : 0] || row[1] || row[0];
+  if (params) for (const k in params) out = out.split("{" + k + "}").join(params[k]);
+  return out;
+}
+
+function applyLocale(loc) {
+  LOCALE = I18N_LANGS.includes(loc) ? loc : "en";
+  const dir = RTL_LANGS.includes(LOCALE) ? "rtl" : "ltr";
+  document.documentElement.lang = LOCALE;
+  document.documentElement.dir = dir;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const html = T(el.dataset.i18n);
+    if (el.dataset.i18nAttr) el.setAttribute(el.dataset.i18nAttr, html);
+    else el.innerHTML = html;
+  });
+  document.title = T("app_name") + " — " + T("tagline");
+}
+
+// Narrow public hook: the native shell pushes the device language in here on
+// launch (iOS/Android), before the profile locale is known.
+window.nogaSetLanguage = (loc) => applyLocale(loc);
 
 const $ = (id) => document.getElementById(id);
 const chat = $("chat"), sugBox = $("suggestions");
@@ -524,24 +600,22 @@ async function loadToday() {
   const waiting = (tasks || []).filter((t) => t.waiting_on);
 
   const hour = now.getHours();
-  const greet = hour < 5 ? "לילה טוב" : hour < 12 ? "בוקר טוב" : hour < 18 ? "צהריים טובים" : "ערב טוב";
-  const dateStr = new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long" }).format(now);
+  const greet = hour < 5 ? T("greet_night") : hour < 12 ? T("greet_morning") : hour < 18 ? T("greet_noon") : T("greet_evening");
+  const dateStr = new Intl.DateTimeFormat(LOCALE, { weekday: "long", day: "numeric", month: "long" }).format(now);
   const name = prof?.display_name ? ", " + escapeHtml(prof.display_name) : "";
-  const focusLine = top3.length
-    ? `${top3.length} דברים חשובים על הרדאר`
-    : "הכל נקי — יום פתוח לפניך";
+  const focusLine = top3.length ? T("focus_n", { n: top3.length }) : T("all_clear");
 
   let html = `<div class="greet"><div class="g">${greet}${name} ✨</div><div class="d">${dateStr} · ${focusLine}</div></div>`;
 
   if (top3.length) {
-    html += `<div class="sect">הדברים של היום</div>`;
+    html += `<div class="sect">${T("sec_today")}</div>`;
     top3.forEach((x, i) => {
       html += `<div class="row"><div class="pri-row" style="flex:1"><div class="n">${i + 1}</div><div class="grow"><div class="t">${escapeHtml(x.t.title)}${x.t.prepared_at ? " <span title=\"נוגה הכינה ערכת פתיחה — בצ'אט\">✨</span>" : ""}</div>${x.why ? `<div class="s${x.score === 0 ? " overdue" : ""}">${escapeHtml(x.why)}</div>` : ""}</div></div></div>`;
     });
   }
 
   if (waiting.length) {
-    html += `<div class="sect">ממתין לאחרים</div><div class="row"><div class="chips-wrap">`;
+    html += `<div class="sect">${T("sec_waiting")}</div><div class="row"><div class="chips-wrap">`;
     for (const t of waiting.slice(0, 6)) {
       const days = t.waiting_since ? Math.max(1, Math.floor((now - new Date(t.waiting_since)) / 864e5)) : null;
       html += `<span class="wchip">${escapeHtml(t.waiting_on)} · ${escapeHtml(t.title).slice(0, 26)}${days ? " · " + days + " ימים" : ""}</span>`;
@@ -550,30 +624,30 @@ async function loadToday() {
   }
 
   if (rems && rems.length) {
-    html += `<div class="sect">היום בלוח</div><div class="row timeline" style="display:block">`;
+    html += `<div class="sect">${T("sec_schedule")}</div><div class="row timeline" style="display:block">`;
     for (const r of rems) {
-      const hh = new Intl.DateTimeFormat("he-IL", { hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(r.remind_at));
+      const hh = new Intl.DateTimeFormat(LOCALE, { hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(r.remind_at));
       html += `<div class="tl"><span>${escapeHtml(r.body)}</span><span class="hh">${hh}</span></div>`;
     }
     html += `</div>`;
   }
 
   if (people && people.length) {
-    html += `<div class="sect">האנשים שלך</div><div class="row"><div class="chips-wrap">`;
+    html += `<div class="sect">${T("sec_people")}</div><div class="row"><div class="chips-wrap">`;
     for (const p of people) {
       const silent = p.last_heard_at
         ? Math.floor((now - new Date(p.last_heard_at)) / 864e5)
         : null;
       html += `<span class="wchip pwrap"><button class="pchip" data-person="${escapeHtml(p.name)}">` +
         `${escapeHtml(p.name)}${p.relation ? " · " + escapeHtml(p.relation) : ""}` +
-        `${silent !== null && silent >= 10 ? ` · שקט ${silent} ימים` : ""}</button>` +
+        `${silent !== null && silent >= 10 ? ` · ${T("silent_days", { n: silent })}` : ""}</button>` +
         `<button class="pdel" data-person="${escapeHtml(p.name)}" title="מחיקה" aria-label="מחיקת ${escapeHtml(p.name)} מהאנשים">✕</button></span>`;
     }
     html += `</div></div>`;
   }
 
   if (!top3.length && !waiting.length && (!rems || !rems.length)) {
-    html += `<div class="empty">אין כלום על הרדאר להיום 🙌<br>ספר לנוגה בצ'אט מה על הראש שלך</div>`;
+    html += `<div class="empty">${T("today_empty")}</div>`;
   }
 
   box.innerHTML = html;
@@ -582,7 +656,7 @@ async function loadToday() {
     b.onclick = () => {
       document.querySelector('nav button[data-view="chat"]')?.click();
       const inp = $("text");
-      inp.value = `מה פתוח מול ${b.dataset.person}?`;
+      inp.value = T("ask_open_with", { name: b.dataset.person });
       inp.focus();
     };
   });
@@ -591,7 +665,7 @@ async function loadToday() {
     b.onclick = async (e) => {
       e.stopPropagation();
       const name = b.dataset.person;
-      if (!confirm(`למחוק את ${name} מהאנשים של נוגה? (משימות והודעות לא נמחקות)`)) return;
+      if (!confirm(T("del_person_q", { name }))) return;
       const { error } = await sb.from("people").delete().eq("name", name);
       if (!error) loadToday();
     };
@@ -731,6 +805,29 @@ $("connect-form").onsubmit = async (e) => {
     btn.disabled = false;
   }
 };
+
+
+/* ── language picker ──────────────────────────────────────────────────── */
+function buildLangPicker() {
+  const sel = $("lang-select");
+  if (!sel || sel.options.length) return;
+  for (const code of I18N_LANGS) {
+    const o = document.createElement("option");
+    o.value = code; o.textContent = LANG_NAMES[code];
+    sel.appendChild(o);
+  }
+  sel.value = LOCALE;
+  sel.onchange = async () => {
+    const loc = sel.value;
+    applyLocale(loc);
+    refresh();
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      await sb.from("profiles").update({ locale: loc }).eq("id", session.user.id);
+      $("lang-note").textContent = "✓";
+    }
+  };
+}
 
 /* ── plan / billing ───────────────────────────────────────────────────── */
 const PLAN_LABELS = { free: "חינם", personal: "פרטי", business: "עסקי" };
@@ -909,8 +1006,8 @@ async function ensureProfile(user) {
     await sb.from("profiles").insert({
       id: user.id,
       display_name: (user.email || "").split("@")[0],
-      locale: "he",
-      timezone: "Asia/Jerusalem",
+      locale: I18N_LANGS.includes((navigator.language || "en").slice(0, 2)) ? (navigator.language || "en").slice(0, 2) : "en",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Jerusalem",
     });
   }
 }
@@ -985,6 +1082,9 @@ async function showApp(session) {
   $("topbar").classList.remove("hidden");
   $("app").classList.remove("hidden");
   await ensureProfile(session.user);
+  const { data: myProfile } = await sb.from("profiles").select("locale").eq("id", session.user.id).maybeSingle();
+  applyLocale(myProfile?.locale || (navigator.language || "en").slice(0, 2));
+  buildLangPicker();
   refresh();
   loadPlan();
   startPolling();
@@ -998,16 +1098,17 @@ async function showApp(session) {
 $("send-link").onclick = async () => {
   const email = $("email").value.trim();
   if (!email) return;
-  $("login-note").textContent = "שולח...";
+  $("login-note").textContent = T("login_sending");
   const { error } = await sb.auth.signInWithOtp({
     email,
     options: { emailRedirectTo: window.location.href.split("#")[0] },
   });
-  $("login-note").textContent = error ? "שגיאה: " + error.message : "✓ נשלח! בדוק את המייל ולחץ על הקישור";
+  $("login-note").textContent = error ? "⚠ " + error.message : T("login_sent");
 };
 
 $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
 
+applyLocale((navigator.language || "en").slice(0, 2));
 sb.auth.onAuthStateChange((_e, session) => { if (session) showApp(session); });
 const { data: { session } } = await sb.auth.getSession();
 if (session) showApp(session);
