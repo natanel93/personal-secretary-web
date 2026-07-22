@@ -994,6 +994,17 @@ $("contacts-btn").onclick = () => {
 };
 async function onNativeMessage(e) {
   let msg; try { msg = JSON.parse(e.data); } catch { return; }
+  if (msg?.type === "push_token") {
+    // The shell has no credentials; the web layer stores the token with the
+    // user's own JWT so RLS still applies.
+    if (!msg.token) return;
+    const { data: me } = await sb.auth.getUser();
+    if (!me?.user) return;
+    await sb.from("profiles")
+      .update({ push_token: msg.token, push_updated_at: new Date().toISOString() })
+      .eq("id", me.user.id);
+    return;
+  }
   if (msg?.type !== "contacts_result") return;
   const note = $("contacts-note");
   if (!msg.ok) {
@@ -1143,6 +1154,9 @@ async function showApp(session) {
   refresh();
   loadConsent();
   loadPlan();
+  if (window.ReactNativeWebView) {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: "request_push_token" }));
+  }
   startPolling();
   setTimeout(() => {
     if (!chat.children.length) {
@@ -1162,7 +1176,14 @@ $("send-link").onclick = async () => {
   $("login-note").textContent = error ? "⚠ " + error.message : T("login_sent");
 };
 
-$("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+$("logout").onclick = async () => {
+  try {
+    const { data: me } = await sb.auth.getUser();
+    if (me?.user) await sb.from("profiles").update({ push_token: null }).eq("id", me.user.id);
+  } catch { /* logging out must never be blocked by this */ }
+  await sb.auth.signOut();
+  location.reload();
+};
 
 applyLocale((navigator.language || "en").slice(0, 2));
 sb.auth.onAuthStateChange((_e, session) => { if (session) showApp(session); });
