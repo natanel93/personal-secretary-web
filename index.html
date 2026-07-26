@@ -191,6 +191,9 @@
   .gadd input { flex: 1; border: 1px solid #d6d9de; border-radius: 10px; padding: 9px 12px; font-size: 14px; outline: none; }
   .gadd input:focus { border-color: var(--gold); }
   .gadd button { border: none; background: var(--navy); color: #fff; border-radius: 10px; padding: 0 16px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  /* night-prep kit expander inside a task row */
+  .kit-btn { background: none; border: none; color: #8A6E2F; font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 6px 2px; text-align: start; }
+  .kit { white-space: pre-wrap; word-break: break-word; font-size: 13px; color: #3a4257; line-height: 1.55; background: #FBF8F1; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-top: 4px; }
 
   /* ── first-run onboarding ── */
   #app.onboarding > nav,
@@ -526,6 +529,14 @@ const I18N = {
   "auto_daily": ["כל יום ב-{time}","Every day at {time}","كل يوم في {time}","Каждый день в {time}","Cada día a las {time}","Chaque jour à {time}","Täglich um {time}","Todo dia às {time}","Ogni giorno alle {time}","Elke dag om {time}","Codziennie o {time}","Her gün {time}","Щодня о {time}","हर दिन {time} बजे","每天 {time}"],
   "auto_weekly": ["כל יום {day} ב-{time}","Every {day} at {time}","كل {day} في {time}","Каждый {day} в {time}","Cada {day} a las {time}","Chaque {day} à {time}","Jeden {day} um {time}","Toda {day} às {time}","Ogni {day} alle {time}","Elke {day} om {time}","W każdy {day} o {time}","Her {day} {time}","Кожного {day} о {time}","हर {day} {time} बजे","每{day} {time}"],
   "auto_monthly": ["ב-{day} בכל חודש ב-{time}","On day {day} monthly at {time}","في اليوم {day} من كل شهر في {time}","{day}-го числа каждого месяца в {time}","El día {day} de cada mes a las {time}","Le {day} de chaque mois à {time}","Am {day}. jeden Monat um {time}","No dia {day} de cada mês às {time}","Il giorno {day} di ogni mese alle {time}","Op dag {day} elke maand om {time}","{day}. dnia miesiąca o {time}","Her ayın {day}. günü {time}","{day}-го числа щомісяця о {time}","हर महीने की {day} तारीख को {time} बजे","每月 {day} 号 {time}"],
+  "why_overdue": ["באיחור — היה עד {date}","Overdue — was due {date}","متأخر — كان حتى {date}","Просрочено — срок был {date}","Atrasado — vencía {date}","En retard — échéance {date}","Überfällig — war fällig {date}","Atrasado — vencia {date}","In ritardo — scadeva {date}","Te laat — moest {date}","Zaległe — termin {date}","Gecikti — son tarih {date}","Прострочено — треба було до {date}","विलंबित — नियत था {date}","已逾期 — 截止 {date}"],
+  "why_today": ["להיום","Today","لليوم","На сегодня","Para hoy","Pour aujourd'hui","Für heute","Para hoje","Per oggi","Voor vandaag","Na dziś","Bugün için","На сьогодні","आज के लिए","今天"],
+  "why_waiting": ["ממתין ל{who} — {n} {days}","Waiting on {who} — {n} {days}","بانتظار {who} — {n} {days}","Ждём {who} — {n} {days}","Esperando a {who} — {n} {days}","En attente de {who} — {n} {days}","Wartet auf {who} — {n} {days}","Aguardando {who} — {n} {days}","In attesa di {who} — {n} {days}","Wacht op {who} — {n} {days}","Czeka na {who} — {n} {days}","{who} bekleniyor — {n} {days}","Чекаємо {who} — {n} {days}","{who} का इंतज़ार — {n} {days}","等待 {who} — {n} {days}"],
+  "why_due": ["עד {date}","Due {date}","حتى {date}","Срок {date}","Para {date}","Pour {date}","Fällig {date}","Até {date}","Entro {date}","Voor {date}","Do {date}","Son tarih {date}","До {date}","नियत {date}","截止 {date}"],
+  "task_mark_done": ["סמן כבוצע","Mark done","وضع علامة تم","Отметить выполненным","Marcar como hecho","Marquer comme fait","Als erledigt markieren","Marcar como feito","Segna come fatto","Markeer als klaar","Oznacz jako zrobione","Tamamlandı işaretle","Позначити виконаним","पूर्ण चिह्नित करें","标记为完成"],
+  "tasks_empty": ["אין משימות פתוחות 🙌","No open tasks 🙌","لا مهام مفتوحة 🙌","Нет открытых задач 🙌","Sin tareas pendientes 🙌","Aucune tâche ouverte 🙌","Keine offenen Aufgaben 🙌","Nenhuma tarefa aberta 🙌","Nessuna attività aperta 🙌","Geen open taken 🙌","Brak otwartych zadań 🙌","Açık görev yok 🙌","Немає відкритих завдань 🙌","कोई खुला कार्य नहीं 🙌","没有待办任务 🙌"],
+  "prep_kit": ["✨ ערכת פתיחה שנוגה הכינה","✨ Starter kit Noga prepared","✨ حزمة انطلاق أعدّتها نوغا","✨ Набор, подготовленный Ногой","✨ Kit inicial que preparó Noga","✨ Kit de départ préparé par Noga","✨ Von Noga vorbereitetes Starter-Kit","✨ Kit inicial que a Noga preparou","✨ Kit iniziale preparato da Noga","✨ Starterkit van Noga","✨ Zestaw startowy od Nogi","✨ Noga'nın hazırladığı başlangıç kiti","✨ Стартовий набір від Ноги","✨ नोगा का तैयार किया स्टार्टर किट","✨ Noga 准备的启动包"],
+  "prep_hint": ["נוגה הכינה ערכת פתיחה","Noga prepared a starter kit","أعدّت نوغا حزمة انطلاق","Нога подготовила набор","Noga preparó un kit inicial","Noga a préparé un kit de départ","Noga hat ein Starter-Kit vorbereitet","A Noga preparou um kit inicial","Noga ha preparato un kit iniziale","Noga heeft een starterkit klaargezet","Noga przygotowała zestaw startowy","Noga bir başlangıç kiti hazırladı","Нога підготувала стартовий набір","नोगा ने स्टार्टर किट तैयार की","Noga 已准备启动包"],
 };
 
 const LANG_NAMES = { he:"עברית", en:"English", ar:"العربية", ru:"Русский", es:"Español",
@@ -690,12 +701,12 @@ async function actOn(id, action, card) {
 
 /* ── tasks ────────────────────────────────────────────────────────────── */
 function fmtDay(iso) {
-  return new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric" }).format(new Date(iso));
+  return new Intl.DateTimeFormat(LOCALE, { day: "numeric", month: "numeric" }).format(new Date(iso));
 }
 
 async function loadTasks() {
   const { data } = await sb.from("tasks")
-    .select("id, title, due_at, waiting_on, waiting_since").eq("status", "open")
+    .select("id, title, due_at, waiting_on, waiting_since, prepared_at, notes").eq("status", "open")
     .order("due_at", { ascending: true, nullsFirst: false }).limit(50);
   const box = $("tasks-list");
   box.innerHTML = "";
@@ -704,14 +715,15 @@ async function loadTasks() {
   badge.classList.toggle("hidden", !overdueCount);
   badge.textContent = overdueCount;
   if (!data || !data.length) {
-    box.innerHTML = '<div class="empty">אין משימות פתוחות 🙌</div>';
+    box.innerHTML = `<div class="empty">${T("tasks_empty")}</div>`;
     return;
   }
   for (const t of data) {
     const row = document.createElement("div");
-    row.className = "row";
+    row.className = "row"; row.style.flexWrap = "wrap";
     const check = document.createElement("button");
-    check.className = "check"; check.title = "סמן כבוצע"; check.setAttribute("aria-label", "סמן כבוצע: " + t.title);
+    check.className = "check"; check.title = T("task_mark_done");
+    check.setAttribute("aria-label", T("task_mark_done") + ": " + t.title);
     check.onclick = async () => {
       check.textContent = "✓";
       await sb.from("tasks").update({ status: "done" }).eq("id", t.id);
@@ -721,12 +733,18 @@ async function loadTasks() {
     grow.className = "grow";
     const title = document.createElement("div");
     title.className = "t"; title.textContent = t.title;
+    if (t.prepared_at) {
+      const star = document.createElement("span");
+      star.textContent = " ✨"; star.title = T("prep_hint");
+      title.appendChild(star);
+    }
     grow.appendChild(title);
     if (t.due_at) {
       const sub = document.createElement("div");
       const late = new Date(t.due_at) < new Date();
       sub.className = "s" + (late ? " overdue" : "");
-      sub.textContent = (late ? "באיחור — היה עד " : "עד ") + fmtDay(t.due_at);
+      sub.textContent = late ? T("why_overdue", { date: fmtDay(t.due_at) })
+                             : T("why_due", { date: fmtDay(t.due_at) });
       grow.appendChild(sub);
     }
     if (t.waiting_on) {
@@ -735,10 +753,27 @@ async function loadTasks() {
         ? Math.max(1, Math.floor((Date.now() - new Date(t.waiting_since)) / 864e5))
         : null;
       w.className = "s";
-      w.innerHTML = `<span class="wchip">ממתין ל${escapeHtml(t.waiting_on)}${days ? " · " + days + " ימים" : ""}</span>`;
+      w.innerHTML = `<span class="wchip">${escapeHtml(t.waiting_on)}${days ? " · " + days + " " + T("days_short") : ""}</span>`;
       grow.appendChild(w);
     }
     row.append(check, grow);
+    // ✨ Night-prep kit — surface the flagship feature that was chat-only.
+    if (t.prepared_at && t.notes) {
+      const kitBtn = document.createElement("button");
+      kitBtn.className = "kit-btn"; kitBtn.type = "button";
+      kitBtn.textContent = T("prep_kit");
+      const kit = document.createElement("div");
+      kit.className = "kit hidden"; kit.textContent = t.notes;
+      kitBtn.setAttribute("aria-expanded", "false");
+      kitBtn.onclick = () => {
+        const open = kit.classList.toggle("hidden");
+        kitBtn.setAttribute("aria-expanded", open ? "false" : "true");
+      };
+      const wrap = document.createElement("div");
+      wrap.style.flexBasis = "100%";
+      wrap.append(kitBtn, kit);
+      row.appendChild(wrap);
+    }
     box.appendChild(row);
   }
 }
@@ -827,12 +862,13 @@ async function loadToday() {
   const scored = (tasks || []).map((t) => {
     const due = t.due_at ? new Date(t.due_at) : null;
     let score, why;
-    if (due && due < now) { score = 0; why = "באיחור — היה עד " + fmtDay(t.due_at); }
-    else if (due && due <= dayEnd) { score = 1; why = "להיום"; }
+    if (due && due < now) { score = 0; why = T("why_overdue", { date: fmtDay(t.due_at) }); }
+    else if (due && due <= dayEnd) { score = 1; why = T("why_today"); }
     else if (t.waiting_on && t.waiting_since) {
       const days = Math.floor((now - new Date(t.waiting_since)) / 864e5);
-      score = days >= 3 ? 2 : 4; why = `ממתין ל${t.waiting_on} כבר ${Math.max(days, 1)} ימים`;
-    } else if (due) { score = 3; why = "עד " + fmtDay(t.due_at); }
+      score = days >= 3 ? 2 : 4;
+      why = T("why_waiting", { who: t.waiting_on, n: Math.max(days, 1), days: T("days_short") });
+    } else if (due) { score = 3; why = T("why_due", { date: fmtDay(t.due_at) }); }
     else { score = 5; why = null; }
     return { t, score, why, due: due ? due.getTime() : Infinity };
   }).sort((a, b) => a.score - b.score || a.due - b.due);
@@ -850,7 +886,7 @@ async function loadToday() {
   if (top3.length) {
     html += `<div class="sect">${T("sec_today")}</div>`;
     top3.forEach((x, i) => {
-      html += `<div class="row"><div class="pri-row" style="flex:1"><div class="n">${i + 1}</div><div class="grow"><div class="t">${escapeHtml(x.t.title)}${x.t.prepared_at ? " <span title=\"נוגה הכינה ערכת פתיחה — בצ'אט\">✨</span>" : ""}</div>${x.why ? `<div class="s${x.score === 0 ? " overdue" : ""}">${escapeHtml(x.why)}</div>` : ""}</div></div></div>`;
+      html += `<div class="row"><div class="pri-row" style="flex:1"><div class="n">${i + 1}</div><div class="grow"><div class="t">${escapeHtml(x.t.title)}${x.t.prepared_at ? ` <span title="${T("prep_hint")}">✨</span>` : ""}</div>${x.why ? `<div class="s${x.score === 0 ? " overdue" : ""}">${escapeHtml(x.why)}</div>` : ""}</div></div></div>`;
     });
   }
 
@@ -858,7 +894,7 @@ async function loadToday() {
     html += `<div class="sect">${T("sec_waiting")}</div><div class="row"><div class="chips-wrap">`;
     for (const t of waiting.slice(0, 6)) {
       const days = t.waiting_since ? Math.max(1, Math.floor((now - new Date(t.waiting_since)) / 864e5)) : null;
-      html += `<span class="wchip">${escapeHtml(t.waiting_on)} · ${escapeHtml(t.title).slice(0, 26)}${days ? " · " + days + " ימים" : ""}</span>`;
+      html += `<span class="wchip">${escapeHtml(t.waiting_on)} · ${escapeHtml(t.title).slice(0, 26)}${days ? " · " + days + " " + T("days_short") : ""}</span>`;
     }
     html += `</div></div>`;
   }
