@@ -154,6 +154,26 @@
     border-radius: 9px; min-width: 17px; height: 17px; line-height: 17px;
   }
 
+  /* ── capability discovery ("what else Noga can do") ── */
+  .caps-head { display: flex; align-items: center; justify-content: space-between; margin: 8px 2px 0; }
+  .caps-head .h { font-size: 13px; font-weight: 800; color: var(--navy); letter-spacing: .06em; }
+  .caps-x { background: none; border: none; color: #9aa; font-size: 15px; cursor: pointer; padding: 4px 6px; line-height: 1; min-width: 30px; min-height: 30px; font-family: inherit; }
+  .caps-x:active { color: var(--coral); }
+  .caps { display: flex; gap: 9px; overflow-x: auto; padding: 2px 2px 4px; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .caps::-webkit-scrollbar { display: none; }
+  .cap {
+    flex: 0 0 auto; width: 158px; text-align: start; cursor: pointer; font-family: inherit;
+    background: linear-gradient(165deg, #fff, #FBF8F1); border: 1px solid var(--line);
+    border-radius: 15px; padding: 12px 13px; scroll-snap-align: start;
+    display: flex; flex-direction: column; gap: 5px; box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    transition: border-color .12s, transform .12s;
+  }
+  .cap:active { border-color: var(--gold); transform: scale(.98); }
+  .cap .ce { font-size: 21px; line-height: 1; }
+  .cap .ct { font-size: 13px; font-weight: 800; color: var(--navy); line-height: 1.25; }
+  .cap .cx { font-size: 11.5px; color: #6A7186; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .cap .cgo { margin-top: 2px; font-size: 11px; font-weight: 700; color: #8A6E2F; }
+
   /* ── first-run onboarding ── */
   #app.onboarding > nav,
   #app.onboarding > #ai-paused,
@@ -455,6 +475,19 @@ const I18N = {
   "silent_days": ["שקט {n} ימים","quiet {n} days","صمت {n} يومًا","тишина {n} дн.","{n} días en silencio","silence {n} jours","{n} Tage still","{n} dias em silêncio","{n} giorni di silenzio","{n} dagen stil","cisza {n} dni","{n} gündür sessiz","тиша {n} дн.","{n} दिन से चुप","已 {n} 天没消息"],
   "del_person_q": ["למחוק את {name} מהאנשים של נוגה? (משימות והודעות לא נמחקות)","Remove {name} from Noga's people? (tasks and messages stay)","إزالة {name} من أشخاص نوغا؟ (تبقى المهام والرسائل)","Удалить {name} из людей Ноги? (задачи и сообщения останутся)","¿Quitar a {name} de las personas de Noga? (tareas y mensajes se mantienen)","Retirer {name} des contacts de Noga ? (tâches et messages conservés)","{name} aus Nogas Leuten entfernen? (Aufgaben und Nachrichten bleiben)","Remover {name} das pessoas da Noga? (tarefas e mensagens permanecem)","Rimuovere {name} dalle persone di Noga? (attività e messaggi restano)","{name} verwijderen uit Noga's mensen? (taken en berichten blijven)","Usunąć {name} z ludzi Nogi? (zadania i wiadomości zostają)","{name} Noga'nın kişilerinden çıkarılsın mı? (görevler ve mesajlar kalır)","Видалити {name} з людей Ноги? (завдання й повідомлення лишаться)","{name} को नोगा के लोगों से हटाएँ? (कार्य और संदेश रहेंगे)","将 {name} 从 Noga 的人脉中移除？（任务和消息保留）"],
   "ask_open_with": ["מה פתוח מול {name}?","What's open with {name}?","ما المفتوح مع {name}؟","Что открыто с {name}?","¿Qué hay pendiente con {name}?","Qu'est-ce qui est en cours avec {name} ?","Was ist offen mit {name}?","O que está em aberto com {name}?","Cosa è aperto con {name}?","Wat loopt er met {name}?","Co jest otwarte z {name}?","{name} ile ne açık?","Що відкрито з {name}?","{name} के साथ क्या लंबित है?","和 {name} 还有什么未了？"],
+  "cap_head": ["גלה מה עוד נוגה יכולה","Discover what Noga can do","اكتشف ما تستطيع نوغا فعله","Узнайте, что умеет Нога","Descubre lo que Noga puede hacer","Découvrez ce que Noga sait faire","Entdecke, was Noga kann","Descubra o que a Noga faz","Scopri cosa sa fare Noga","Ontdek wat Noga kan","Odkryj, co potrafi Noga","Noga neler yapabilir, keşfet","Дізнайтеся, що вміє Нога","जानें नोगा क्या कर सकती है","看看 Noga 还能做什么"],
+  "cap_hide": ["הסתר","Hide","إخفاء","Скрыть","Ocultar","Masquer","Ausblenden","Ocultar","Nascondi","Verbergen","Ukryj","Gizle","Сховати","छिपाएँ","隐藏"],
+  "cap_try": ["הקש כדי לנסות","Tap to try","اضغط للتجربة","Нажмите, чтобы попробовать","Toca para probar","Toucher pour essayer","Zum Ausprobieren tippen","Toque para testar","Tocca per provare","Tik om te proberen","Dotknij, aby wypróbować","Denemek için dokun","Торкніться, щоб спробувати","आज़माने के लिए टैप करें","点按试试"],
+  "cap_automation_t": ["אוטומציה קבועה","A standing automation","أتمتة دائمة","Регулярная автоматизация","Una automatización fija","Une automatisation régulière","Eine feste Automatisierung","Uma automação recorrente","Un'automazione ricorrente","Een vaste automatisering","Stała automatyzacja","Sürekli bir otomasyon","Регулярна автоматизація","एक नियमित ऑटोमेशन","固定自动化"],
+  "cap_automation_ex": ["כל יום ראשון תזכירי לי לשלוח דוח שבועי","Every Sunday, remind me to send the weekly report","كل يوم أحد ذكّريني بإرسال التقرير الأسبوعي","Каждое воскресенье напоминай отправить недельный отчёт","Cada domingo, recuérdame enviar el informe semanal","Chaque dimanche, rappelle-moi d'envoyer le rapport hebdomadaire","Erinnere mich jeden Sonntag an den Wochenbericht","Todo domingo, lembre-me de enviar o relatório semanal","Ogni domenica ricordami di inviare il report settimanale","Herinner me elke zondag aan het weekrapport","W każdą niedzielę przypominaj mi o wysłaniu raportu tygodniowego","Her pazar haftalık raporu göndermeyi hatırlat","Щонеділі нагадуй надіслати тижневий звіт","हर रविवार मुझे साप्ताहिक रिपोर्ट भेजने की याद दिलाना","每周日提醒我发送周报"],
+  "cap_goal_t": ["יעד אישי","A personal goal","هدف شخصي","Личная цель","Un objetivo personal","Un objectif personnel","Ein persönliches Ziel","Uma meta pessoal","Un obiettivo personale","Een persoonlijk doel","Cel osobisty","Kişisel bir hedef","Особиста ціль","एक निजी लक्ष्य","个人目标"],
+  "cap_goal_ex": ["היעד שלי החודש: לסגור 3 לקוחות חדשים","My goal this month: close 3 new clients","هدفي هذا الشهر: إغلاق 3 عملاء جدد","Моя цель в этом месяце: закрыть 3 новых клиентов","Mi objetivo este mes: cerrar 3 clientes nuevos","Mon objectif ce mois-ci : signer 3 nouveaux clients","Mein Ziel diesen Monat: 3 neue Kunden gewinnen","Minha meta este mês: fechar 3 novos clientes","Il mio obiettivo questo mese: chiudere 3 nuovi clienti","Mijn doel deze maand: 3 nieuwe klanten binnenhalen","Mój cel w tym miesiącu: pozyskać 3 nowych klientów","Bu ayki hedefim: 3 yeni müşteri kazanmak","Моя ціль цього місяця: закрити 3 нових клієнтів","इस महीने मेरा लक्ष्य: 3 नए ग्राहक हासिल करना","我这个月的目标：签下 3 个新客户"],
+  "cap_chase_t": ["מעקב אחרי אחרים","Chase what you await","تتبّع ما تنتظره","Отслеживание ожидаемого","Perseguir lo que esperas","Relancer ce que vous attendez","Nachfassen bei anderen","Cobrar o que você espera","Sollecitare gli altri","Achter anderen aan","Dopilnuj, na co czekasz","Beklediğini takip et","Відстеження очікуваного","जिसका इंतज़ार है उसे ट्रैक करें","追踪你在等的事"],
+  "cap_chase_ex": ["אני מחכה לחוזה מעורך הדין — תעקבי בשבילי ותזכירי לי","I'm waiting on the contract from the lawyer — track it and remind me","أنتظر العقد من المحامي — تابعيه وذكّريني","Жду договор от юриста — отслеживай и напомни мне","Espero el contrato del abogado: hazle seguimiento y recuérdamelo","J'attends le contrat de l'avocat — suis-le et rappelle-le-moi","Ich warte auf den Vertrag vom Anwalt — behalte ihn im Auge und erinnere mich","Estou esperando o contrato do advogado — acompanhe e me lembre","Aspetto il contratto dall'avvocato — tienilo d'occhio e ricordamelo","Ik wacht op het contract van de advocaat — volg het en herinner me","Czekam na umowę od prawnika — pilnuj tego i przypomnij mi","Avukattan sözleşmeyi bekliyorum — takip et ve bana hatırlat","Чекаю договір від юриста — відстежуй і нагадай мені","मैं वकील से अनुबंध का इंतज़ार कर रहा हूँ — इसे ट्रैक करो और याद दिलाओ","我在等律师的合同——帮我盯着并提醒我"],
+  "cap_prep_t": ["הכנה ליום","Prep for tomorrow","التحضير للغد","Подготовка к завтра","Preparar el día","Préparer demain","Vorbereitung auf morgen","Preparar o amanhã","Preparare domani","Voorbereiden op morgen","Przygotowanie na jutro","Yarına hazırlık","Підготовка до завтра","कल की तैयारी","为明天做准备"],
+  "cap_prep_ex": ["תכיני לי סיכום לכל מה שמחכה לי מחר בבוקר","Prepare a rundown of everything waiting for me tomorrow morning","جهّزي لي ملخصًا لكل ما ينتظرني صباح الغد","Подготовь сводку всего, что ждёт меня завтра утром","Prepárame un resumen de todo lo que me espera mañana por la mañana","Prépare-moi un récap de tout ce qui m'attend demain matin","Bereite mir eine Übersicht über alles vor, was mich morgen früh erwartet","Prepare um resumo de tudo que me espera amanhã de manhã","Preparami un riepilogo di tutto ciò che mi aspetta domani mattina","Maak een overzicht van alles wat me morgenochtend wacht","Przygotuj podsumowanie wszystkiego, co czeka mnie jutro rano","Yarın sabah beni bekleyen her şeyin özetini hazırla","Підготуй зведення всього, що чекає на мене завтра вранці","कल सुबह मेरा इंतज़ार कर रही हर चीज़ का सारांश तैयार करो","帮我把明天早上等着我的所有事整理成清单"],
+  "cap_translate_t": ["תרגום ותשובה","Translate & reply","ترجمة وردّ","Перевод и ответ","Traducir y responder","Traduire et répondre","Übersetzen & antworten","Traduzir e responder","Traduci e rispondi","Vertalen & antwoorden","Tłumacz i odpowiedz","Çevir ve yanıtla","Переклад і відповідь","अनुवाद और जवाब","翻译并回复"],
+  "cap_translate_ex": ["תרגמי את ההודעה הזאת ותנסחי לי תשובה","Translate this message and draft me a reply","ترجمي هذه الرسالة وصيغي لي ردًا","Переведи это сообщение и составь мне ответ","Traduce este mensaje y redáctame una respuesta","Traduis ce message et rédige-moi une réponse","Übersetze diese Nachricht und entwirf mir eine Antwort","Traduza esta mensagem e escreva uma resposta para mim","Traduci questo messaggio e scrivimi una risposta","Vertaal dit bericht en stel een antwoord op","Przetłumacz tę wiadomość i napisz mi odpowiedź","Bu mesajı çevir ve bana bir yanıt taslağı hazırla","Переклади це повідомлення й склади мені відповідь","इस संदेश का अनुवाद करो और मेरे लिए जवाब तैयार करो","翻译这条消息并帮我拟一份回复"],
 };
 
 const LANG_NAMES = { he:"עברית", en:"English", ar:"العربية", ru:"Русский", es:"Español",
@@ -684,7 +717,7 @@ async function loadToday() {
   const dayStart = new Date(now); dayStart.setHours(0, 0, 0, 0);
   const dayEnd = new Date(now); dayEnd.setHours(23, 59, 59, 999);
 
-  const [{ data: prof }, { data: tasks }, { data: rems }, { data: people }] = await Promise.all([
+  const [{ data: prof }, { data: tasks }, { data: rems }, { data: people }, autoRes, goalRes] = await Promise.all([
     sb.from("profiles").select("display_name").maybeSingle(),
     sb.from("tasks").select("id, title, due_at, waiting_on, waiting_since, prepared_at")
       .eq("status", "open").limit(100),
@@ -693,7 +726,12 @@ async function loadToday() {
       .order("remind_at").limit(10),
     sb.from("people").select("name, relation, last_heard_at")
       .order("updated_at", { ascending: false }).limit(8),
+    // Head-only counts: used to hide capabilities the user has already discovered.
+    sb.from("automations").select("id", { count: "exact", head: true }),
+    sb.from("goals").select("id", { count: "exact", head: true }),
   ]);
+  const autoCount = autoRes?.count || 0;
+  const goalCount = goalRes?.count || 0;
 
   // Rank: overdue → due today → stale waiting → the rest. Top 3 only.
   const scored = (tasks || []).map((t) => {
@@ -762,6 +800,34 @@ async function loadToday() {
     html += `<div class="empty">${T("today_empty")}</div>`;
   }
 
+  // ── Discovery strip: turn unknown features into a first use. Each card, when
+  // tapped, prefills+sends a real example into the chat so the user *experiences*
+  // the capability instead of reading about it. Cards the user has already used
+  // are hidden, so the strip only ever teaches what's still undiscovered. When
+  // nothing is left to teach, the strip disappears — a quiet reward.
+  if (localStorage.getItem("noga_caps_off") !== "1") {
+    const caps = [
+      { id: "automation", e: "🔁", ok: autoCount === 0 },
+      { id: "goal",       e: "🎯", ok: goalCount === 0 },
+      { id: "chase",      e: "⏳", ok: waiting.length === 0 },
+      { id: "prep",       e: "🌙", ok: !(tasks || []).some((t) => t.prepared_at) },
+      { id: "translate",  e: "🌍", ok: true },
+    ].filter((c) => c.ok).slice(0, 4);
+    if (caps.length) {
+      html += `<div class="caps-head"><span class="h">${T("cap_head")}</span>` +
+        `<button type="button" class="caps-x" id="caps-x" aria-label="${T("cap_hide")}">✕</button></div>`;
+      html += `<div class="caps" role="list">`;
+      for (const c of caps) {
+        html += `<button type="button" class="cap" role="listitem" data-cap="${c.id}">` +
+          `<span class="ce" aria-hidden="true">${c.e}</span>` +
+          `<span class="ct">${T("cap_" + c.id + "_t")}</span>` +
+          `<span class="cx">${escapeHtml(T("cap_" + c.id + "_ex"))}</span>` +
+          `<span class="cgo">${T("cap_try")}</span></button>`;
+      }
+      html += `</div>`;
+    }
+  }
+
   box.innerHTML = html;
   // person chip → jump to chat with a ready question for Noga
   box.querySelectorAll(".pchip").forEach((b) => {
@@ -782,6 +848,18 @@ async function loadToday() {
       if (!error) loadToday();
     };
   });
+  // capability card → jump to chat and actually send the example. requestSubmit
+  // routes through the composer's consent gate, so nothing is sent un-consented.
+  box.querySelectorAll(".cap").forEach((b) => {
+    b.onclick = () => {
+      document.querySelector('nav button[data-view="chat"]')?.click();
+      $("text").value = T("cap_" + b.dataset.cap + "_ex");
+      $("composer").requestSubmit();
+    };
+  });
+  // ✕ on the strip → hide it for good (per device).
+  const capsX = $("caps-x");
+  if (capsX) capsX.onclick = () => { localStorage.setItem("noga_caps_off", "1"); loadToday(); };
 }
 
 $("task-form").onsubmit = async (e) => {
