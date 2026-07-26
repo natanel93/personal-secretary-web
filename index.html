@@ -154,6 +154,32 @@
     border-radius: 9px; min-width: 17px; height: 17px; line-height: 17px;
   }
 
+  /* ── first-run onboarding ── */
+  #app.onboarding > nav,
+  #app.onboarding > #ai-paused,
+  #app.onboarding > .view:not(#view-onboard) { display: none !important; }
+  #view-onboard { flex: 1; overflow-y: auto; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+  .ob { width: 100%; max-width: 380px; margin: auto; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .ob-logo { font-size: 46px; line-height: 1; }
+  .ob-h { color: var(--navy); font-size: 23px; font-weight: 800; line-height: 1.25; text-wrap: balance; }
+  .ob-sub { color: #5F6678; font-size: 14.5px; line-height: 1.55; max-width: 330px; }
+  .ob-form { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .ob-form textarea { width: 100%; border: 1px solid #d6d9de; border-radius: 14px; padding: 13px 15px; font-size: 16px; font-family: inherit; line-height: 1.5; resize: none; outline: none; }
+  .ob-form textarea:focus { border-color: var(--gold); }
+  .ob-send { width: 100%; background: var(--navy); color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .ob-skip { background: none; border: none; color: #9aa; font-size: 13px; cursor: pointer; font-family: inherit; }
+  #ai-paused { width: 100%; background: #FBF3E2; border: none; border-bottom: 1px solid #EAD9AE; color: #8A6E2F; font-size: 13px; font-weight: 700; padding: 9px 12px; cursor: pointer; text-align: center; font-family: inherit; }
+  /* ── consent sheet ── */
+  .sheet { position: fixed; inset: 0; z-index: 60; display: flex; align-items: flex-end; justify-content: center; background: rgba(15,23,41,.55); }
+  .sheet-card { background: #fff; width: 100%; max-width: 480px; border-radius: 18px 18px 0 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom)); box-shadow: 0 -6px 24px rgba(0,0,0,.25); display: flex; flex-direction: column; gap: 10px; }
+  .sheet-h { color: var(--navy); font-size: 19px; font-weight: 800; }
+  .sheet-b { color: #444; font-size: 14px; line-height: 1.55; }
+  .sheet-trust { color: #8A6E2F; font-size: 12.5px; line-height: 1.5; }
+  .sheet-link { color: #8A6E2F; font-size: 13px; }
+  .sheet-yes { background: var(--navy); color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+  .sheet-no { background: none; border: none; color: #9aa; font-size: 13.5px; cursor: pointer; font-family: inherit; }
+  .sheet-note { font-size: 12.5px; font-weight: 600; color: var(--gold); min-height: 15px; text-align: center; }
+
   /* ── login ── */
   #login {
     flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -194,6 +220,22 @@
   </div>
 
   <main class="hidden" id="app">
+      <!-- AI paused: recovery for anyone who hasn't granted (or has revoked) consent -->
+      <button type="button" id="ai-paused" class="hidden" data-i18n="ai_paused"></button>
+
+      <!-- first-run onboarding: one real action, then hand to Noga's chat interview -->
+      <section class="view hidden" id="view-onboard">
+        <div class="ob">
+          <div class="ob-logo" aria-hidden="true">👩🏻‍💼</div>
+          <h2 class="ob-h" id="ob-title" data-i18n="ob_title"></h2>
+          <p class="ob-sub" data-i18n="ob_sub"></p>
+          <form id="ob-form" class="ob-form">
+            <textarea id="ob-thing" rows="3" autocomplete="off" data-i18n="ob_ph" data-i18n-attr="placeholder" aria-labelledby="ob-title"></textarea>
+            <button type="submit" id="ob-send" class="ob-send" data-i18n="ob_send"></button>
+          </form>
+          <button type="button" id="ob-skip" class="ob-skip" data-i18n="ob_skip"></button>
+        </div>
+      </section>
     <!-- today — the manager's home -->
     <section class="view" id="view-today">
       <div class="list" id="today-list"></div>
@@ -301,6 +343,15 @@
         </div>
       </div>
 
+      <!-- privacy: message-retention control (the policy promises this exists) -->
+      <div style="padding: 0 12px 12px">
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
+          <div style="font-weight:700;color:var(--navy);margin-bottom:4px" data-i18n="ret_title"></div>
+          <div style="font-size:12.5px;color:#5F6678;line-height:1.55;margin-bottom:10px" data-i18n="ret_sub"></div>
+          <div id="ret-opts" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+          <div id="ret-note" role="status" style="font-size:12.5px;font-weight:600;min-height:15px;color:var(--gold);margin-top:8px"></div>
+        </div>
+      </div>
       <!-- account: export + delete + legal -->
       <div style="padding: 0 12px 24px">
         <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)">
@@ -326,6 +377,19 @@
       <button data-view="inbox"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13.5" rx="3"/><polyline points="4,7 12,13.5 20,7"/><circle class="dot" cx="19" cy="17" r="1.6"/></svg><span data-i18n="nav_inbox">דואר</span><span class="badge hidden" id="badge-inbox"></span></button>
       <button data-view="settings"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="2.3"/><circle cx="18.5" cy="5.5" r="2.3"/><circle cx="18.5" cy="18.5" r="2.3"/><line x1="7.6" y1="11" x2="16.4" y2="6.5"/><line x1="7.6" y1="13" x2="16.4" y2="17.5"/><circle class="dot" cx="5.5" cy="12" r="1.1"/></svg><span data-i18n="nav_settings">חיבורים</span></button>
     </nav>
+
+    <!-- consent sheet: captured at the first AI touch; reused by onboarding, connect, AND chat -->
+    <div id="consent-sheet" class="sheet hidden" role="dialog" aria-modal="true" aria-labelledby="cs-h">
+      <div class="sheet-card">
+        <div id="cs-h" class="sheet-h" data-i18n="consent_title"></div>
+        <div class="sheet-b" data-i18n="consent_body"></div>
+        <div class="sheet-trust" data-i18n="ob_consent_trust"></div>
+        <a href="privacy.html" target="_blank" rel="noopener" class="sheet-link" data-i18n="consent_policy_link"></a>
+        <button type="button" id="cs-yes" class="sheet-yes" data-i18n="consent_accept"></button>
+        <button type="button" id="cs-no" class="sheet-no" data-i18n="ob_consent_later"></button>
+        <div id="cs-note" role="status" class="sheet-note"></div>
+      </div>
+    </div>
   </main>
 
 <script type="module">
@@ -337,6 +401,23 @@ const sb = createClient(SUPABASE_URL, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJp
 /* ── i18n (15 languages) ──────────────────────────────────────────────── */
 const I18N_LANGS = ["he", "en", "ar", "ru", "es", "fr", "de", "pt", "it", "nl", "pl", "tr", "uk", "hi", "zh"];
 const I18N = {
+  "ret_title": ["פרטיות ההודעות שלך 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒","Your message privacy 🔒"],
+  "ret_sub": ["כמה זמן הטקסט המקורי של הודעות וואטסאפ ו-SMS נשמר אצלנו לפני מחיקה אוטומטית. גוף המייל אף פעם לא נשמר.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored.","How long the original text of WhatsApp/SMS messages is kept before automatic deletion. Email bodies are never stored."],
+  "ret_1h": ["שעה","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour","1 hour"],
+  "ret_24h": ["24 שעות","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours","24 hours"],
+  "ret_72h": ["3 ימים","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days","3 days"],
+  "ret_30d": ["30 יום","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days","30 days"],
+  "ret_saved": ["✓ נשמר","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved","✓ Saved"],
+  "ob_title": ["היי, אני נוגה 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋","Hi, I'm Noga 👋"],
+  "ob_sub": ["אני המנהלת האישית שלך — עוקבת, מזכירה, ומכינה דברים בשבילך גם כשאתה ישן. מה הכי מעיק עליך עכשיו?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?","I'm your personal manager — I track, remind, and prepare things for you, even while you sleep. What's weighing on you most right now?"],
+  "ob_ph": ["למשל: לחתום על החוזה עד יום חמישי, להתקשר לרואה החשבון...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant...","e.g. sign the contract by Thursday, call the accountant..."],
+  "ob_send": ["בואו נתחיל","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start","Let's start"],
+  "ob_skip": ["אולי אחר כך","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later","Maybe later"],
+  "ob_consent_trust": ["גוף המייל שלך לא נשמר אצלנו, ואנחנו לא מאמנים מודלים על התוכן שלך. אפשר לבטל בכל רגע.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime.","Your email bodies are never stored with us, and we don't train models on your content. You can revoke anytime."],
+  "ob_consent_later": ["לא עכשיו","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now","Not now"],
+  "ai_paused": ["⏸️ נוגה מושהית — הקש לאישור עיבוד AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI","⏸️ Noga is paused — tap to enable AI"],
+  "chat_error": ["אופס, משהו השתבש. נסה שוב.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again.","Oops, something went wrong. Please try again."],
+  "chat_typing": ["נוגה כותבת...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing...","Noga is typing..."],
   "consent_title": ["רגע לפני שמתחילים","One moment before we start","لحظة قبل أن نبدأ","Один момент перед началом","Un momento antes de empezar","Un instant avant de commencer","Kurz bevor es losgeht","Um momento antes de começar","Un attimo prima di iniziare","Even voordat we beginnen","Chwila przed startem","Başlamadan önce bir saniye","Хвилинку перед початком","शुरू करने से पहले एक पल","开始前稍等一下"],
   "consent_body": ["כדי להבין את מה שאת/ה כותב/ת ואת מה שנכנס לתיבה, נוגה שולחת את התוכן לעיבוד אצל ספק בינה מלאכותית (Google Gemini, ובגיבוי Anthropic). התוכן לא משמש לאימון מודלים, ואפשר לבטל את ההסכמה בכל רגע במסך הזה.","To understand what you write and what arrives in your inbox, Noga sends that content for processing to an AI provider (Google Gemini, with Anthropic as backup). Your content is not used to train models, and you can withdraw this consent at any time on this screen.","لفهم ما تكتبه وما يصل إلى بريدك، ترسل نوغا المحتوى للمعالجة لدى مزوّد ذكاء اصطناعي (Google Gemini وAnthropic كاحتياطي). لا يُستخدم المحتوى لتدريب النماذج، ويمكنك سحب الموافقة في أي وقت.","Чтобы понимать, что вы пишете и что приходит во входящие, Нога отправляет содержимое на обработку ИИ-провайдеру (Google Gemini, резервно Anthropic). Содержимое не используется для обучения моделей, согласие можно отозвать в любой момент.","Para entender lo que escribes y lo que llega a tu bandeja, Noga envía ese contenido a un proveedor de IA (Google Gemini, con Anthropic como respaldo). Tu contenido no se usa para entrenar modelos y puedes retirar el consentimiento cuando quieras.","Pour comprendre ce que vous écrivez et ce qui arrive dans votre boîte, Noga envoie ce contenu à un fournisseur d IA (Google Gemini, Anthropic en secours). Votre contenu ne sert pas à entraîner les modèles et vous pouvez retirer ce consentement à tout moment.","Um zu verstehen, was du schreibst und was in deinem Postfach ankommt, sendet Noga diese Inhalte an einen KI-Anbieter (Google Gemini, Anthropic als Backup). Deine Inhalte werden nicht zum Training verwendet, und du kannst die Zustimmung jederzeit widerrufen.","Para entender o que você escreve e o que chega à sua caixa, a Noga envia esse conteúdo para um provedor de IA (Google Gemini, com Anthropic como reserva). Seu conteúdo não é usado para treinar modelos e você pode retirar o consentimento quando quiser.","Per capire ciò che scrivi e ciò che arriva nella tua casella, Noga invia quel contenuto a un fornitore di IA (Google Gemini, con Anthropic come riserva). I tuoi contenuti non vengono usati per addestrare modelli e puoi revocare il consenso quando vuoi.","Om te begrijpen wat je schrijft en wat er binnenkomt, stuurt Noga die inhoud naar een AI-aanbieder (Google Gemini, met Anthropic als back-up). Je inhoud wordt niet gebruikt om modellen te trainen en je kunt de toestemming altijd intrekken.","Aby rozumieć, co piszesz i co trafia do skrzynki, Noga wysyła tę treść do dostawcy AI (Google Gemini, zapasowo Anthropic). Treści nie służą do trenowania modeli, a zgodę możesz wycofać w każdej chwili.","Ne yazdığını ve gelen kutuna ne düştüğünü anlayabilmek için Noga bu içeriği bir yapay zeka sağlayıcısına (Google Gemini, yedek Anthropic) gönderir. İçeriğin model eğitiminde kullanılmaz ve onayı istediğin an geri alabilirsin.","Щоб розуміти, що ви пишете і що надходить у вхідні, Нога надсилає цей вміст постачальнику ШІ (Google Gemini, резервно Anthropic). Вміст не використовується для навчання моделей, згоду можна відкликати будь-коли.","आप जो लिखते हैं और इनबॉक्स में जो आता है उसे समझने के लिए नोगा वह सामग्री एक AI प्रदाता (Google Gemini, बैकअप Anthropic) को भेजती है। आपकी सामग्री मॉडल प्रशिक्षण में उपयोग नहीं होती, सहमति कभी भी वापस ले सकते हैं।","为了理解你写的内容和收件箱里的内容，Noga 会将这些内容发送给 AI 服务商处理（Google Gemini，备用 Anthropic）。你的内容不会用于训练模型，你随时可以撤回同意。"],
   "consent_accept": ["אני מאשר/ת","I agree","أوافق","Согласен","Acepto","J accepte","Ich stimme zu","Eu concordo","Accetto","Ik ga akkoord","Zgadzam się","Kabul ediyorum","Погоджуюсь","मैं सहमत हूँ","我同意"],
@@ -454,10 +535,15 @@ $("composer").onsubmit = async (e) => {
   const input = $("text"), btn = $("send");
   const text = input.value.trim();
   if (!text) return;
+  // Just-in-time consent: capture at the first AI touch instead of dead-ending.
+  if (!CONSENT_OK) {
+    const granted = (await ensureConsent()) || (await openConsentSheet());
+    if (!granted) return; // they chose Not now — nothing sent, banner stays
+  }
   input.value = ""; btn.disabled = true;
-  bubble("user", text);
+  const userBubble = bubble("user", text);
   const typing = document.createElement("div");
-  typing.className = "typing"; typing.textContent = "המזכירה כותבת...";
+  typing.className = "typing"; typing.textContent = T("chat_typing");
   chat.appendChild(typing); chat.scrollTop = chat.scrollHeight;
   try {
     const { data: { session } } = await sb.auth.getSession();
@@ -468,17 +554,26 @@ $("composer").onsubmit = async (e) => {
     });
     const data = await res.json();
     typing.remove();
+    if (data.consent_required) {
+      // Server refused for lack of consent — roll back, capture, resend.
+      userBubble && userBubble.remove();
+      CONSENT_OK = false; updateAiPaused();
+      const granted = await openConsentSheet();
+      btn.disabled = false;
+      if (granted) { input.value = text; $("composer").requestSubmit(); }
+      return;
+    }
     if (res.ok) {
       conversationId = data.conversation_id;
       localStorage.setItem("conversation_id", conversationId);
       bubble("assistant", data.reply);
       renderedCount += 2;
     } else {
-      bubble("assistant", "אופס, משהו השתבש: " + (data.error || res.status));
+      bubble("assistant", T("chat_error"));
     }
   } catch {
     typing.remove();
-    bubble("assistant", "אופס, בעיית תקשורת. נסה שוב.");
+    bubble("assistant", T("chat_error"));
   } finally {
     btn.disabled = false; input.focus();
   }
@@ -874,13 +969,17 @@ async function setConsent(grant) {
   const { data: me } = await sb.auth.getUser();
   const { data } = await sb.from("profiles").select("consents").maybeSingle();
   const consents = (data && data.consents) || {};
-  consents.ai = grant
-    ? { granted_at: new Date().toISOString(), policy_version: "2.0",
-        vendors: ["google-gemini", "anthropic"], revoked_at: null }
-    : Object.assign({}, consents.ai || {}, { revoked_at: new Date().toISOString() });
+  if (grant) {
+    consents.ai = { granted_at: new Date().toISOString(), policy_version: "2.0",
+        vendors: ["google-gemini", "anthropic"], revoked_at: null };
+    consents.age16 = consents.age16 || { confirmed_at: new Date().toISOString() };
+  } else {
+    consents.ai = Object.assign({}, consents.ai || {}, { revoked_at: new Date().toISOString() });
+  }
   const { error } = await sb.from("profiles").update({ consents: consents }).eq("id", me.user.id);
   btn.disabled = false;
   if (error) { note.textContent = "\u2717 " + error.message; return; }
+  CONSENT_OK = grant; updateAiPaused();
   loadConsent();
 }
 
@@ -1143,26 +1242,140 @@ function startPolling() {
   });
 }
 
+/* ── message-retention control (the privacy policy promises this exists) ──── */
+const RET_OPTS = [["1h","ret_1h"],["24h","ret_24h"],["72h","ret_72h"],["30d","ret_30d"]];
+async function loadRetention() {
+  const box = $("ret-opts"); if (!box) return;
+  const { data } = await sb.from("profiles").select("retention").maybeSingle();
+  const cur = (data && data.retention) || "72h";
+  box.innerHTML = "";
+  for (const [val, key] of RET_OPTS) {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = T(key);
+    b.setAttribute("aria-pressed", val === cur ? "true" : "false");
+    b.style.cssText = "flex:1;min-width:64px;border-radius:10px;padding:9px 4px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;" +
+      (val === cur ? "background:var(--navy);color:#fff;border:1px solid var(--navy)"
+                   : "background:#fff;color:var(--navy);border:1px solid #d6d9de");
+    b.onclick = () => setRetention(val);
+    box.appendChild(b);
+  }
+}
+async function setRetention(val) {
+  const { data: me } = await sb.auth.getUser();
+  if (!me?.user) return;
+  const note = $("ret-note");
+  const { error } = await sb.from("profiles").update({ retention: val }).eq("id", me.user.id);
+  if (error) { note.style.color = "#c0392b"; note.textContent = "\u2717 " + error.message; return; }
+  note.style.color = "var(--gold)"; note.textContent = T("ret_saved");
+  loadRetention();
+}
+
+/* ── consent sheet: the single just-in-time AI-consent capture ────────────── */
+// Writes the SAME shape the server gate reads (see _shared/consent.ts).
+async function writeConsentGrant() {
+  const { data: me } = await sb.auth.getUser();
+  if (!me?.user) return false;
+  const { data } = await sb.from("profiles").select("consents").maybeSingle();
+  const consents = (data && data.consents) || {};
+  const nowIso = new Date().toISOString();
+  consents.ai = { granted_at: nowIso, policy_version: "2.0",
+    vendors: ["google-gemini", "anthropic"], revoked_at: null };
+  consents.age16 = consents.age16 || { confirmed_at: nowIso };
+  const { error } = await sb.from("profiles").update({ consents }).eq("id", me.user.id);
+  if (error) return false;
+  CONSENT_OK = true;
+  updateAiPaused();
+  return true;
+}
+
+// Re-read server truth before any AI touch — a stale client flag must never open the gate.
+async function ensureConsent() {
+  const { data } = await sb.from("profiles").select("consents").maybeSingle();
+  const ai = data && data.consents && data.consents.ai;
+  CONSENT_OK = !!(ai && ai.granted_at && !ai.revoked_at);
+  updateAiPaused();
+  return CONSENT_OK;
+}
+
+function updateAiPaused() {
+  const b = $("ai-paused");
+  if (!b) return;
+  b.classList.toggle("hidden", CONSENT_OK !== false);
+}
+$("ai-paused").onclick = () => openConsentSheet();
+
+let _consentResolve = null;
+function openConsentSheet() {
+  return new Promise((resolve) => {
+    _consentResolve = resolve;
+    $("cs-note").textContent = "";
+    $("consent-sheet").classList.remove("hidden");
+  });
+}
+function closeConsentSheet(granted) {
+  $("consent-sheet").classList.add("hidden");
+  const r = _consentResolve; _consentResolve = null;
+  if (r) r(granted);
+}
+$("cs-yes").onclick = async () => {
+  const btn = $("cs-yes"); btn.disabled = true;
+  $("cs-note").textContent = "...";
+  const ok = await writeConsentGrant();
+  btn.disabled = false;
+  if (ok) closeConsentSheet(true);
+  else { $("cs-note").textContent = "✗"; }
+};
+$("cs-no").onclick = () => closeConsentSheet(false);
+
+/* ── first-run onboarding ─────────────────────────────────────────────────── */
+let firstRun = false;
+function enterOnboarding() {
+  firstRun = true;
+  $("app").classList.add("onboarding");
+  ["today","chat","tasks","inbox","settings"].forEach((v) => $("view-"+v).classList.add("hidden"));
+  $("view-onboard").classList.remove("hidden");
+  setTimeout(() => $("ob-thing").focus(), 300);
+}
+async function stampOnboarded() {
+  firstRun = false;
+  const { data: me } = await sb.auth.getUser();
+  if (me?.user) sb.from("profiles").update({ onboarded_at: new Date().toISOString() }).eq("id", me.user.id);
+}
+function leaveOnboarding() {
+  $("app").classList.remove("onboarding");
+  $("view-onboard").classList.add("hidden");
+  stampOnboarded(); // fire-and-forget: no Today flash while awaiting the write
+}
+$("ob-skip").onclick = () => {
+  leaveOnboarding();
+  document.querySelector('nav button[data-view="chat"]').click();
+};
+$("ob-form").onsubmit = async (e) => {
+  e.preventDefault();
+  const thing = $("ob-thing").value.trim();
+  leaveOnboarding();
+  document.querySelector('nav button[data-view="chat"]').click();
+  if (thing) { $("text").value = thing; $("composer").requestSubmit(); }
+};
+
 async function showApp(session) {
   $("login").classList.add("hidden");
   $("topbar").classList.remove("hidden");
   $("app").classList.remove("hidden");
   await ensureProfile(session.user);
-  const { data: myProfile } = await sb.from("profiles").select("locale").eq("id", session.user.id).maybeSingle();
+  const { data: myProfile } = await sb.from("profiles").select("locale, onboarded_at").eq("id", session.user.id).maybeSingle();
   applyLocale(myProfile?.locale || (navigator.language || "en").slice(0, 2));
   buildLangPicker();
   refresh();
-  loadConsent();
+  await ensureConsent();
   loadPlan();
+  loadRetention();
   if (window.ReactNativeWebView) {
     window.ReactNativeWebView.postMessage(JSON.stringify({ type: "request_push_token" }));
   }
   startPolling();
-  setTimeout(() => {
-    if (!chat.children.length) {
-      bubble("assistant", "היי! אני נוגה, המזכירה האישית שלך 🙂 אפשר לבקש ממני לקבוע תזכורות, לנהל משימות, ולזכור דברים חשובים. במה נתחיל?");
-    }
-  }, 1200);
+  // Brand-new account (server-authoritative flag) → first-run takeover.
+  if (!myProfile?.onboarded_at) { enterOnboarding(); }
 }
 
 $("send-link").onclick = async () => {
