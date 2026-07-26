@@ -174,6 +174,24 @@
   .cap .cx { font-size: 11.5px; color: #6A7186; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .cap .cgo { margin-top: 2px; font-size: 11px; font-weight: 700; color: #8A6E2F; }
 
+  /* ── dashboard manager rows (goals + automations) ── */
+  .mitem { background: #fff; border-radius: 14px; padding: 11px 13px; box-shadow: 0 1px 2px rgba(0,0,0,.06); display: flex; flex-direction: column; gap: 8px; }
+  .mitem .mtop { display: flex; align-items: flex-start; gap: 8px; }
+  .mitem .mmain { flex: 1; min-width: 0; }
+  .mitem .mt { font-size: 14.5px; color: #222; font-weight: 600; line-height: 1.3; }
+  .mitem .ms { font-size: 12px; color: #5F6678; margin-top: 3px; line-height: 1.4; }
+  .macts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mbtn { border: 1px solid var(--line); background: #FBF8F1; color: var(--navy); border-radius: 9px; padding: 6px 11px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; min-height: 32px; }
+  .mbtn:active { border-color: var(--gold); }
+  .mbtn.gold { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .mbtn.danger { color: #A2322A; padding: 6px 10px; }
+  .mstatus { font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 12px; vertical-align: middle; }
+  .mstatus.paused { background: #EEE; color: #777; }
+  .gadd { display: flex; gap: 6px; margin-top: 2px; }
+  .gadd input { flex: 1; border: 1px solid #d6d9de; border-radius: 10px; padding: 9px 12px; font-size: 14px; outline: none; }
+  .gadd input:focus { border-color: var(--gold); }
+  .gadd button { border: none; background: var(--navy); color: #fff; border-radius: 10px; padding: 0 16px; font-size: 14px; font-weight: 700; cursor: pointer; }
+
   /* ── first-run onboarding ── */
   #app.onboarding > nav,
   #app.onboarding > #ai-paused,
@@ -488,6 +506,26 @@ const I18N = {
   "cap_prep_ex": ["תכיני לי סיכום לכל מה שמחכה לי מחר בבוקר","Prepare a rundown of everything waiting for me tomorrow morning","جهّزي لي ملخصًا لكل ما ينتظرني صباح الغد","Подготовь сводку всего, что ждёт меня завтра утром","Prepárame un resumen de todo lo que me espera mañana por la mañana","Prépare-moi un récap de tout ce qui m'attend demain matin","Bereite mir eine Übersicht über alles vor, was mich morgen früh erwartet","Prepare um resumo de tudo que me espera amanhã de manhã","Preparami un riepilogo di tutto ciò che mi aspetta domani mattina","Maak een overzicht van alles wat me morgenochtend wacht","Przygotuj podsumowanie wszystkiego, co czeka mnie jutro rano","Yarın sabah beni bekleyen her şeyin özetini hazırla","Підготуй зведення всього, що чекає на мене завтра вранці","कल सुबह मेरा इंतज़ार कर रही हर चीज़ का सारांश तैयार करो","帮我把明天早上等着我的所有事整理成清单"],
   "cap_translate_t": ["תרגום ותשובה","Translate & reply","ترجمة وردّ","Перевод и ответ","Traducir y responder","Traduire et répondre","Übersetzen & antworten","Traduzir e responder","Traduci e rispondi","Vertalen & antwoorden","Tłumacz i odpowiedz","Çevir ve yanıtla","Переклад і відповідь","अनुवाद और जवाब","翻译并回复"],
   "cap_translate_ex": ["תרגמי את ההודעה הזאת ותנסחי לי תשובה","Translate this message and draft me a reply","ترجمي هذه الرسالة وصيغي لي ردًا","Переведи это сообщение и составь мне ответ","Traduce este mensaje y redáctame una respuesta","Traduis ce message et rédige-moi une réponse","Übersetze diese Nachricht und entwirf mir eine Antwort","Traduza esta mensagem e escreva uma resposta para mim","Traduci questo messaggio e scrivimi una risposta","Vertaal dit bericht en stel een antwoord op","Przetłumacz tę wiadomość i napisz mi odpowiedź","Bu mesajı çevir ve bana bir yanıt taslağı hazırla","Переклади це повідомлення й склади мені відповідь","इस संदेश का अनुवाद करो और मेरे लिए जवाब तैयार करो","翻译这条消息并帮我拟一份回复"],
+  "sec_goals": ["היעדים שלך","Your goals","أهدافك","Ваши цели","Tus objetivos","Vos objectifs","Deine Ziele","Suas metas","I tuoi obiettivi","Jouw doelen","Twoje cele","Hedeflerin","Ваші цілі","आपके लक्ष्य","你的目标"],
+  "sec_autos": ["אוטומציות פעילות","Your automations","الأتمتة النشطة","Ваши автоматизации","Tus automatizaciones","Vos automatisations","Deine Automatisierungen","Suas automações","Le tue automazioni","Jouw automatiseringen","Twoje automatyzacje","Otomasyonların","Ваші автоматизації","आपके ऑटोमेशन","你的自动化"],
+  "st_paused": ["מושהה","Paused","متوقّف","На паузе","En pausa","En pause","Pausiert","Pausado","In pausa","Gepauzeerd","Wstrzymane","Duraklatıldı","Призупинено","रुका हुआ","已暂停"],
+  "act_pause": ["השהה","Pause","إيقاف","Пауза","Pausar","Pause","Pausieren","Pausar","Pausa","Pauzeren","Wstrzymaj","Duraklat","Пауза","रोकें","暂停"],
+  "act_resume": ["הפעל","Resume","استئناف","Возобновить","Reanudar","Reprendre","Fortsetzen","Retomar","Riprendi","Hervatten","Wznów","Sürdür","Відновити","फिर शुरू करें","恢复"],
+  "act_delete": ["מחק","Delete","حذف","Удалить","Eliminar","Supprimer","Löschen","Excluir","Elimina","Verwijderen","Usuń","Sil","Видалити","हटाएँ","删除"],
+  "goal_checkin": ["עדכון","Check in","تحديث","Отметиться","Registrar","Faire le point","Einchecken","Registrar","Aggiorna","Inchecken","Zamelduj","Durum gir","Відзначитись","प्रगति","打卡"],
+  "goal_done": ["השגתי 🎉","Achieved 🎉","أنجزته 🎉","Достигнуто 🎉","¡Logrado! 🎉","Atteint 🎉","Erreicht 🎉","Concluído 🎉","Raggiunto 🎉","Behaald 🎉","Osiągnięto 🎉","Başardım 🎉","Досягнуто 🎉","हासिल 🎉","已达成 🎉"],
+  "goal_last_checkin": ["עדכון אחרון: {note}","Last check-in: {note}","آخر تحديث: {note}","Последняя отметка: {note}","Último registro: {note}","Dernier point : {note}","Letzter Check-in: {note}","Último registro: {note}","Ultimo aggiornamento: {note}","Laatste check-in: {note}","Ostatni meldunek: {note}","Son durum: {note}","Останнє: {note}","अंतिम अपडेट: {note}","最近打卡：{note}"],
+  "goal_no_note": ["עודכן","checked in","تم التحديث","отмечено","registrado","fait","eingecheckt","registrado","aggiornato","ingecheckt","zameldowano","girildi","відзначено","दर्ज","已打卡"],
+  "goal_add_ph": ["יעד חדש...","New goal...","هدف جديد...","Новая цель...","Nuevo objetivo...","Nouvel objectif...","Neues Ziel...","Nova meta...","Nuovo obiettivo...","Nieuw doel...","Nowy cel...","Yeni hedef...","Нова ціль...","नया लक्ष्य...","新目标..."],
+  "goal_add_btn": ["הוסף","Add","إضافة","Добавить","Añadir","Ajouter","Hinzufügen","Adicionar","Aggiungi","Toevoegen","Dodaj","Ekle","Додати","जोड़ें","添加"],
+  "goal_checkin_q": ["איך הולך עם היעד? (אפשר להשאיר ריק)","How's the goal going? (you can leave this blank)","كيف يسير الهدف؟ (يمكنك تركه فارغًا)","Как идёт цель? (можно оставить пустым)","¿Cómo va el objetivo? (puedes dejarlo vacío)","Où en est l'objectif ? (vous pouvez laisser vide)","Wie läuft das Ziel? (kann leer bleiben)","Como vai a meta? (pode deixar em branco)","Come va l'obiettivo? (puoi lasciare vuoto)","Hoe gaat het doel? (mag leeg)","Jak idzie cel? (możesz zostawić puste)","Hedef nasıl gidiyor? (boş bırakabilirsin)","Як просувається ціль? (можна лишити порожнім)","लक्ष्य कैसा चल रहा है? (खाली छोड़ सकते हैं)","目标进展如何？（可以留空）"],
+  "goal_done_q": ["לסמן את היעד כהושג? 🎉","Mark this goal as achieved? 🎉","وضع علامة على الهدف كمُنجَز؟ 🎉","Отметить цель как достигнутую? 🎉","¿Marcar el objetivo como logrado? 🎉","Marquer l'objectif comme atteint ? 🎉","Ziel als erreicht markieren? 🎉","Marcar a meta como concluída? 🎉","Segnare l'obiettivo come raggiunto? 🎉","Doel als behaald markeren? 🎉","Oznaczyć cel jako osiągnięty? 🎉","Hedef başarıldı olarak işaretlensin mi? 🎉","Позначити ціль як досягнуту? 🎉","लक्ष्य को हासिल किया हुआ चिह्नित करें? 🎉","将此目标标记为已达成？🎉"],
+  "goal_del_q": ["למחוק את היעד?","Delete this goal?","حذف هذا الهدف؟","Удалить эту цель?","¿Eliminar este objetivo?","Supprimer cet objectif ?","Dieses Ziel löschen?","Excluir esta meta?","Eliminare questo obiettivo?","Dit doel verwijderen?","Usunąć ten cel?","Bu hedef silinsin mi?","Видалити цю ціль?","यह लक्ष्य हटाएँ?","删除这个目标？"],
+  "auto_del_q": ["למחוק את האוטומציה?","Delete this automation?","حذف هذه الأتمتة؟","Удалить эту автоматизацию?","¿Eliminar esta automatización?","Supprimer cette automatisation ?","Diese Automatisierung löschen?","Excluir esta automação?","Eliminare questa automazione?","Deze automatisering verwijderen?","Usunąć tę automatyzację?","Bu otomasyon silinsin mi?","Видалити цю автоматизацію?","यह ऑटोमेशन हटाएँ?","删除这个自动化？"],
+  "action_failed": ["הפעולה נכשלה, נסה שוב","Action failed, please try again","فشلت العملية، حاول مجددًا","Не удалось, попробуйте снова","La acción falló, inténtalo de nuevo","L'action a échoué, réessayez","Aktion fehlgeschlagen, bitte erneut versuchen","A ação falhou, tente novamente","Azione non riuscita, riprova","Actie mislukt, probeer opnieuw","Akcja nie powiodła się, spróbuj ponownie","İşlem başarısız, tekrar dene","Дію не виконано, спробуйте ще раз","कार्रवाई विफल, फिर प्रयास करें","操作失败，请重试"],
+  "auto_daily": ["כל יום ב-{time}","Every day at {time}","كل يوم في {time}","Каждый день в {time}","Cada día a las {time}","Chaque jour à {time}","Täglich um {time}","Todo dia às {time}","Ogni giorno alle {time}","Elke dag om {time}","Codziennie o {time}","Her gün {time}","Щодня о {time}","हर दिन {time} बजे","每天 {time}"],
+  "auto_weekly": ["כל יום {day} ב-{time}","Every {day} at {time}","كل {day} في {time}","Каждый {day} в {time}","Cada {day} a las {time}","Chaque {day} à {time}","Jeden {day} um {time}","Toda {day} às {time}","Ogni {day} alle {time}","Elke {day} om {time}","W każdy {day} o {time}","Her {day} {time}","Кожного {day} о {time}","हर {day} {time} बजे","每{day} {time}"],
+  "auto_monthly": ["ב-{day} בכל חודש ב-{time}","On day {day} monthly at {time}","في اليوم {day} من كل شهر في {time}","{day}-го числа каждого месяца в {time}","El día {day} de cada mes a las {time}","Le {day} de chaque mois à {time}","Am {day}. jeden Monat um {time}","No dia {day} de cada mês às {time}","Il giorno {day} di ogni mese alle {time}","Op dag {day} elke maand om {time}","{day}. dnia miesiąca o {time}","Her ayın {day}. günü {time}","{day}-го числа щомісяця о {time}","हर महीने की {day} तारीख को {time} बजे","每月 {day} 号 {time}"],
 };
 
 const LANG_NAMES = { he:"עברית", en:"English", ar:"العربية", ru:"Русский", es:"Español",
@@ -711,6 +749,53 @@ function escapeHtml(s) {
 }
 
 /* ── today — the manager's home ───────────────────────────────────────── */
+/* ── Today dashboard: goals + automations (surfaced + managed via 0018 RPCs) ── */
+function fmtHourLocal(h) { return String(h).padStart(2, "0") + ":00"; }
+function weekdayNameLocal(wd) {
+  // 2024-01-07 is a Sunday; +wd days → the locale's long weekday name.
+  const d = new Date(Date.UTC(2024, 0, 7 + (Number(wd) || 0)));
+  return new Intl.DateTimeFormat(LOCALE, { weekday: "long", timeZone: "UTC" }).format(d);
+}
+function fmtSchedule(a) {
+  const t = fmtHourLocal(a.hour);
+  if (a.cadence === "weekly") return T("auto_weekly", { day: weekdayNameLocal(a.weekday), time: t });
+  if (a.cadence === "monthly") return T("auto_monthly", { day: a.day || 1, time: t });
+  return T("auto_daily", { time: t });
+}
+function renderGoalsSection(goals) {
+  let h = `<div class="sect">${T("sec_goals")}</div>`;
+  for (const g of goals) {
+    const paused = g.status === "paused";
+    const sub = g.last_checkin_at
+      ? `<div class="ms">${T("goal_last_checkin", { note: g.checkin_note ? escapeHtml(g.checkin_note) : T("goal_no_note") })}</div>`
+      : (g.why ? `<div class="ms">${escapeHtml(g.why)}</div>` : "");
+    h += `<div class="mitem"><div class="mtop"><div class="mmain">` +
+      `<div class="mt">🎯 ${escapeHtml(g.title)}${paused ? ` <span class="mstatus paused">${T("st_paused")}</span>` : ""}</div>${sub}` +
+      `</div></div><div class="macts">` +
+      `<button class="mbtn gold" data-goal="${g.id}" data-act="checkin">${T("goal_checkin")}</button>` +
+      `<button class="mbtn" data-goal="${g.id}" data-act="done">${T("goal_done")}</button>` +
+      `<button class="mbtn" data-goal="${g.id}" data-act="${paused ? "resume" : "pause"}">${paused ? T("act_resume") : T("act_pause")}</button>` +
+      `<button class="mbtn danger" data-goal="${g.id}" data-act="delete" aria-label="${T("act_delete")}">✕</button>` +
+      `</div></div>`;
+  }
+  h += `<form class="gadd" id="goal-add"><input id="goal-add-input" autocomplete="off" placeholder="${T("goal_add_ph")}" aria-label="${T("goal_add_ph")}"><button type="submit">${T("goal_add_btn")}</button></form>`;
+  return h;
+}
+function renderAutosSection(autos) {
+  let h = `<div class="sect">${T("sec_autos")}</div>`;
+  for (const a of autos) {
+    const paused = a.status === "paused";
+    h += `<div class="mitem"><div class="mtop"><div class="mmain">` +
+      `<div class="mt">🔁 ${escapeHtml(a.instruction)}${paused ? ` <span class="mstatus paused">${T("st_paused")}</span>` : ""}</div>` +
+      `<div class="ms">${escapeHtml(fmtSchedule(a))}</div>` +
+      `</div></div><div class="macts">` +
+      `<button class="mbtn" data-auto="${a.id}" data-act="${paused ? "resume" : "pause"}">${paused ? T("act_resume") : T("act_pause")}</button>` +
+      `<button class="mbtn danger" data-auto="${a.id}" data-act="delete" aria-label="${T("act_delete")}">✕</button>` +
+      `</div></div>`;
+  }
+  return h;
+}
+
 async function loadToday() {
   const box = $("today-list");
   const now = new Date();
@@ -726,12 +811,17 @@ async function loadToday() {
       .order("remind_at").limit(10),
     sb.from("people").select("name, relation, last_heard_at")
       .order("updated_at", { ascending: false }).limit(8),
-    // Head-only counts: used to hide capabilities the user has already discovered.
-    sb.from("automations").select("id", { count: "exact", head: true }),
-    sb.from("goals").select("id", { count: "exact", head: true }),
+    // Full rows now — the Today dashboard surfaces + manages these (was head-count only).
+    sb.from("automations").select("id, instruction, cadence, hour, weekday, day, status, last_run_at")
+      .order("created_at").limit(30),
+    sb.from("goals").select("id, title, why, status, last_checkin_at, checkin_note")
+      .order("created_at").limit(50),
   ]);
-  const autoCount = autoRes?.count || 0;
-  const goalCount = goalRes?.count || 0;
+  const autos = autoRes?.data || [];
+  const allGoals = goalRes?.data || [];
+  const goals = allGoals.filter((g) => g.status !== "done");   // done goals leave the board
+  const autoCount = autos.length;
+  const goalCount = allGoals.length;
 
   // Rank: overdue → due today → stale waiting → the rest. Top 3 only.
   const scored = (tasks || []).map((t) => {
@@ -781,6 +871,11 @@ async function loadToday() {
     }
     html += `</div>`;
   }
+
+  // 🎯 Goals — the warm-accountability moat, now visible + controllable.
+  if (goals.length) html += renderGoalsSection(goals);
+  // 🔁 Automations — "what's running for you while you sleep", with real control.
+  if (autos.length) html += renderAutosSection(autos);
 
   if (people && people.length) {
     html += `<div class="sect">${T("sec_people")}</div><div class="row"><div class="chips-wrap">`;
@@ -860,6 +955,41 @@ async function loadToday() {
   // ✕ on the strip → hide it for good (per device).
   const capsX = $("caps-x");
   if (capsX) capsX.onclick = () => { localStorage.setItem("noga_caps_off", "1"); loadToday(); };
+
+  // 🎯 goals — check-in / achieved / pause·resume / delete (owner-scoped RPC)
+  box.querySelectorAll("[data-goal]").forEach((b) => {
+    b.onclick = async () => {
+      const id = b.dataset.goal, act = b.dataset.act;
+      let note = null;
+      if (act === "checkin") { note = prompt(T("goal_checkin_q")); if (note === null) return; }
+      else if (act === "done" && !confirm(T("goal_done_q"))) return;
+      else if (act === "delete" && !confirm(T("goal_del_q"))) return;
+      const { error } = await sb.rpc("goal_action", { p_id: id, p_action: act, p_note: note });
+      if (error) { alert(T("action_failed")); return; }
+      loadToday();
+    };
+  });
+  // 🔁 automations — pause·resume / delete
+  box.querySelectorAll("[data-auto]").forEach((b) => {
+    b.onclick = async () => {
+      const id = b.dataset.auto, act = b.dataset.act;
+      if (act === "delete" && !confirm(T("auto_del_q"))) return;
+      const { error } = await sb.rpc("automation_action", { p_id: id, p_action: act });
+      if (error) { alert(T("action_failed")); return; }
+      loadToday();
+    };
+  });
+  // add a goal straight from the dashboard
+  const gAdd = $("goal-add");
+  if (gAdd) gAdd.onsubmit = async (e) => {
+    e.preventDefault();
+    const inp = $("goal-add-input"), title = inp.value.trim();
+    if (!title) return;
+    inp.value = "";
+    const { error } = await sb.rpc("goal_create", { p_title: title, p_why: null });
+    if (error) { alert(T("action_failed")); return; }
+    loadToday();
+  };
 }
 
 $("task-form").onsubmit = async (e) => {
