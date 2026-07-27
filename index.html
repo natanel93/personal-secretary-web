@@ -260,14 +260,13 @@
 
   <div id="login">
     <div class="logo">👩🏻‍💼</div>
-    <h2>נוגה — המנהלת האישית שלך</h2>
-    <p>הכנס אימייל ותקבל קישור כניסה. בלי סיסמאות.</p>
-    <input id="email" type="email" aria-label="כתובת אימייל לכניסה" placeholder="you@example.com" autocomplete="email">
-    <button id="send-link">שלח לי קישור כניסה</button>
+    <h2><span data-i18n="app_name"></span> — <span data-i18n="login_title"></span></h2>
+    <p data-i18n="login_sub"></p>
+    <input id="email" type="email" data-i18n="login_email_aria" data-i18n-attr="aria-label" placeholder="you@example.com" autocomplete="email">
+    <button id="send-link" data-i18n="login_btn"></button>
     <div class="note" id="login-note" role="status"></div>
     <div style="font-size:12px;color:#99a;margin-top:8px">
-      בהתחברות אתה מסכים ל<a href="terms.html" style="color:#c9a44c">תנאי השימוש</a>
-      ול<a href="privacy.html" style="color:#c9a44c">מדיניות הפרטיות</a>
+      <span data-i18n="login_agree"></span><a href="terms.html" style="color:#c9a44c" data-i18n="terms_link"></a><span data-i18n="login_and"></span><a href="privacy.html" style="color:#c9a44c" data-i18n="privacy_link"></a>
     </div>
   </div>
 
@@ -295,8 +294,8 @@
 
     <!-- chat -->
     <section class="view hidden" id="view-chat">
-      <div id="chat" role="log" aria-live="polite" aria-label="שיחה עם נוגה"></div>
-      <div id="suggestions" aria-live="polite" aria-label="הצעות של נוגה"></div>
+      <div id="chat" role="log" aria-live="polite" data-i18n="chat_aria" data-i18n-attr="aria-label" aria-label="שיחה עם נוגה"></div>
+      <div id="suggestions" aria-live="polite" data-i18n="sug_aria" data-i18n-attr="aria-label" aria-label="הצעות של נוגה"></div>
       <form class="composer" id="composer">
         <input id="text" placeholder="כתבו לנוגה..." data-i18n="chat_ph" data-i18n-attr="placeholder" aria-label="Noga" autocomplete="off">
         <button type="submit" id="send" data-i18n="send">שלח</button>
@@ -307,8 +306,8 @@
     <section class="view hidden" id="view-tasks">
       <div class="list" id="tasks-list"></div>
       <form class="composer" id="task-form">
-        <input id="task-input" placeholder="משימה חדשה..." autocomplete="off">
-        <button type="submit">הוסף</button>
+        <input id="task-input" data-i18n="task_new_ph" data-i18n-attr="placeholder" placeholder="משימה חדשה..." autocomplete="off">
+        <button type="submit" data-i18n="goal_add_btn"></button>
       </form>
     </section>
 
@@ -422,7 +421,7 @@
       </div>
     </section>
 
-    <nav aria-label="ניווט ראשי">
+    <nav data-i18n="nav_aria" data-i18n-attr="aria-label" aria-label="ניווט ראשי">
       <button data-view="today" class="active" aria-current="page"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><line x1="3" y1="18.5" x2="21" y2="18.5"/><circle class="dot" cx="12" cy="11" r="3.2"/><line x1="12" y1="4.5" x2="12" y2="3"/><line x1="6.2" y1="6.8" x2="5.1" y2="5.7"/><line x1="17.8" y1="6.8" x2="18.9" y2="5.7"/></svg><span data-i18n="nav_today">היום</span></button>
       <button data-view="chat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="13" rx="4"/><path d="M8.5 17.5v3l3.5-3"/><circle class="dot" cx="16.5" cy="11" r="1.7"/></svg><span data-i18n="nav_chat">צ'אט</span></button>
       <button data-view="tasks"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><polyline points="8.4,12.3 11,14.8 15.8,9.6"/><circle class="dot" cx="19.5" cy="4.5" r="1.6"/></svg><span data-i18n="nav_tasks">משימות</span><span class="badge hidden" id="badge-tasks"></span></button>
@@ -567,6 +566,15 @@ const I18N = {
   "ps_draft_prefill": ["עזרי לי לנסח הודעה ל{name}","Help me draft a message to {name}","ساعديني في صياغة رسالة إلى {name}","Помоги составить сообщение для {name}","Ayúdame a redactar un mensaje para {name}","Aide-moi à rédiger un message pour {name}","Hilf mir, eine Nachricht an {name} zu entwerfen","Ajude-me a escrever uma mensagem para {name}","Aiutami a scrivere un messaggio a {name}","Help me een bericht aan {name} op te stellen","Pomóż mi napisać wiadomość do {name}","{name} için mesaj yazmama yardım et","Допоможи скласти повідомлення для {name}","{name} के लिए संदेश तैयार करने में मदद करो","帮我给 {name} 起草一条消息"],
   "ps_close": ["סגור","Close","إغلاق","Закрыть","Cerrar","Fermer","Schließen","Fechar","Chiudi","Sluiten","Zamknij","Kapat","Закрити","बंद करें","关闭"],
   "inbox_empty": ["התיבה ריקה. חברו מייל ווואטסאפ כדי שנוגה תתחיל לקרוא בשבילכם 📬","Your inbox is empty. Connect email and WhatsApp so Noga can start reading for you 📬","صندوق الوارد فارغ. اربط البريد وواتساب لتبدأ نوغا القراءة نيابةً عنك 📬","Входящие пусты. Подключите почту и WhatsApp, чтобы Нога начала читать за вас 📬","Tu bandeja está vacía. Conecta el correo y WhatsApp para que Noga empiece a leer por ti 📬","Votre boîte est vide. Connectez l'e-mail et WhatsApp pour que Noga commence à lire pour vous 📬","Dein Posteingang ist leer. Verbinde E-Mail und WhatsApp, damit Noga für dich liest 📬","Sua caixa está vazia. Conecte e-mail e WhatsApp para a Noga começar a ler por você 📬","La tua casella è vuota. Collega email e WhatsApp così Noga inizia a leggere per te 📬","Je inbox is leeg. Koppel e-mail en WhatsApp zodat Noga voor je gaat lezen 📬","Twoja skrzynka jest pusta. Połącz e-mail i WhatsApp, aby Noga zaczęła czytać za Ciebie 📬","Gelen kutun boş. E-posta ve WhatsApp'ı bağla ki Noga senin için okumaya başlasın 📬","Вхідні порожні. Підключіть пошту та WhatsApp, щоб Нога почала читати за вас 📬","आपका इनबॉक्स खाली है। ईमेल और WhatsApp जोड़ें ताकि नोगा आपके लिए पढ़ना शुरू करे 📬","收件箱是空的。连接邮箱和 WhatsApp，让 Noga 开始为你阅读 📬"],
+  "login_email_aria": ["כתובת אימייל לכניסה","Email address for sign-in","عنوان البريد للدخول","E-mail для входа","Correo para iniciar sesión","E-mail pour la connexion","E-Mail für die Anmeldung","E-mail para entrar","Email per l'accesso","E-mail om in te loggen","E-mail do logowania","Giriş için e-posta","E-mail для входу","साइन-इन के लिए ईमेल","登录邮箱"],
+  "login_agree": ["בהתחברות אתה מסכים ל","By signing in you agree to the ","بتسجيل الدخول فإنك توافق على ","Входя, вы принимаете ","Al iniciar sesión aceptas los ","En vous connectant, vous acceptez les ","Mit der Anmeldung stimmst du den ","Ao entrar, você aceita os ","Accedendo accetti i ","Door in te loggen ga je akkoord met de ","Logując się, akceptujesz ","Giriş yaparak şunları kabul edersin: ","Входячи, ви приймаєте ","साइन इन करके आप सहमत हैं ","登录即表示你同意"],
+  "login_and": [" ול"," and the "," و "," и "," y la "," et la "," und der "," e a "," e l' "," en het "," oraz "," ve "," та "," और "," 和"],
+  "terms_link": ["תנאי השימוש","Terms of Use","شروط الاستخدام","Условиями использования","Términos de uso","Conditions d'utilisation","Nutzungsbedingungen","Termos de uso","Termini d'uso","Gebruiksvoorwaarden","Warunki użytkowania","Kullanım Koşulları","Умовами використання","उपयोग की शर्तें","使用条款"],
+  "privacy_link": ["מדיניות הפרטיות","Privacy Policy","سياسة الخصوصية","Политикой конфиденциальности","Política de privacidad","Politique de confidentialité","Datenschutzerklärung","Política de privacidade","Informativa privacy","Privacybeleid","Polityką prywatności","Gizlilik Politikası","Політикою приватності","गोपनीयता नीति","隐私政策"],
+  "task_new_ph": ["משימה חדשה...","New task...","مهمة جديدة...","Новая задача...","Nueva tarea...","Nouvelle tâche...","Neue Aufgabe...","Nova tarefa...","Nuova attività...","Nieuwe taak...","Nowe zadanie...","Yeni görev...","Нове завдання...","नया कार्य...","新任务..."],
+  "chat_aria": ["שיחה עם נוגה","Conversation with Noga","محادثة مع نوغا","Разговор с Ногой","Conversación con Noga","Conversation avec Noga","Unterhaltung mit Noga","Conversa com a Noga","Conversazione con Noga","Gesprek met Noga","Rozmowa z Nogą","Noga ile sohbet","Розмова з Ногою","नोगा से बातचीत","与 Noga 的对话"],
+  "sug_aria": ["הצעות של נוגה","Noga's suggestions","اقتراحات نوغا","Предложения Ноги","Sugerencias de Noga","Suggestions de Noga","Nogas Vorschläge","Sugestões da Noga","Suggerimenti di Noga","Suggesties van Noga","Sugestie Nogi","Noga'nın önerileri","Пропозиції Ноги","नोगा के सुझाव","Noga 的建议"],
+  "nav_aria": ["ניווט ראשי","Main navigation","التنقل الرئيسي","Основная навигация","Navegación principal","Navigation principale","Hauptnavigation","Navegação principal","Navigazione principale","Hoofdnavigatie","Nawigacja główna","Ana gezinme","Основна навігація","मुख्य नेविगेशन","主导航"],
 };
 
 const LANG_NAMES = { he:"עברית", en:"English", ar:"العربية", ru:"Русский", es:"Español",
