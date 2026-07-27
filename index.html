@@ -195,6 +195,17 @@
   .kit-btn { background: none; border: none; color: #8A6E2F; font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 6px 2px; text-align: start; }
   .kit { white-space: pre-wrap; word-break: break-word; font-size: 13px; color: #3a4257; line-height: 1.55; background: #FBF8F1; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-top: 4px; }
 
+  /* ── person profile sheet ── */
+  .psheet { position: fixed; inset: 0; z-index: 70; background: rgba(15,23,41,.5); display: flex; align-items: flex-end; justify-content: center; }
+  .psheet-card { background: var(--bg); width: 100%; max-width: 480px; height: 88vh; border-radius: 18px 18px 0 0; display: flex; flex-direction: column; box-shadow: 0 -6px 24px rgba(0,0,0,.25); }
+  .psheet-head { display: flex; align-items: center; gap: 10px; padding: 16px 16px 12px; border-bottom: 1px solid var(--line); }
+  .psheet-title { flex: 1; min-width: 0; }
+  .psheet-title .nm { font-size: 19px; font-weight: 800; color: var(--navy); }
+  .psheet-title .rl { font-size: 13px; color: #5F6678; margin-top: 2px; }
+  .psheet-x { background: none; border: none; font-size: 17px; color: #9aa; cursor: pointer; padding: 6px 8px; min-width: 34px; min-height: 34px; font-family: inherit; }
+  .psheet-body { flex: 1; overflow-y: auto; padding: 14px 16px calc(20px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
+  .psheet-body a.wchip { text-decoration: none; }
+
   /* ── first-run onboarding ── */
   #app.onboarding > nav,
   #app.onboarding > #ai-paused,
@@ -431,6 +442,17 @@
         <div id="cs-note" role="status" class="sheet-note"></div>
       </div>
     </div>
+
+    <!-- person profile (opened from a person chip on Today) -->
+    <div id="person-sheet" class="psheet hidden" role="dialog" aria-modal="true" aria-labelledby="ps-name">
+      <div class="psheet-card">
+        <div class="psheet-head">
+          <div class="psheet-title"><div class="nm" id="ps-name"></div><div class="rl" id="ps-rel"></div></div>
+          <button type="button" id="ps-close" class="psheet-x" data-i18n="ps_close" data-i18n-attr="aria-label">✕</button>
+        </div>
+        <div class="psheet-body" id="ps-body"></div>
+      </div>
+    </div>
   </main>
 
 <script type="module">
@@ -537,6 +559,14 @@ const I18N = {
   "tasks_empty": ["אין משימות פתוחות 🙌","No open tasks 🙌","لا مهام مفتوحة 🙌","Нет открытых задач 🙌","Sin tareas pendientes 🙌","Aucune tâche ouverte 🙌","Keine offenen Aufgaben 🙌","Nenhuma tarefa aberta 🙌","Nessuna attività aperta 🙌","Geen open taken 🙌","Brak otwartych zadań 🙌","Açık görev yok 🙌","Немає відкритих завдань 🙌","कोई खुला कार्य नहीं 🙌","没有待办任务 🙌"],
   "prep_kit": ["✨ ערכת פתיחה שנוגה הכינה","✨ Starter kit Noga prepared","✨ حزمة انطلاق أعدّتها نوغا","✨ Набор, подготовленный Ногой","✨ Kit inicial que preparó Noga","✨ Kit de départ préparé par Noga","✨ Von Noga vorbereitetes Starter-Kit","✨ Kit inicial que a Noga preparou","✨ Kit iniziale preparato da Noga","✨ Starterkit van Noga","✨ Zestaw startowy od Nogi","✨ Noga'nın hazırladığı başlangıç kiti","✨ Стартовий набір від Ноги","✨ नोगा का तैयार किया स्टार्टर किट","✨ Noga 准备的启动包"],
   "prep_hint": ["נוגה הכינה ערכת פתיחה","Noga prepared a starter kit","أعدّت نوغا حزمة انطلاق","Нога подготовила набор","Noga preparó un kit inicial","Noga a préparé un kit de départ","Noga hat ein Starter-Kit vorbereitet","A Noga preparou um kit inicial","Noga ha preparato un kit iniziale","Noga heeft een starterkit klaargezet","Noga przygotowała zestaw startowy","Noga bir başlangıç kiti hazırladı","Нога підготувала стартовий набір","नोगा ने स्टार्टर किट तैयार की","Noga 已准备启动包"],
+  "ps_open": ["פתוח מולם","Open with them","المفتوح معهم","Открытые дела","Pendiente con esta persona","En cours avec cette personne","Offen mit dieser Person","Em aberto com esta pessoa","In sospeso con questa persona","Openstaand met deze persoon","Otwarte sprawy","Bu kişiyle açık işler","Відкриті справи","इनके साथ लंबित","与他们的未了事项"],
+  "ps_recent": ["הודעות אחרונות","Recent messages","رسائل أخيرة","Недавние сообщения","Mensajes recientes","Messages récents","Letzte Nachrichten","Mensagens recentes","Messaggi recenti","Recente berichten","Ostatnie wiadomości","Son mesajlar","Останні повідомлення","हाल के संदेश","最近的消息"],
+  "ps_empty": ["עוד אין מה להראות כאן","Nothing to show here yet","لا شيء لعرضه هنا بعد","Пока нечего показать","Aún no hay nada que mostrar","Rien à afficher pour l'instant","Noch nichts anzuzeigen","Ainda não há nada para mostrar","Ancora niente da mostrare","Nog niets te tonen","Nie ma jeszcze nic do pokazania","Henüz gösterilecek bir şey yok","Поки немає що показати","अभी दिखाने को कुछ नहीं","暂时没有可显示的内容"],
+  "ps_ask": ["שאל את נוגה","Ask Noga","اسأل نوغا","Спросить Ногу","Pregúntale a Noga","Demander à Noga","Noga fragen","Perguntar à Noga","Chiedi a Noga","Vraag het Noga","Zapytaj Nogę","Noga'ya sor","Запитати Ногу","नोगा से पूछें","问 Noga"],
+  "ps_draft": ["נסח הודעה","Draft a message","صياغة رسالة","Составить сообщение","Redactar un mensaje","Rédiger un message","Nachricht entwerfen","Escrever uma mensagem","Scrivi un messaggio","Bericht opstellen","Napisz wiadomość","Mesaj taslağı","Скласти повідомлення","संदेश तैयार करें","起草消息"],
+  "ps_draft_prefill": ["עזרי לי לנסח הודעה ל{name}","Help me draft a message to {name}","ساعديني في صياغة رسالة إلى {name}","Помоги составить сообщение для {name}","Ayúdame a redactar un mensaje para {name}","Aide-moi à rédiger un message pour {name}","Hilf mir, eine Nachricht an {name} zu entwerfen","Ajude-me a escrever uma mensagem para {name}","Aiutami a scrivere un messaggio a {name}","Help me een bericht aan {name} op te stellen","Pomóż mi napisać wiadomość do {name}","{name} için mesaj yazmama yardım et","Допоможи скласти повідомлення для {name}","{name} के लिए संदेश तैयार करने में मदद करो","帮我给 {name} 起草一条消息"],
+  "ps_close": ["סגור","Close","إغلاق","Закрыть","Cerrar","Fermer","Schließen","Fechar","Chiudi","Sluiten","Zamknij","Kapat","Закрити","बंद करें","关闭"],
+  "inbox_empty": ["התיבה ריקה. חברו מייל ווואטסאפ כדי שנוגה תתחיל לקרוא בשבילכם 📬","Your inbox is empty. Connect email and WhatsApp so Noga can start reading for you 📬","صندوق الوارد فارغ. اربط البريد وواتساب لتبدأ نوغا القراءة نيابةً عنك 📬","Входящие пусты. Подключите почту и WhatsApp, чтобы Нога начала читать за вас 📬","Tu bandeja está vacía. Conecta el correo y WhatsApp para que Noga empiece a leer por ti 📬","Votre boîte est vide. Connectez l'e-mail et WhatsApp pour que Noga commence à lire pour vous 📬","Dein Posteingang ist leer. Verbinde E-Mail und WhatsApp, damit Noga für dich liest 📬","Sua caixa está vazia. Conecte e-mail e WhatsApp para a Noga começar a ler por você 📬","La tua casella è vuota. Collega email e WhatsApp così Noga inizia a leggere per te 📬","Je inbox is leeg. Koppel e-mail en WhatsApp zodat Noga voor je gaat lezen 📬","Twoja skrzynka jest pusta. Połącz e-mail i WhatsApp, aby Noga zaczęła czytać za Ciebie 📬","Gelen kutun boş. E-posta ve WhatsApp'ı bağla ki Noga senin için okumaya başlasın 📬","Вхідні порожні. Підключіть пошту та WhatsApp, щоб Нога почала читати за вас 📬","आपका इनबॉक्स खाली है। ईमेल और WhatsApp जोड़ें ताकि नोगा आपके लिए पढ़ना शुरू करे 📬","收件箱是空的。连接邮箱和 WhatsApp，让 Noga 开始为你阅读 📬"],
 };
 
 const LANG_NAMES = { he:"עברית", en:"English", ar:"العربية", ru:"Русский", es:"Español",
@@ -831,6 +861,73 @@ function renderAutosSection(autos) {
   return h;
 }
 
+/* ── person profile: a real in-app view (was: chip → prefill a chat line) ── */
+function askInChat(text) {
+  document.querySelector('nav button[data-view="chat"]')?.click();
+  const inp = $("text"); inp.value = text; inp.focus();
+}
+function closePerson() { $("person-sheet").classList.add("hidden"); }
+async function openPerson(name) {
+  const sheet = $("person-sheet"), body = $("ps-body");
+  body.innerHTML = "";
+  sheet.classList.remove("hidden");
+  const [{ data: p }, { data: tks }] = await Promise.all([
+    sb.from("people").select("name, relation, emails, phone, notes, last_heard_at").eq("name", name).maybeSingle(),
+    sb.from("tasks").select("id, title, due_at, waiting_since").eq("waiting_on", name).eq("status", "open")
+      .order("due_at", { ascending: true, nullsFirst: false }),
+  ]);
+  const person = p || { name };
+  const emails = person.emails || [];
+  const idents = emails.concat(person.phone ? [person.phone] : []).map((x) => String(x).toLowerCase()).filter(Boolean);
+  let msgs = [];
+  if (idents.length) {
+    const { data: inb } = await sb.from("inbox_items")
+      .select("source, subject, preview, sender, received_at")
+      .order("received_at", { ascending: false }).limit(80);
+    msgs = (inb || []).filter((m) => {
+      const s = String(m.sender || "").toLowerCase();
+      return idents.some((id) => s.includes(id));
+    }).slice(0, 6);
+  }
+  $("ps-name").textContent = person.name;
+  const quiet = person.last_heard_at ? Math.floor((Date.now() - new Date(person.last_heard_at)) / 864e5) : null;
+  $("ps-rel").textContent = [person.relation, (quiet !== null && quiet >= 1 ? T("silent_days", { n: quiet }) : null)]
+    .filter(Boolean).join(" · ");
+
+  let h = "";
+  const chips = [];
+  if (person.phone) chips.push(`<a class="wchip" href="tel:${escapeHtml(person.phone)}">📞 ${escapeHtml(person.phone)}</a>`);
+  for (const e of emails.slice(0, 3)) chips.push(`<a class="wchip" href="mailto:${escapeHtml(e)}">✉️ ${escapeHtml(e)}</a>`);
+  if (chips.length) h += `<div class="chips-wrap">${chips.join("")}</div>`;
+  if (person.notes) h += `<div class="mitem"><div class="ms" style="white-space:pre-wrap">${escapeHtml(person.notes)}</div></div>`;
+  if (tks && tks.length) {
+    h += `<div class="sect">${T("ps_open")}</div>`;
+    for (const t of tks) {
+      const late = t.due_at && new Date(t.due_at) < new Date();
+      const days = t.waiting_since ? Math.max(1, Math.floor((Date.now() - new Date(t.waiting_since)) / 864e5)) : null;
+      const sub = t.due_at ? (late ? T("why_overdue", { date: fmtDay(t.due_at) }) : T("why_due", { date: fmtDay(t.due_at) }))
+                           : (days ? days + " " + T("days_short") : "");
+      h += `<div class="mitem"><div class="mt">${escapeHtml(t.title)}</div>${sub ? `<div class="ms${late ? " overdue" : ""}">${escapeHtml(sub)}</div>` : ""}</div>`;
+    }
+  }
+  if (msgs.length) {
+    h += `<div class="sect">${T("ps_recent")}</div>`;
+    for (const m of msgs) {
+      const when = new Intl.DateTimeFormat(LOCALE, { day: "numeric", month: "numeric" }).format(new Date(m.received_at));
+      h += `<div class="mitem"><div class="mt">${SRC_ICON[m.source] || "📄"} ${escapeHtml(m.subject || m.preview || "")}</div><div class="ms">${when}</div></div>`;
+    }
+  }
+  if (!chips.length && !person.notes && !(tks && tks.length) && !msgs.length) {
+    h += `<div class="empty">${T("ps_empty")}</div>`;
+  }
+  h += `<div class="macts" style="margin-top:4px">` +
+    `<button class="mbtn gold" id="ps-ask">${T("ps_ask")}</button>` +
+    `<button class="mbtn" id="ps-draft">${T("ps_draft")}</button></div>`;
+  body.innerHTML = h;
+  $("ps-ask").onclick = () => { closePerson(); askInChat(T("ask_open_with", { name: person.name })); };
+  $("ps-draft").onclick = () => { closePerson(); askInChat(T("ps_draft_prefill", { name: person.name })); };
+}
+
 async function loadToday() {
   const box = $("today-list");
   const now = new Date();
@@ -960,14 +1057,9 @@ async function loadToday() {
   }
 
   box.innerHTML = html;
-  // person chip → jump to chat with a ready question for Noga
+  // person chip → open the in-app profile (was: prefill a chat question)
   box.querySelectorAll(".pchip").forEach((b) => {
-    b.onclick = () => {
-      document.querySelector('nav button[data-view="chat"]')?.click();
-      const inp = $("text");
-      inp.value = T("ask_open_with", { name: b.dataset.person });
-      inp.focus();
-    };
+    b.onclick = () => openPerson(b.dataset.person);
   });
   // ✕ → delete the person (privacy promise; RLS scopes to own rows)
   box.querySelectorAll(".pdel").forEach((b) => {
@@ -1053,7 +1145,7 @@ async function loadInbox() {
   badge.classList.toggle("hidden", !unread);
   badge.textContent = unread;
   if (!data || !data.length) {
-    box.innerHTML = '<div class="empty">התיבה ריקה.\nחבר את המייל והוואטסאפ כדי שהמזכירה תתחיל לקרוא בשבילך 📬</div>';
+    box.innerHTML = `<div class="empty">${T("inbox_empty")}</div>`;
     return;
   }
   for (const i of data) {
@@ -1068,7 +1160,7 @@ async function loadInbox() {
     const s = document.createElement("div");
     s.className = "s";
     s.textContent = (i.sender ?? "") + " · " +
-      new Intl.DateTimeFormat("he-IL", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })
+      new Intl.DateTimeFormat(LOCALE, { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })
         .format(new Date(i.received_at));
     grow.append(t, s);
     row.append(src, grow);
@@ -1570,6 +1662,13 @@ $("cs-yes").onclick = async () => {
   else { $("cs-note").textContent = "✗"; }
 };
 $("cs-no").onclick = () => closeConsentSheet(false);
+
+// person profile sheet: close on ✕, backdrop tap, or Escape
+$("ps-close").onclick = closePerson;
+$("person-sheet").addEventListener("click", (e) => { if (e.target === $("person-sheet")) closePerson(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !$("person-sheet").classList.contains("hidden")) closePerson();
+});
 
 /* ── first-run onboarding ─────────────────────────────────────────────────── */
 let firstRun = false;
