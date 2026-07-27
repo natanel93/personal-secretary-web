@@ -194,6 +194,11 @@
   /* night-prep kit expander inside a task row */
   .kit-btn { background: none; border: none; color: #8A6E2F; font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 6px 2px; text-align: start; }
   .kit { white-space: pre-wrap; word-break: break-word; font-size: 13px; color: #3a4257; line-height: 1.55; background: #FBF8F1; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-top: 4px; }
+  /* 📅 add-to-phone-calendar button (native shell only) */
+  .calbtn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 4px 6px; min-width: 32px; min-height: 32px; line-height: 1; opacity: .85; flex-shrink: 0; }
+  .calbtn:active { opacity: 1; }
+  .calbtn:disabled { opacity: .5; cursor: default; }
+  .timeline .tl .calbtn { margin-inline-start: 4px; }
 
   /* ── person profile sheet ── */
   .psheet { position: fixed; inset: 0; z-index: 70; background: rgba(15,23,41,.5); display: flex; align-items: flex-end; justify-content: center; }
@@ -587,6 +592,10 @@ const I18N = {
   "ps_draft": ["נסח הודעה","Draft a message","صياغة رسالة","Составить сообщение","Redactar un mensaje","Rédiger un message","Nachricht entwerfen","Escrever uma mensagem","Scrivi un messaggio","Bericht opstellen","Napisz wiadomość","Mesaj taslağı","Скласти повідомлення","संदेश तैयार करें","起草消息"],
   "ps_draft_prefill": ["עזרי לי לנסח הודעה ל{name}","Help me draft a message to {name}","ساعديني في صياغة رسالة إلى {name}","Помоги составить сообщение для {name}","Ayúdame a redactar un mensaje para {name}","Aide-moi à rédiger un message pour {name}","Hilf mir, eine Nachricht an {name} zu entwerfen","Ajude-me a escrever uma mensagem para {name}","Aiutami a scrivere un messaggio a {name}","Help me een bericht aan {name} op te stellen","Pomóż mi napisać wiadomość do {name}","{name} için mesaj yazmama yardım et","Допоможи скласти повідомлення для {name}","{name} के लिए संदेश तैयार करने में मदद करो","帮我给 {name} 起草一条消息"],
   "ps_close": ["סגור","Close","إغلاق","Закрыть","Cerrar","Fermer","Schließen","Fechar","Chiudi","Sluiten","Zamknij","Kapat","Закрити","बंद करें","关闭"],
+  "cal_add": ["הוסף ליומן","Add to calendar","أضف إلى التقويم","Добавить в календарь","Añadir al calendario","Ajouter au calendrier","Zum Kalender hinzufügen","Adicionar ao calendário","Aggiungi al calendario","Aan agenda toevoegen","Dodaj do kalendarza","Takvime ekle","Додати в календар","कैलेंडर में जोड़ें","添加到日历"],
+  "cal_added": ["נוסף ליומן","Added to calendar","أُضيف إلى التقويم","Добавлено в календарь","Añadido al calendario","Ajouté au calendrier","Zum Kalender hinzugefügt","Adicionado ao calendário","Aggiunto al calendario","Toegevoegd aan agenda","Dodano do kalendarza","Takvime eklendi","Додано в календар","कैलेंडर में जोड़ा गया","已添加到日历"],
+  "cal_denied": ["לא אושרה גישה ליומן — אפשר לאשר בהגדרות iOS ← נוגה ← יומנים","Calendar access denied — enable it in iOS Settings → Noga → Calendars","تم رفض الوصول إلى التقويم — فعّله من إعدادات iOS ← نوغا ← التقويمات","Доступ к календарю запрещён — включите в Настройках iOS → Noga → Календари","Acceso al calendario denegado — actívalo en Ajustes de iOS → Noga → Calendarios","Accès au calendrier refusé — activez-le dans Réglages iOS → Noga → Calendriers","Kalenderzugriff verweigert — in iOS-Einstellungen → Noga → Kalender aktivieren","Acesso ao calendário negado — ative em Ajustes do iOS → Noga → Calendários","Accesso al calendario negato — attivalo in Impostazioni iOS → Noga → Calendari","Agenda-toegang geweigerd — schakel het in via iOS-instellingen → Noga → Agenda's","Odmowa dostępu do kalendarza — włącz w Ustawieniach iOS → Noga → Kalendarze","Takvim erişimi reddedildi — iOS Ayarlar → Noga → Takvimler'den aç","Доступ до календаря заборонено — увімкніть у Налаштуваннях iOS → Noga → Календарі","कैलेंडर एक्सेस अस्वीकृत — iOS सेटिंग्स → Noga → कैलेंडर में सक्षम करें","日历访问被拒绝 — 在 iOS 设置 → Noga → 日历中开启"],
+  "cal_failed": ["הוספת האירוע נכשלה, נסה שוב","Couldn't add the event, try again","تعذّرت إضافة الحدث، حاول مجددًا","Не удалось добавить событие, попробуйте снова","No se pudo añadir el evento, inténtalo de nuevo","Impossible d'ajouter l'événement, réessayez","Ereignis konnte nicht hinzugefügt werden, erneut versuchen","Não foi possível adicionar o evento, tente novamente","Impossibile aggiungere l'evento, riprova","Kon het item niet toevoegen, probeer opnieuw","Nie udało się dodać wydarzenia, spróbuj ponownie","Etkinlik eklenemedi, tekrar dene","Не вдалося додати подію, спробуйте ще раз","इवेंट नहीं जोड़ा जा सका, फिर प्रयास करें","无法添加事件，请重试"],
   "inbox_empty": ["התיבה ריקה. חברו מייל ווואטסאפ כדי שנוגה תתחיל לקרוא בשבילכם 📬","Your inbox is empty. Connect email and WhatsApp so Noga can start reading for you 📬","صندوق الوارد فارغ. اربط البريد وواتساب لتبدأ نوغا القراءة نيابةً عنك 📬","Входящие пусты. Подключите почту и WhatsApp, чтобы Нога начала читать за вас 📬","Tu bandeja está vacía. Conecta el correo y WhatsApp para que Noga empiece a leer por ti 📬","Votre boîte est vide. Connectez l'e-mail et WhatsApp pour que Noga commence à lire pour vous 📬","Dein Posteingang ist leer. Verbinde E-Mail und WhatsApp, damit Noga für dich liest 📬","Sua caixa está vazia. Conecte e-mail e WhatsApp para a Noga começar a ler por você 📬","La tua casella è vuota. Collega email e WhatsApp così Noga inizia a leggere per te 📬","Je inbox is leeg. Koppel e-mail en WhatsApp zodat Noga voor je gaat lezen 📬","Twoja skrzynka jest pusta. Połącz e-mail i WhatsApp, aby Noga zaczęła czytać za Ciebie 📬","Gelen kutun boş. E-posta ve WhatsApp'ı bağla ki Noga senin için okumaya başlasın 📬","Вхідні порожні. Підключіть пошту та WhatsApp, щоб Нога почала читати за вас 📬","आपका इनबॉक्स खाली है। ईमेल और WhatsApp जोड़ें ताकि नोगा आपके लिए पढ़ना शुरू करे 📬","收件箱是空的。连接邮箱和 WhatsApp，让 Noga 开始为你阅读 📬"],
   "login_email_aria": ["כתובת אימייל לכניסה","Email address for sign-in","عنوان البريد للدخول","E-mail для входа","Correo para iniciar sesión","E-mail pour la connexion","E-Mail für die Anmeldung","E-mail para entrar","Email per l'accesso","E-mail om in te loggen","E-mail do logowania","Giriş için e-posta","E-mail для входу","साइन-इन के लिए ईमेल","登录邮箱"],
   "login_agree": ["בהתחברות אתה מסכים ל","By signing in you agree to the ","بتسجيل الدخول فإنك توافق على ","Входя, вы принимаете ","Al iniciar sesión aceptas los ","En vous connectant, vous acceptez les ","Mit der Anmeldung stimmst du den ","Ao entrar, você aceita os ","Accedendo accetti i ","Door in te loggen ga je akkoord met de ","Logując się, akceptujesz ","Giriş yaparak şunları kabul edersin: ","Входячи, ви приймаєте ","साइन इन करके आप सहमत हैं ","登录即表示你同意"],
@@ -817,6 +826,14 @@ async function loadTasks() {
       grow.appendChild(w);
     }
     row.append(check, grow);
+    // 📅 add the deadline to the phone calendar (native shell only)
+    if (inNativeShell && t.due_at) {
+      const cb = document.createElement("button");
+      cb.className = "calbtn"; cb.type = "button"; cb.textContent = "📅";
+      cb.title = T("cal_add"); cb.setAttribute("aria-label", T("cal_add"));
+      cb.dataset.calTitle = t.title; cb.dataset.calStart = t.due_at;
+      row.appendChild(cb);
+    }
     // ✨ Night-prep kit — surface the flagship feature that was chat-only.
     if (t.prepared_at && t.notes) {
       const kitBtn = document.createElement("button");
@@ -836,6 +853,7 @@ async function loadTasks() {
     }
     box.appendChild(row);
   }
+  wireCalBtns(box);
 }
 
 function escapeHtml(s) {
@@ -1030,7 +1048,10 @@ async function loadToday() {
     html += `<div class="sect">${T("sec_schedule")}</div><div class="row timeline" style="display:block">`;
     for (const r of rems) {
       const hh = new Intl.DateTimeFormat(LOCALE, { hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(r.remind_at));
-      html += `<div class="tl"><span>${escapeHtml(r.body)}</span><span class="hh">${hh}</span></div>`;
+      const calBtn = inNativeShell
+        ? `<button class="calbtn" data-cal-title="${escapeHtml(r.body)}" data-cal-start="${r.remind_at}" title="${T("cal_add")}" aria-label="${T("cal_add")}">📅</button>`
+        : "";
+      html += `<div class="tl"><span>${escapeHtml(r.body)}</span><span class="hh">${hh}</span>${calBtn}</div>`;
     }
     html += `</div>`;
   }
@@ -1087,6 +1108,7 @@ async function loadToday() {
   }
 
   box.innerHTML = html;
+  wireCalBtns(box);
   // person chip → open the in-app profile (was: prefill a chat question)
   box.querySelectorAll(".pchip").forEach((b) => {
     b.onclick = () => openPerson(b.dataset.person);
@@ -1452,6 +1474,40 @@ async function startTrial() {
 /* ── contacts import (native shell bridge) ────────────────────────────── */
 const inNativeShell = !!window.ReactNativeWebView;
 if (inNativeShell) $("contacts-card").classList.remove("hidden");
+
+// Bridge: ask the native shell to add an event to the phone calendar, await
+// its {type:"calendar_result"} reply. Resolves {ok:false,reason:"not_native"}
+// on plain web so callers can degrade gracefully.
+let calendarResolve = null;
+function nativeAddToCalendar(ev) {
+  return new Promise((resolve) => {
+    if (!inNativeShell) { resolve({ ok: false, reason: "not_native" }); return; }
+    calendarResolve = resolve;
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: "add_calendar_event", ...ev }));
+    setTimeout(() => { if (calendarResolve === resolve) { calendarResolve = null; resolve({ ok: false, reason: "timeout" }); } }, 20000);
+  });
+}
+// Wire every 📅 button under `root` to add its item to the phone calendar.
+function wireCalBtns(root) {
+  root.querySelectorAll(".calbtn").forEach((b) => {
+    if (b._wired) return; b._wired = true;
+    b.onclick = async (e) => {
+      e.stopPropagation();
+      const orig = b.textContent; b.disabled = true; b.textContent = "⏳";
+      const res = await nativeAddToCalendar({
+        title: b.dataset.calTitle, startISO: b.dataset.calStart, notes: b.dataset.calNotes || undefined,
+      });
+      b.disabled = false;
+      if (res.ok) { b.textContent = "✓"; b.title = T("cal_added"); }
+      else {
+        b.textContent = orig;
+        if (res.reason === "denied") alert(T("cal_denied"));
+        else if (res.reason === "not_native") { /* plain web — silently ignore */ }
+        else alert(T("cal_failed"));
+      }
+    };
+  });
+}
 $("contacts-btn").onclick = () => {
   if (!inNativeShell) return;
   $("contacts-note").textContent = "מבקשת גישה לאנשי הקשר...";
@@ -1468,6 +1524,11 @@ async function onNativeMessage(e) {
     await sb.from("profiles")
       .update({ push_token: msg.token, push_updated_at: new Date().toISOString() })
       .eq("id", me.user.id);
+    return;
+  }
+  if (msg?.type === "calendar_result") {
+    const r = calendarResolve; calendarResolve = null;
+    if (r) r(msg);
     return;
   }
   if (msg?.type !== "contacts_result") return;
