@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://esm.sh; style-src 'unsafe-inline'; connect-src https://*.supabase.co https://esm.sh; img-src 'self' data:; font-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://*.supabase.co; img-src 'self' data:; font-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1e2a4a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -459,8 +459,22 @@
     </div>
   </main>
 
+<script src="vendor/supabase.js"></script>
 <script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// Supabase client is vendored (web/vendor/supabase.js, served from our own
+// origin) so the app has ZERO third-party CDN dependency at load. A CDN blip
+// used to leave a blank, text-less login screen (the import failed before any
+// UI code ran). window.supabase is the UMD global from the vendored bundle.
+if (!window.supabase || !window.supabase.createClient) {
+  // Defense in depth: never leave a blank, text-less screen — offer a retry.
+  document.body.innerHTML =
+    '<div style="min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;font-family:-apple-system,sans-serif;color:#1e2a4a">' +
+    '<div style="font-size:40px">📶</div>' +
+    '<div style="font-size:16px;line-height:1.5;max-width:300px">בעיית חיבור זמנית. בדקו את החיבור ונסו שוב.<br><span style="color:#5F6678">Connection problem. Check your internet and try again.</span></div>' +
+    '<button onclick="location.reload()" style="background:#1e2a4a;color:#fff;border:none;border-radius:12px;padding:13px 28px;font-size:16px;font-weight:700;cursor:pointer">נסה שוב · Retry</button></div>';
+  throw new Error("Supabase client failed to load");
+}
+const { createClient } = window.supabase;
 
 const SUPABASE_URL = "https://xzglitsbmpgryserphmb.supabase.co";
 const sb = createClient(SUPABASE_URL, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6Z2xpdHNibXBncnlzZXJwaG1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODQ2MzgsImV4cCI6MjA5ODU2MDYzOH0.Lmqyc-9ITGL1q3xGvofiTrPBeBwDqcW--sSeRZ2RKKU");
