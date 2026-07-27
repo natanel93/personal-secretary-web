@@ -264,6 +264,11 @@
     <p data-i18n="login_sub"></p>
     <input id="email" type="email" data-i18n="login_email_aria" data-i18n-attr="aria-label" placeholder="you@example.com" autocomplete="email">
     <button id="send-link" data-i18n="login_btn"></button>
+    <div id="otp-box" class="hidden" style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px;margin-top:6px">
+      <input id="otp-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*"
+        data-i18n="login_code_ph" data-i18n-attr="placeholder" style="letter-spacing:6px;text-align:center;font-size:20px">
+      <button id="verify-code" data-i18n="login_verify"></button>
+    </div>
     <div class="note" id="login-note" role="status"></div>
     <div style="font-size:12px;color:#99a;margin-top:8px">
       <span data-i18n="login_agree"></span><a href="terms.html" style="color:#c9a44c" data-i18n="terms_link"></a><span data-i18n="login_and"></span><a href="privacy.html" style="color:#c9a44c" data-i18n="privacy_link"></a>
@@ -498,7 +503,10 @@ const I18N = {
   "login_title": ["המנהלת האישית שלך","Your personal manager","مديرتك الشخصية","Ваш личный менеджер","Tu gestora personal","Votre manager personnelle","Deine persönliche Managerin","Sua gestora pessoal","La tua manager personale","Je persoonlijke manager","Twoja osobista menedżerka","Kişisel yöneticin","Ваша особиста менеджерка","आपकी निजी प्रबंधक","你的私人管家"],
   "login_sub": ["הכנס את המייל שלך ונשלח לך קישור כניסה — בלי סיסמאות.","Enter your email and we'll send a sign-in link — no passwords.","أدخل بريدك وسنرسل رابط دخول — بلا كلمات مرور.","Введите e-mail — пришлём ссылку для входа, без паролей.","Escribe tu email y te enviamos un enlace de acceso, sin contraseñas.","Saisissez votre e-mail : nous envoyons un lien de connexion, sans mot de passe.","E-Mail eingeben — wir senden einen Login-Link, ganz ohne Passwort.","Digite seu e-mail e enviamos um link de acesso — sem senhas.","Inserisci l'email e ti inviamo un link di accesso, senza password.","Vul je e-mail in; we sturen een inloglink — geen wachtwoorden.","Podaj e-mail, wyślemy link logowania — bez haseł.","E-postanı gir, giriş bağlantısı gönderelim — şifre yok.","Введіть e-mail — надішлемо посилання для входу, без паролів.","अपना ईमेल दें, हम साइन-इन लिंक भेजेंगे — कोई पासवर्ड नहीं।","输入邮箱，我们发送登录链接——无需密码。"],
   "login_btn": ["שלח לי קישור","Send me a link","أرسل لي رابطًا","Отправить ссылку","Enviarme un enlace","Envoyez-moi un lien","Link senden","Enviar link","Inviami un link","Stuur me een link","Wyślij link","Bağlantı gönder","Надіслати посилання","मुझे लिंक भेजें","发送登录链接"],
-  "login_sent": ["✓ נשלח! בדוק את המייל ולחץ על הקישור","✓ Sent! Check your email and click the link","✓ أُرسل! تفقد بريدك واضغط الرابط","✓ Отправлено! Проверьте почту и перейдите по ссылке","✓ ¡Enviado! Revisa tu correo y pulsa el enlace","✓ Envoyé ! Consultez vos e-mails et cliquez sur le lien","✓ Gesendet! E-Mail prüfen und Link klicken","✓ Enviado! Confira seu e-mail e clique no link","✓ Inviato! Controlla l'email e clicca sul link","✓ Verstuurd! Check je mail en klik op de link","✓ Wysłano! Sprawdź pocztę i kliknij link","✓ Gönderildi! E-postanı kontrol et ve bağlantıya tıkla","✓ Надіслано! Перевірте пошту та натисніть посилання","✓ भेजा गया! ईमेल देखें और लिंक पर क्लिक करें","✓ 已发送！查收邮件并点击链接"],
+  "login_sent": ["✓ נשלח! הזן את הקוד מהמייל (או הקש על הקישור)","✓ Sent! Enter the code from the email (or tap the link)","✓ أُرسل! أدخل الرمز من البريد (أو اضغط الرابط)","✓ Отправлено! Введите код из письма (или нажмите ссылку)","✓ ¡Enviado! Introduce el código del correo (o pulsa el enlace)","✓ Envoyé ! Saisissez le code du message (ou touchez le lien)","✓ Gesendet! Gib den Code aus der E-Mail ein (oder tippe den Link)","✓ Enviado! Digite o código do e-mail (ou toque no link)","✓ Inviato! Inserisci il codice dall'email (o tocca il link)","✓ Verstuurd! Voer de code uit de e-mail in (of tik op de link)","✓ Wysłano! Wpisz kod z e-maila (lub kliknij link)","✓ Gönderildi! E-postadaki kodu gir (veya bağlantıya dokun)","✓ Надіслано! Введіть код з листа (або натисніть посилання)","✓ भेजा गया! ईमेल से कोड डालें (या लिंक पर टैप करें)","✓ 已发送！输入邮件中的代码（或点击链接）"],
+  "login_code_ph": ["קוד בן 8 ספרות","8-digit code","رمز من 8 أرقام","8-значный код","Código de 8 dígitos","Code à 8 chiffres","8-stelliger Code","Código de 8 dígitos","Codice a 8 cifre","8-cijferige code","8-cyfrowy kod","8 haneli kod","8-значний код","8-अंकों का कोड","8 位代码"],
+  "login_verify": ["כניסה","Sign in","دخول","Войти","Entrar","Se connecter","Anmelden","Entrar","Accedi","Inloggen","Zaloguj","Giriş","Увійти","साइन इन","登录"],
+  "login_code_bad": ["קוד שגוי או שפג תוקפו","Wrong or expired code","رمز خاطئ أو منتهي","Неверный или просроченный код","Código incorrecto o caducado","Code incorrect ou expiré","Falscher oder abgelaufener Code","Código incorreto ou expirado","Codice errato o scaduto","Onjuiste of verlopen code","Błędny lub wygasły kod","Yanlış veya süresi dolmuş kod","Невірний або прострочений код","गलत या समाप्त कोड","代码错误或已过期"],
   "login_sending": ["שולח...","Sending...","جارٍ الإرسال...","Отправляем...","Enviando...","Envoi...","Senden...","Enviando...","Invio...","Versturen...","Wysyłanie...","Gönderiliyor...","Надсилаємо...","भेज रहे हैं...","发送中..."],
   "chat_ph": ["כתבו לנוגה...","Write to Noga...","اكتب لنوغا...","Напишите Ноге...","Escribe a Noga...","Écrivez à Noga...","Schreib an Noga...","Escreva para a Noga...","Scrivi a Noga...","Schrijf naar Noga...","Napisz do Nogi...","Noga'ya yaz...","Напишіть Нозі...","नोगा को लिखें...","给 Noga 留言..."],
   "send": ["שלח","Send","إرسال","Отправить","Enviar","Envoyer","Senden","Enviar","Invia","Versturen","Wyślij","Gönder","Надіслати","भेजें","发送"],
@@ -1737,8 +1745,28 @@ $("send-link").onclick = async () => {
     email,
     options: { emailRedirectTo: window.location.href.split("#")[0] },
   });
-  $("login-note").textContent = error ? "⚠ " + error.message : T("login_sent");
+  if (error) { $("login-note").textContent = "⚠ " + error.message; return; }
+  // Reveal the code step — the reliable path inside the app WebView (the magic
+  // link opens in Safari and never returns a session here).
+  $("otp-box").classList.remove("hidden");
+  $("otp-code").focus();
+  $("login-note").textContent = T("login_sent");
 };
+
+// Verify the 8-digit code straight inside the app — no browser round-trip.
+$("verify-code").onclick = async () => {
+  const email = $("email").value.trim();
+  const token = $("otp-code").value.replace(/\D/g, "");
+  if (!email || token.length < 6) return;
+  const btn = $("verify-code"); btn.disabled = true;
+  $("login-note").textContent = T("login_sending");
+  const { error } = await sb.auth.verifyOtp({ email, token, type: "email" });
+  btn.disabled = false;
+  if (error) { $("login-note").textContent = "⚠ " + T("login_code_bad"); return; }
+  // success → onAuthStateChange fires showApp(); clear the field just in case.
+  $("otp-code").value = "";
+};
+$("otp-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("verify-code").click(); });
 
 $("logout").onclick = async () => {
   try {
