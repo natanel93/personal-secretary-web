@@ -210,6 +210,11 @@
   .psheet-x { background: none; border: none; font-size: 17px; color: #9aa; cursor: pointer; padding: 6px 8px; min-width: 34px; min-height: 34px; font-family: inherit; }
   .psheet-body { flex: 1; overflow-y: auto; padding: 14px 16px calc(20px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
   .psheet-body a.wchip { text-decoration: none; }
+  /* ── task edit sheet fields ── */
+  .te-in { width: 100%; border: 1px solid #d6d9de; border-radius: 10px; padding: 11px 13px; font-size: 15px; outline: none; font-family: inherit; }
+  .te-in:focus { border-color: var(--gold); }
+  .te-lbl { font-size: 12.5px; color: #5F6678; font-weight: 700; margin: 2px 2px -4px; }
+  .te-remove { background: none; border: none; color: #A2322A; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 8px 4px; }
 
   /* ── first-run onboarding ── */
   #app.onboarding > nav,
@@ -463,6 +468,24 @@
         <div class="psheet-body" id="ps-body"></div>
       </div>
     </div>
+
+    <!-- task edit (opened by tapping a task title in the Tasks tab) -->
+    <div id="task-sheet" class="sheet hidden" role="dialog" aria-modal="true" aria-labelledby="ts-h">
+      <div class="sheet-card">
+        <div class="sheet-h" id="ts-h" data-i18n="te_title"></div>
+        <input id="te-title" class="te-in" autocomplete="off" data-i18n="te_title_ph" data-i18n-attr="placeholder">
+        <label class="te-lbl" for="te-due" data-i18n="te_due"></label>
+        <input id="te-due" class="te-in" type="date" style="direction:ltr">
+        <label class="te-lbl" for="te-waiting" data-i18n="te_waiting"></label>
+        <input id="te-waiting" class="te-in" autocomplete="off" data-i18n="te_waiting_ph" data-i18n-attr="placeholder">
+        <button type="button" id="te-save" class="sheet-yes" data-i18n="te_save"></button>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">
+          <button type="button" id="te-remove" class="te-remove" data-i18n="te_remove"></button>
+          <button type="button" id="te-cancel" class="sheet-no" data-i18n="ps_close"></button>
+        </div>
+        <div id="te-note" role="status" class="sheet-note"></div>
+      </div>
+    </div>
   </main>
 
 <script src="vendor/supabase.js"></script>
@@ -594,6 +617,15 @@ const I18N = {
   "ps_draft": ["נסח הודעה","Draft a message","صياغة رسالة","Составить сообщение","Redactar un mensaje","Rédiger un message","Nachricht entwerfen","Escrever uma mensagem","Scrivi un messaggio","Bericht opstellen","Napisz wiadomość","Mesaj taslağı","Скласти повідомлення","संदेश तैयार करें","起草消息"],
   "ps_draft_prefill": ["עזרי לי לנסח הודעה ל{name}","Help me draft a message to {name}","ساعديني في صياغة رسالة إلى {name}","Помоги составить сообщение для {name}","Ayúdame a redactar un mensaje para {name}","Aide-moi à rédiger un message pour {name}","Hilf mir, eine Nachricht an {name} zu entwerfen","Ajude-me a escrever uma mensagem para {name}","Aiutami a scrivere un messaggio a {name}","Help me een bericht aan {name} op te stellen","Pomóż mi napisać wiadomość do {name}","{name} için mesaj yazmama yardım et","Допоможи скласти повідомлення для {name}","{name} के लिए संदेश तैयार करने में मदद करो","帮我给 {name} 起草一条消息"],
   "ps_close": ["סגור","Close","إغلاق","Закрыть","Cerrar","Fermer","Schließen","Fechar","Chiudi","Sluiten","Zamknij","Kapat","Закрити","बंद करें","关闭"],
+  "te_title": ["עריכת משימה","Edit task","تعديل المهمة","Редактировать задачу","Editar tarea","Modifier la tâche","Aufgabe bearbeiten","Editar tarefa","Modifica attività","Taak bewerken","Edytuj zadanie","Görevi düzenle","Редагувати завдання","कार्य संपादित करें","编辑任务"],
+  "te_title_ph": ["שם המשימה","Task name","اسم المهمة","Название задачи","Nombre de la tarea","Nom de la tâche","Aufgabenname","Nome da tarefa","Nome attività","Taaknaam","Nazwa zadania","Görev adı","Назва завдання","कार्य का नाम","任务名称"],
+  "te_due": ["תאריך יעד","Due date","تاريخ الاستحقاق","Срок","Fecha límite","Échéance","Fälligkeitsdatum","Data de vencimento","Scadenza","Vervaldatum","Termin","Son tarih","Термін","नियत तिथि","截止日期"],
+  "te_waiting": ["ממתין ל (לא חובה)","Waiting on (optional)","بانتظار (اختياري)","Ожидается от (необязательно)","Esperando a (opcional)","En attente de (facultatif)","Wartet auf (optional)","Aguardando (opcional)","In attesa di (facoltativo)","Wacht op (optioneel)","Czeka na (opcjonalne)","Beklenen (isteğe bağlı)","Очікується від (необов'язково)","प्रतीक्षा (वैकल्पिक)","等待（可选）"],
+  "te_waiting_ph": ["שם האדם או הגורם","Person or party","الشخص أو الجهة","Человек или сторона","Persona o parte","Personne ou partie","Person oder Partei","Pessoa ou parte","Persona o parte","Persoon of partij","Osoba lub strona","Kişi veya taraf","Особа або сторона","व्यक्ति या पक्ष","某人或某方"],
+  "te_save": ["שמור","Save","حفظ","Сохранить","Guardar","Enregistrer","Speichern","Salvar","Salva","Opslaan","Zapisz","Kaydet","Зберегти","सहेजें","保存"],
+  "te_remove": ["הסר משימה","Remove task","إزالة المهمة","Удалить задачу","Eliminar tarea","Supprimer la tâche","Aufgabe entfernen","Remover tarefa","Rimuovi attività","Taak verwijderen","Usuń zadanie","Görevi kaldır","Видалити завдання","कार्य हटाएँ","移除任务"],
+  "te_need_title": ["צריך שם למשימה","Task needs a name","المهمة تحتاج اسمًا","Нужно название задачи","La tarea necesita un nombre","La tâche a besoin d'un nom","Aufgabe braucht einen Namen","A tarefa precisa de um nome","L'attività ha bisogno di un nome","Taak heeft een naam nodig","Zadanie potrzebuje nazwy","Görev bir ad gerektirir","Завданню потрібна назва","कार्य को नाम चाहिए","任务需要名称"],
+  "te_remove_q": ["להסיר את המשימה?","Remove this task?","إزالة هذه المهمة؟","Удалить эту задачу?","¿Eliminar esta tarea?","Supprimer cette tâche ?","Diese Aufgabe entfernen?","Remover esta tarefa?","Rimuovere questa attività?","Deze taak verwijderen?","Usunąć to zadanie?","Bu görev kaldırılsın mı?","Видалити це завдання?","यह कार्य हटाएँ?","移除这个任务？"],
   "cal_add": ["הוסף ליומן","Add to calendar","أضف إلى التقويم","Добавить в календарь","Añadir al calendario","Ajouter au calendrier","Zum Kalender hinzufügen","Adicionar ao calendário","Aggiungi al calendario","Aan agenda toevoegen","Dodaj do kalendarza","Takvime ekle","Додати в календар","कैलेंडर में जोड़ें","添加到日历"],
   "cal_added": ["נוסף ליומן","Added to calendar","أُضيف إلى التقويم","Добавлено в календарь","Añadido al calendario","Ajouté au calendrier","Zum Kalender hinzugefügt","Adicionado ao calendário","Aggiunto al calendario","Toegevoegd aan agenda","Dodano do kalendarza","Takvime eklendi","Додано в календар","कैलेंडर में जोड़ा गया","已添加到日历"],
   "cal_denied": ["לא אושרה גישה ליומן — אפשר לאשר בהגדרות iOS ← נוגה ← יומנים","Calendar access denied — enable it in iOS Settings → Noga → Calendars","تم رفض الوصول إلى التقويم — فعّله من إعدادات iOS ← نوغا ← التقويمات","Доступ к календарю запрещён — включите в Настройках iOS → Noga → Календари","Acceso al calendario denegado — actívalo en Ajustes de iOS → Noga → Calendarios","Accès au calendrier refusé — activez-le dans Réglages iOS → Noga → Calendriers","Kalenderzugriff verweigert — in iOS-Einstellungen → Noga → Kalender aktivieren","Acesso ao calendário negado — ative em Ajustes do iOS → Noga → Calendários","Accesso al calendario negato — attivalo in Impostazioni iOS → Noga → Calendari","Agenda-toegang geweigerd — schakel het in via iOS-instellingen → Noga → Agenda's","Odmowa dostępu do kalendarza — włącz w Ustawieniach iOS → Noga → Kalendarze","Takvim erişimi reddedildi — iOS Ayarlar → Noga → Takvimler'den aç","Доступ до календаря заборонено — увімкніть у Налаштуваннях iOS → Noga → Календарі","कैलेंडर एक्सेस अस्वीकृत — iOS सेटिंग्स → Noga → कैलेंडर में सक्षम करें","日历访问被拒绝 — 在 iOS 设置 → Noga → 日历中开启"],
@@ -804,6 +836,9 @@ async function loadTasks() {
     grow.className = "grow";
     const title = document.createElement("div");
     title.className = "t"; title.textContent = t.title;
+    title.style.cursor = "pointer"; title.setAttribute("role", "button");
+    title.setAttribute("aria-label", T("te_title") + ": " + t.title);
+    title.onclick = () => openTaskEdit(t);
     if (t.prepared_at) {
       const star = document.createElement("span");
       star.textContent = " ✨"; star.title = T("prep_hint");
@@ -977,6 +1012,26 @@ async function openPerson(name) {
   $("ps-ask").onclick = () => { closePerson(); askInChat(T("ask_open_with", { name: person.name })); };
   $("ps-draft").onclick = () => { closePerson(); askInChat(T("ps_draft_prefill", { name: person.name })); };
 }
+
+/* ── task edit sheet: rename / reschedule / mark waiting / remove ── */
+let editingTaskId = null;
+function toDateInput(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+function openTaskEdit(t) {
+  editingTaskId = t.id;
+  $("te-title").value = t.title || "";
+  $("te-due").value = toDateInput(t.due_at);
+  const w = $("te-waiting");
+  w.value = t.waiting_on || "";
+  w.dataset.prev = t.waiting_on || "";
+  $("te-note").textContent = "";
+  $("task-sheet").classList.remove("hidden");
+  $("te-title").focus();
+}
+function closeTaskEdit() { $("task-sheet").classList.add("hidden"); editingTaskId = null; }
 
 async function loadToday() {
   const box = $("today-list");
@@ -1760,8 +1815,44 @@ $("cs-no").onclick = () => closeConsentSheet(false);
 $("ps-close").onclick = closePerson;
 $("person-sheet").addEventListener("click", (e) => { if (e.target === $("person-sheet")) closePerson(); });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !$("person-sheet").classList.contains("hidden")) closePerson();
+  if (e.key !== "Escape") return;
+  if (!$("person-sheet").classList.contains("hidden")) closePerson();
+  if (!$("task-sheet").classList.contains("hidden")) closeTaskEdit();
 });
+
+// task edit: save (rename / reschedule / waiting), remove (soft-cancel), close
+$("te-save").onclick = async () => {
+  if (!editingTaskId) return;
+  const title = $("te-title").value.trim();
+  if (!title) { $("te-note").textContent = "⚠ " + T("te_need_title"); return; }
+  const dueVal = $("te-due").value;
+  const waiting = $("te-waiting").value.trim();
+  const prevWaiting = $("te-waiting").dataset.prev || "";
+  const patch = {
+    title,
+    due_at: dueVal ? new Date(dueVal + "T09:00:00").toISOString() : null,
+    waiting_on: waiting || null,
+    updated_at: new Date().toISOString(),
+  };
+  // start the waiting clock when newly waiting; clear it when no longer waiting
+  if (waiting && waiting !== prevWaiting) patch.waiting_since = new Date().toISOString();
+  if (!waiting) patch.waiting_since = null;
+  const btn = $("te-save"); btn.disabled = true;
+  const { error } = await sb.from("tasks").update(patch).eq("id", editingTaskId);
+  btn.disabled = false;
+  if (error) { $("te-note").textContent = "⚠ " + T("action_failed"); return; }
+  closeTaskEdit(); loadTasks(); loadToday();
+};
+$("te-remove").onclick = async () => {
+  if (!editingTaskId) return;
+  if (!confirm(T("te_remove_q"))) return;
+  const { error } = await sb.from("tasks")
+    .update({ status: "cancelled", updated_at: new Date().toISOString() }).eq("id", editingTaskId);
+  if (error) { $("te-note").textContent = "⚠ " + T("action_failed"); return; }
+  closeTaskEdit(); loadTasks(); loadToday();
+};
+$("te-cancel").onclick = closeTaskEdit;
+$("task-sheet").addEventListener("click", (e) => { if (e.target === $("task-sheet")) closeTaskEdit(); });
 
 /* ── first-run onboarding ─────────────────────────────────────────────────── */
 let firstRun = false;
