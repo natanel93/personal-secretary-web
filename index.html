@@ -199,6 +199,11 @@
   .calbtn:active { opacity: 1; }
   .calbtn:disabled { opacity: .5; cursor: default; }
   .timeline .tl .calbtn { margin-inline-start: 4px; }
+  /* empty-chat starter prompts */
+  .chat-empty { display: flex; flex-direction: column; gap: 9px; align-items: center; margin: auto 0; padding: 24px 8px; }
+  .ce-h { color: var(--navy); font-weight: 800; font-size: 16.5px; text-align: center; margin-bottom: 4px; }
+  .ce-chip { background: #fff; border: 1px solid var(--gold); color: #1C2338; border-radius: 18px; padding: 10px 16px; font-size: 14px; cursor: pointer; font-family: inherit; max-width: 320px; text-align: center; line-height: 1.4; box-shadow: 0 1px 3px rgba(201,164,76,.2); }
+  .ce-chip:active { background: #FBF3E2; }
 
   /* ── person profile sheet ── */
   .psheet { position: fixed; inset: 0; z-index: 70; background: rgba(15,23,41,.5); display: flex; align-items: flex-end; justify-content: center; }
@@ -242,23 +247,52 @@
   .sheet-no { background: none; border: none; color: #9aa; font-size: 13.5px; cursor: pointer; font-family: inherit; }
   .sheet-note { font-size: 12.5px; font-weight: 600; color: var(--gold); min-height: 15px; text-align: center; }
 
-  /* ── login ── */
+  /* ── login — ATRA structural language (Noga palette): lang chips, brand
+        block w/ logo card + hairline rule, tagged bordered form card, labeled
+        input, primary button, info line, footer ── */
   #login {
-    flex: 1; display: flex; flex-direction: column; align-items: center;
-    justify-content: center; gap: 14px; padding: 24px; text-align: center;
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start; gap: 0; padding: 26px 18px 24px;
   }
-  #login .logo { font-size: 42px; }
-  #login h2 { color: var(--navy); font-size: 22px; }
-  #login p { color: #667; font-size: 14px; max-width: 300px; }
+  .lg-langs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; }
+  .lg-lang {
+    display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 11px;
+    border-radius: 16px; border: 1px solid var(--line); background: #fff;
+    font-size: 12px; font-weight: 700; color: #5F6678; cursor: pointer; font-family: inherit;
+  }
+  .lg-lang.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .lg-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+  .lg-logocard {
+    background: #fff; border: 1px solid var(--line); border-radius: 6px;
+    padding: 14px 30px; font-size: 46px; line-height: 1;
+  }
+  .lg-appname { font-size: 22px; font-weight: 800; color: var(--navy); margin-top: 13px; letter-spacing: -0.2px; }
+  .lg-tagline { font-size: 13px; font-weight: 600; color: #5F6678; margin-top: 1px; }
+  .lg-rule { width: 40px; height: 1px; background: var(--line); margin-top: 12px; }
+  .lg-card {
+    width: 100%; max-width: 360px; background: #fff; border: 1px solid var(--line);
+    border-radius: 6px; padding: 16px 18px 14px; text-align: start;
+  }
+  .lg-tag { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; color: #98A0B3; margin-bottom: 8px; }
+  .lg-ftitle { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+  .lg-fsub { font-size: 13px; color: #5F6678; line-height: 1.5; margin-bottom: 14px; }
+  .lg-label { display: block; font-size: 12px; font-weight: 700; color: var(--navy); margin: 10px 2px 5px; }
+  .lg-label .req { color: var(--gold); }
   #login input {
-    width: 100%; max-width: 320px; border: 1px solid #d6d9de; border-radius: 10px;
-    padding: 12px 14px; font-size: 16px; direction: ltr; text-align: center;
+    width: 100%; border: 1px solid #d6d9de; border-radius: 6px; background: #fff;
+    padding: 12px 13px; font-size: 16px; direction: ltr; text-align: center; font-family: inherit;
   }
-  #login button {
-    width: 100%; max-width: 320px; background: var(--navy); color: #fff; border: none;
-    border-radius: 10px; padding: 13px; font-size: 16px; cursor: pointer;
+  #login input:focus { border-color: var(--navy); outline: none; }
+  .lg-btn {
+    width: 100%; height: 46px; background: var(--navy); color: #fff; border: none;
+    border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 14px; letter-spacing: .2px;
   }
-  #login .note { color: var(--gold); font-weight: 600; min-height: 20px; }
+  .lg-btn:disabled { opacity: .55; }
+  .lg-info { font-size: 11px; font-weight: 600; color: #5F6678; text-align: center; margin-top: 12px; }
+  #login .note { color: var(--gold); font-weight: 600; min-height: 20px; font-size: 13px; text-align: center; margin-top: 8px; }
+  .lg-helper { font-size: 12px; color: #99a; text-align: center; margin-top: 16px; line-height: 1.6; max-width: 320px; }
+  .lg-footer { font-size: 10px; font-weight: 600; letter-spacing: .1em; color: #9AA1B3; text-align: center; margin-top: 22px; text-transform: uppercase; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -269,36 +303,43 @@
   </header>
 
   <div id="login">
-    <div class="logo">👩🏻‍💼</div>
-    <h2><span data-i18n="app_name"></span> — <span data-i18n="login_title"></span></h2>
-    <p data-i18n="login_sub"></p>
-    <!-- phone flow (primary, like ATRA): phone → SMS code → session -->
-    <div id="phone-flow" style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px">
-      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" data-i18n="login_phone_aria" data-i18n-attr="aria-label"
-        placeholder="050-1234567" style="direction:ltr;text-align:center">
-      <button id="send-sms" data-i18n="login_send_code"></button>
-      <div id="sms-box" class="hidden" style="display:flex;flex-direction:column;gap:10px">
-        <input id="sms-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]*"
-          data-i18n="login_code_ph6" data-i18n-attr="placeholder" style="letter-spacing:6px;text-align:center;font-size:20px">
-        <button id="sms-verify" data-i18n="login_verify"></button>
+    <!-- language switcher (ATRA line #1) -->
+    <div class="lg-langs" id="login-langs" role="group" aria-label="Language"></div>
+
+    <!-- brand block: logo card → name → tagline → hairline rule -->
+    <div class="lg-brand">
+      <div class="lg-logocard" aria-hidden="true">👩🏻‍💼</div>
+      <div class="lg-appname" data-i18n="app_name"></div>
+      <div class="lg-tagline" data-i18n="tagline"></div>
+      <div class="lg-rule"></div>
+    </div>
+
+    <!-- tagged form card, single smart field (email OR phone, auto-detected) -->
+    <div class="lg-card">
+      <div class="lg-tag">01 · <span data-i18n="login_card_tag"></span></div>
+      <div class="lg-ftitle" data-i18n="login_form_title"></div>
+      <div class="lg-fsub" data-i18n="login_sub"></div>
+
+      <label class="lg-label" for="ident"><span data-i18n="login_ident_label"></span> <span class="req">*</span></label>
+      <input id="ident" autocomplete="username" autocapitalize="none" spellcheck="false"
+        placeholder="05X-XXXXXXX · name@mail.com">
+      <button id="send-code" class="lg-btn" data-i18n="login_send_code"></button>
+
+      <div id="code-step" class="hidden">
+        <label class="lg-label" for="login-code" data-i18n="login_code_label"></label>
+        <input id="login-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*"
+          style="letter-spacing:6px;font-size:20px">
+        <button id="verify-login" class="lg-btn" data-i18n="login_verify"></button>
       </div>
+
+      <div class="note" id="login-note" role="status"></div>
+      <div class="lg-info" data-i18n="login_info_line"></div>
     </div>
-    <button type="button" id="mode-toggle" style="background:none;border:none;color:#8A6E2F;font-size:13.5px;cursor:pointer;font-family:inherit;padding:6px" data-i18n="login_use_email"></button>
-    <!-- email flow (fallback / desktop) -->
-    <div id="email-flow" class="hidden" style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px">
-      <input id="email" type="email" data-i18n="login_email_aria" data-i18n-attr="aria-label" placeholder="you@example.com" autocomplete="email">
-      <button id="send-link" data-i18n="login_btn"></button>
-      <div id="otp-box" style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:4px">
-        <div style="font-size:12.5px;color:#8A6E2F;text-align:center" data-i18n="login_code_hint"></div>
-        <input id="otp-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*"
-          data-i18n="login_code_ph" data-i18n-attr="placeholder" style="letter-spacing:6px;text-align:center;font-size:20px">
-        <button id="verify-code" data-i18n="login_verify"></button>
-      </div>
+
+    <div class="lg-helper">
+      <span data-i18n="login_agree"></span><a href="terms.html" style="color:#8A6E2F" data-i18n="terms_link"></a><span data-i18n="login_and"></span><a href="privacy.html" style="color:#8A6E2F" data-i18n="privacy_link"></a>
     </div>
-    <div class="note" id="login-note" role="status"></div>
-    <div style="font-size:12px;color:#99a;margin-top:8px">
-      <span data-i18n="login_agree"></span><a href="terms.html" style="color:#c9a44c" data-i18n="terms_link"></a><span data-i18n="login_and"></span><a href="privacy.html" style="color:#c9a44c" data-i18n="privacy_link"></a>
-    </div>
+    <div class="lg-footer">© 2026 NOGA · <span data-i18n="rights"></span></div>
   </div>
 
   <main class="hidden" id="app">
@@ -559,14 +600,20 @@ const I18N = {
   "nav_inbox": ["דואר","Inbox","الوارد","Входящие","Bandeja","Boîte","Posteingang","Caixa","In arrivo","Inbox","Skrzynka","Gelen","Вхідні","इनबॉक्स","收件箱"],
   "nav_settings": ["חיבורים","Settings","الإعدادات","Настройки","Ajustes","Réglages","Einstellungen","Ajustes","Impostazioni","Instellingen","Ustawienia","Ayarlar","Налаштування","सेटिंग्स","设置"],
   "login_title": ["המנהלת האישית שלך","Your personal manager","مديرتك الشخصية","Ваш личный менеджер","Tu gestora personal","Votre manager personnelle","Deine persönliche Managerin","Sua gestora pessoal","La tua manager personale","Je persoonlijke manager","Twoja osobista menedżerka","Kişisel yöneticin","Ваша особиста менеджерка","आपकी निजी प्रबंधक","你的私人管家"],
-  "login_sub": ["הכנס מספר טלפון ונשלח לך קוד כניסה — בלי סיסמאות.","Enter your phone number and we'll text you a sign-in code — no passwords.","أدخل رقم هاتفك وسنرسل رمز دخول — بلا كلمات مرور.","Введите номер телефона — пришлём код для входа, без паролей.","Escribe tu teléfono y te enviamos un código de acceso, sin contraseñas.","Saisissez votre numéro : nous envoyons un code de connexion, sans mot de passe.","Telefonnummer eingeben — wir senden einen Login-Code, ganz ohne Passwort.","Digite seu telefone e enviamos um código de acesso — sem senhas.","Inserisci il numero e ti inviamo un codice di accesso, senza password.","Vul je nummer in; we sturen een inlogcode — geen wachtwoorden.","Podaj numer telefonu, wyślemy kod logowania — bez haseł.","Telefon numaranı gir, giriş kodu gönderelim — şifre yok.","Введіть номер телефону — надішлемо код для входу, без паролів.","अपना फ़ोन नंबर दें, हम साइन-इन कोड भेजेंगे — कोई पासवर्ड नहीं।","输入手机号，我们发送登录验证码——无需密码。"],
+  "login_sub": ["נשלח קוד חד-פעמי לטלפון או לאימייל שלך — בלי סיסמאות.","We'll send a one-time code to your phone or email — no passwords.","سنرسل رمزًا لمرة واحدة إلى هاتفك أو بريدك — بلا كلمات مرور.","Отправим одноразовый код на телефон или e-mail — без паролей.","Enviaremos un código de un solo uso a tu teléfono o correo — sin contraseñas.","Nous enverrons un code à usage unique sur votre téléphone ou e-mail — sans mot de passe.","Wir senden einen Einmal-Code an Telefon oder E-Mail — ganz ohne Passwort.","Enviaremos um código único ao seu telefone ou e-mail — sem senhas.","Invieremo un codice monouso al tuo telefono o email — senza password.","We sturen een eenmalige code naar je telefoon of e-mail — geen wachtwoorden.","Wyślemy jednorazowy kod na telefon lub e-mail — bez haseł.","Telefonuna veya e-postana tek seferlik kod göndereceğiz — şifre yok.","Надішлемо одноразовий код на телефон або e-mail — без паролів.","आपके फ़ोन या ईमेल पर एक बार का कोड भेजेंगे — कोई पासवर्ड नहीं।","我们会向你的手机或邮箱发送一次性验证码——无需密码。"],
+  "login_card_tag": ["כניסה","SIGN IN","دخول","ВХОД","ACCESO","CONNEXION","ANMELDUNG","ENTRAR","ACCESSO","INLOGGEN","LOGOWANIE","GİRİŞ","ВХІД","साइन इन","登录"],
+  "login_form_title": ["ברוכים הבאים","Welcome","أهلًا بك","Добро пожаловать","Bienvenido","Bienvenue","Willkommen","Bem-vindo","Benvenuto","Welkom","Witamy","Hoş geldin","Ласкаво просимо","स्वागत है","欢迎"],
+  "login_ident_label": ["טלפון או אימייל","Phone or email","الهاتف أو البريد","Телефон или e-mail","Teléfono o correo","Téléphone ou e-mail","Telefon oder E-Mail","Telefone ou e-mail","Telefono o email","Telefoon of e-mail","Telefon lub e-mail","Telefon veya e-posta","Телефон або e-mail","फ़ोन या ईमेल","手机或邮箱"],
+  "login_code_label": ["קוד אימות","Verification code","رمز التحقق","Код подтверждения","Código de verificación","Code de vérification","Bestätigungscode","Código de verificação","Codice di verifica","Verificatiecode","Kod weryfikacyjny","Doğrulama kodu","Код підтвердження","सत्यापन कोड","验证码"],
+  "login_info_line": ["קוד חד-פעמי · בלי סיסמאות · ההתחברות מאובטחת","One-time code · no passwords · secure sign-in","رمز لمرة واحدة · بلا كلمات مرور · دخول آمن","Одноразовый код · без паролей · безопасный вход","Código de un solo uso · sin contraseñas · acceso seguro","Code à usage unique · sans mot de passe · connexion sécurisée","Einmal-Code · keine Passwörter · sichere Anmeldung","Código único · sem senhas · acesso seguro","Codice monouso · niente password · accesso sicuro","Eenmalige code · geen wachtwoorden · veilig inloggen","Kod jednorazowy · bez haseł · bezpieczne logowanie","Tek seferlik kod · şifre yok · güvenli giriş","Одноразовий код · без паролів · безпечний вхід","एक बार का कोड · कोई पासवर्ड नहीं · सुरक्षित साइन-इन","一次性验证码 · 无密码 · 安全登录"],
+  "rights": ["כל הזכויות שמורות","All rights reserved","جميع الحقوق محفوظة","Все права защищены","Todos los derechos reservados","Tous droits réservés","Alle Rechte vorbehalten","Todos os direitos reservados","Tutti i diritti riservati","Alle rechten voorbehouden","Wszelkie prawa zastrzeżone","Tüm hakları saklıdır","Усі права захищені","सर्वाधिकार सुरक्षित","版权所有"],
   "login_btn": ["שלח לי קישור","Send me a link","أرسل لي رابطًا","Отправить ссылку","Enviarme un enlace","Envoyez-moi un lien","Link senden","Enviar link","Inviami un link","Stuur me een link","Wyślij link","Bağlantı gönder","Надіслати посилання","मुझे लिंक भेजें","发送登录链接"],
   "login_sent": ["✓ נשלח! הזן את הקוד מהמייל (או הקש על הקישור)","✓ Sent! Enter the code from the email (or tap the link)","✓ أُرسل! أدخل الرمز من البريد (أو اضغط الرابط)","✓ Отправлено! Введите код из письма (или нажмите ссылку)","✓ ¡Enviado! Introduce el código del correo (o pulsa el enlace)","✓ Envoyé ! Saisissez le code du message (ou touchez le lien)","✓ Gesendet! Gib den Code aus der E-Mail ein (oder tippe den Link)","✓ Enviado! Digite o código do e-mail (ou toque no link)","✓ Inviato! Inserisci il codice dall'email (o tocca il link)","✓ Verstuurd! Voer de code uit de e-mail in (of tik op de link)","✓ Wysłano! Wpisz kod z e-maila (lub kliknij link)","✓ Gönderildi! E-postadaki kodu gir (veya bağlantıya dokun)","✓ Надіслано! Введіть код з листа (або натисніть посилання)","✓ भेजा गया! ईमेल से कोड डालें (या लिंक पर टैप करें)","✓ 已发送！输入邮件中的代码（或点击链接）"],
   "login_code_ph": ["קוד בן 8 ספרות","8-digit code","رمز من 8 أرقام","8-значный код","Código de 8 dígitos","Code à 8 chiffres","8-stelliger Code","Código de 8 dígitos","Codice a 8 cifre","8-cijferige code","8-cyfrowy kod","8 haneli kod","8-значний код","8-अंकों का कोड","8 位代码"],
   "login_verify": ["כניסה","Sign in","دخول","Войти","Entrar","Se connecter","Anmelden","Entrar","Accedi","Inloggen","Zaloguj","Giriş","Увійти","साइन इन","登录"],
   "login_code_hint": ["כבר קיבלת קוד? הזן אותו כאן","Got a code? Enter it here","لديك رمز؟ أدخله هنا","Есть код? Введите его","¿Tienes un código? Introdúcelo","Vous avez un code ? Saisissez-le","Code erhalten? Hier eingeben","Tem um código? Digite aqui","Hai un codice? Inseriscilo","Code ontvangen? Voer hem hier in","Masz kod? Wpisz go tutaj","Kodun mu var? Buraya gir","Є код? Введіть його","कोड मिला? यहाँ डालें","收到验证码？在此输入"],
   "login_phone_aria": ["מספר טלפון","Phone number","رقم الهاتف","Номер телефона","Número de teléfono","Numéro de téléphone","Telefonnummer","Número de telefone","Numero di telefono","Telefoonnummer","Numer telefonu","Telefon numarası","Номер телефону","फ़ोन नंबर","电话号码"],
-  "login_send_code": ["שלח לי קוד ב-SMS","Text me a code","أرسل لي رمزًا في SMS","Отправить код по SMS","Envíame un código por SMS","Envoyez-moi un code par SMS","Code per SMS senden","Envie um código por SMS","Inviami un codice via SMS","Sms me een code","Wyślij kod SMS-em","Bana SMS ile kod gönder","Надіслати код у SMS","SMS से कोड भेजें","短信发送验证码"],
+  "login_send_code": ["שלח קוד אימות","Send verification code","إرسال رمز التحقق","Отправить код","Enviar código","Envoyer le code","Code senden","Enviar código","Invia codice","Code versturen","Wyślij kod","Kod gönder","Надіслати код","कोड भेजें","发送验证码"],
   "login_sms_sent": ["✓ נשלח! הזן את הקוד מה-SMS","✓ Sent! Enter the code from the SMS","✓ أُرسل! أدخل الرمز من الرسالة","✓ Отправлено! Введите код из SMS","✓ ¡Enviado! Introduce el código del SMS","✓ Envoyé ! Saisissez le code du SMS","✓ Gesendet! Code aus der SMS eingeben","✓ Enviado! Digite o código do SMS","✓ Inviato! Inserisci il codice dall'SMS","✓ Verstuurd! Voer de code uit de sms in","✓ Wysłano! Wpisz kod z SMS-a","✓ Gönderildi! SMS'teki kodu gir","✓ Надіслано! Введіть код із SMS","✓ भेजा गया! SMS से कोड डालें","✓ 已发送！输入短信中的验证码"],
   "login_use_email": ["כניסה עם אימייל","Sign in with email","الدخول بالبريد الإلكتروني","Войти по эл. почте","Entrar con correo","Se connecter par e-mail","Mit E-Mail anmelden","Entrar com e-mail","Accedi con email","Inloggen met e-mail","Zaloguj przez e-mail","E-posta ile giriş","Увійти через e-mail","ईमेल से साइन इन","用邮箱登录"],
   "login_use_phone": ["כניסה עם טלפון","Sign in with phone","الدخول بالهاتف","Войти по телефону","Entrar con teléfono","Se connecter par téléphone","Mit Telefon anmelden","Entrar com telefone","Accedi con telefono","Inloggen met telefoon","Zaloguj przez telefon","Telefon ile giriş","Увійти через телефон","फ़ोन से साइन इन","用手机登录"],
@@ -648,6 +695,10 @@ const I18N = {
   "te_remove": ["הסר משימה","Remove task","إزالة المهمة","Удалить задачу","Eliminar tarea","Supprimer la tâche","Aufgabe entfernen","Remover tarefa","Rimuovi attività","Taak verwijderen","Usuń zadanie","Görevi kaldır","Видалити завдання","कार्य हटाएँ","移除任务"],
   "te_need_title": ["צריך שם למשימה","Task needs a name","المهمة تحتاج اسمًا","Нужно название задачи","La tarea necesita un nombre","La tâche a besoin d'un nom","Aufgabe braucht einen Namen","A tarefa precisa de um nome","L'attività ha bisogno di un nome","Taak heeft een naam nodig","Zadanie potrzebuje nazwy","Görev bir ad gerektirir","Завданню потрібна назва","कार्य को नाम चाहिए","任务需要名称"],
   "te_remove_q": ["להסיר את המשימה?","Remove this task?","إزالة هذه المهمة؟","Удалить эту задачу?","¿Eliminar esta tarea?","Supprimer cette tâche ?","Diese Aufgabe entfernen?","Remover esta tarefa?","Rimuovere questa attività?","Deze taak verwijderen?","Usunąć to zadanie?","Bu görev kaldırılsın mı?","Видалити це завдання?","यह कार्य हटाएँ?","移除这个任务？"],
+  "beta_badge": ["בטא","Beta","بيتا","Бета","Beta","Bêta","Beta","Beta","Beta","Bèta","Beta","Beta","Бета","बीटा","测试版"],
+  "beta_free_body": ["נוגה חינם לגמרי בתקופת הבטא — בלי כרטיס אשראי, בלי קרדיטים, בלי הפתעות. כשנשיק מנויים תקבלו הודעה מראש, ותקופת הניסיון תתחיל רק אז.","Noga is completely free during the beta — no card, no credits, no surprises. When subscriptions launch you'll be notified in advance, and your trial will only start then.","نوغا مجانية تمامًا في فترة البيتا — بلا بطاقة، بلا أرصدة، بلا مفاجآت. عند إطلاق الاشتراكات ستُخطر مسبقًا وتبدأ التجربة حينها فقط.","Нога полностью бесплатна в бете — без карты, кредитов и сюрпризов. О запуске подписок сообщим заранее, и только тогда начнётся пробный период.","Noga es totalmente gratis durante la beta — sin tarjeta, sin créditos, sin sorpresas. Cuando lancemos suscripciones te avisaremos antes, y solo entonces empezará tu prueba.","Noga est entièrement gratuite pendant la bêta — sans carte, sans crédits, sans surprises. Au lancement des abonnements vous serez prévenu à l'avance, et l'essai ne commencera qu'alors.","Noga ist in der Beta völlig kostenlos — keine Karte, keine Credits, keine Überraschungen. Beim Start der Abos wirst du vorab informiert; erst dann beginnt die Testphase.","A Noga é totalmente grátis durante o beta — sem cartão, sem créditos, sem surpresas. Quando lançarmos assinaturas você será avisado antes, e só então o teste começará.","Noga è completamente gratuita durante la beta — niente carta, niente crediti, niente sorprese. Al lancio degli abbonamenti sarai avvisato in anticipo, e solo allora inizierà la prova.","Noga is volledig gratis tijdens de bèta — geen kaart, geen credits, geen verrassingen. Bij de lancering van abonnementen hoor je het vooraf, en pas dan start je proefperiode.","Noga jest całkowicie darmowa w becie — bez karty, kredytów i niespodzianek. O starcie subskrypcji powiadomimy z wyprzedzeniem i dopiero wtedy zacznie się okres próbny.","Noga beta süresince tamamen ücretsiz — kart yok, kredi yok, sürpriz yok. Abonelikler başlarken önceden haber verilecek ve deneme ancak o zaman başlayacak.","Нога повністю безкоштовна в беті — без картки, кредитів і сюрпризів. Про запуск підписок повідомимо заздалегідь, і лише тоді почнеться пробний період.","बीटा के दौरान नोगा पूरी तरह मुफ़्त है — कोई कार्ड नहीं, कोई क्रेडिट नहीं, कोई सरप्राइज़ नहीं। सब्सक्रिप्शन शुरू होने पर पहले सूचित करेंगे, तभी ट्रायल शुरू होगा।","测试期内 Noga 完全免费——无需信用卡、无积分、无意外扣费。订阅上线时会提前通知，试用期届时才开始。"],
+  "chat_empty_title": ["על מה נעבוד? נסו אחת מאלה:","What shall we work on? Try one of these:","على ماذا نعمل؟ جرّب واحدة من هذه:","Над чем поработаем? Попробуйте:","¿En qué trabajamos? Prueba una de estas:","On travaille sur quoi ? Essayez :","Woran arbeiten wir? Probier eins davon:","Em que vamos trabalhar? Tente uma destas:","Su cosa lavoriamo? Prova una di queste:","Waar werken we aan? Probeer er een:","Nad czym pracujemy? Wypróbuj jedno:","Ne üzerinde çalışalım? Birini dene:","Над чим попрацюємо? Спробуйте:","किस पर काम करें? इनमें से एक आज़माएँ:","我们做点什么？试试这些："],
+  "chat_try_inbox": ["מה נכנס לי היום למייל?","What came into my inbox today?","ماذا وصل بريدي اليوم؟","Что пришло мне сегодня на почту?","¿Qué llegó hoy a mi correo?","Qu'est-ce qui est arrivé dans ma boîte aujourd'hui ?","Was kam heute in mein Postfach?","O que chegou no meu e-mail hoje?","Cosa è arrivato oggi nella mia casella?","Wat kwam er vandaag binnen?","Co dziś przyszło na moją skrzynkę?","Bugün gelen kutuma ne düştü?","Що сьогодні надійшло на пошту?","आज मेरे इनबॉक्स में क्या आया?","今天我的邮箱收到了什么？"],
   "cal_add": ["הוסף ליומן","Add to calendar","أضف إلى التقويم","Добавить в календарь","Añadir al calendario","Ajouter au calendrier","Zum Kalender hinzufügen","Adicionar ao calendário","Aggiungi al calendario","Aan agenda toevoegen","Dodaj do kalendarza","Takvime ekle","Додати в календар","कैलेंडर में जोड़ें","添加到日历"],
   "cal_added": ["נוסף ליומן","Added to calendar","أُضيف إلى التقويم","Добавлено в календарь","Añadido al calendario","Ajouté au calendrier","Zum Kalender hinzugefügt","Adicionado ao calendário","Aggiunto al calendario","Toegevoegd aan agenda","Dodano do kalendarza","Takvime eklendi","Додано в календар","कैलेंडर में जोड़ा गया","已添加到日历"],
   "cal_denied": ["לא אושרה גישה ליומן — אפשר לאשר בהגדרות iOS ← נוגה ← יומנים","Calendar access denied — enable it in iOS Settings → Noga → Calendars","تم رفض الوصول إلى التقويم — فعّله من إعدادات iOS ← نوغا ← التقويمات","Доступ к календарю запрещён — включите в Настройках iOS → Noga → Календари","Acceso al calendario denegado — actívalo en Ajustes de iOS → Noga → Calendarios","Accès au calendrier refusé — activez-le dans Réglages iOS → Noga → Calendriers","Kalenderzugriff verweigert — in iOS-Einstellungen → Noga → Kalender aktivieren","Acesso ao calendário negado — ative em Ajustes do iOS → Noga → Calendários","Accesso al calendario negato — attivalo in Impostazioni iOS → Noga → Calendari","Agenda-toegang geweigerd — schakel het in via iOS-instellingen → Noga → Agenda's","Odmowa dostępu do kalendarza — włącz w Ustawieniach iOS → Noga → Kalendarze","Takvim erişimi reddedildi — iOS Ayarlar → Noga → Takvimler'den aç","Доступ до календаря заборонено — увімкніть у Налаштуваннях iOS → Noga → Календарі","कैलेंडर एक्सेस अस्वीकृत — iOS सेटिंग्स → Noga → कैलेंडर में सक्षम करें","日历访问被拒绝 — 在 iOS 设置 → Noga → 日历中开启"],
@@ -713,6 +764,7 @@ document.querySelectorAll("nav button").forEach((b) => {
 
 /* ── chat ─────────────────────────────────────────────────────────────── */
 function bubble(role, text) {
+  chat.querySelector(".chat-empty")?.remove(); // first real message clears the starter chips
   const div = document.createElement("div");
   div.className = "msg " + (role === "user" ? "user" : "bot");
   div.textContent = text;
@@ -721,16 +773,35 @@ function bubble(role, text) {
   return div;
 }
 
+// Empty chat = the most documented first-session killer (users who must invent
+// a prompt bounce). Render tappable real examples instead of a blank box.
+function renderChatEmpty() {
+  if (chat.querySelector(".chat-empty") || chat.querySelector(".msg")) return;
+  const wrap = document.createElement("div");
+  wrap.className = "chat-empty";
+  const hi = document.createElement("div");
+  hi.className = "ce-h"; hi.textContent = T("chat_empty_title");
+  wrap.appendChild(hi);
+  for (const k of ["cap_goal_ex", "cap_chase_ex", "cap_automation_ex", "chat_try_inbox"]) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "ce-chip"; b.textContent = T(k);
+    b.onclick = () => { $("text").value = T(k); $("composer").requestSubmit(); };
+    wrap.appendChild(b);
+  }
+  chat.appendChild(wrap);
+}
+
 async function loadHistory() {
   const { data: convo } = await sb.from("conversations").select("id")
     .eq("channel", "app").order("last_active", { ascending: false }).limit(1).maybeSingle();
-  if (!convo) return;
+  if (!convo) { renderChatEmpty(); return; }
   conversationId = convo.id;
   localStorage.setItem("conversation_id", conversationId);
   const { data: msgs } = await sb.from("messages")
     .select("role, content").eq("conversation_id", convo.id)
     .in("role", ["user", "assistant"]).order("created_at").limit(100);
   const list = (msgs || []).filter((m) => m.content);
+  if (!list.length) { renderChatEmpty(); return; }
   if (list.length === renderedCount) return;
   chat.innerHTML = "";
   for (const m of list) bubble(m.role, m.content);
@@ -1452,9 +1523,24 @@ async function setConsent(grant) {
 
 /* ── plan / billing ───────────────────────────────────────────────────── */
 const PLAN_LABELS = { free: "חינם", personal: "פרטי", business: "עסקי" };
+// Beta period: everything is free, no card, no surprises. Flip to false when
+// SUMIT billing goes live (web deploy, minutes). While true we NEVER show
+// checkout/trial UI — and on iOS we never will regardless (App Store 3.1.1:
+// external-payment surfaces inside the app get the build rejected).
+const BETA_FREE = true;
+
 async function loadPlan() {
   const badge = $("plan-badge"), desc = $("plan-desc"), btn = $("plan-btn"), note = $("plan-note");
   note.textContent = "";
+  if (BETA_FREE) {
+    badge.textContent = T("beta_badge");
+    desc.textContent = T("beta_free_body");
+    btn.classList.add("hidden");
+    const repNote = $("reports-note"), repSave = $("reports-save");
+    repSave.disabled = false; repSave.style.opacity = "";
+    if (repNote.textContent.startsWith("🔒")) repNote.textContent = "";
+    return;
+  }
   try {
     const { data: { session } } = await sb.auth.getSession();
     const res = await fetch(SUPABASE_URL + "/functions/v1/billing", {
@@ -1475,28 +1561,37 @@ async function loadPlan() {
       repSave.disabled = false; repSave.style.opacity = "";
       if (repNote.textContent.startsWith("🔒")) repNote.textContent = "";
     }
+    // App Store 3.1.1: inside the iOS shell the plan card is STATUS-ONLY —
+    // no checkout/trial buttons, ever (external-payment surface = rejection).
+    const canSell = !inNativeShell;
     if (s.trialing && s.trial_ends_at) {
       const days = Math.max(0, Math.ceil((new Date(s.trial_ends_at) - new Date()) / 86400000));
       badge.textContent = "ניסיון";
-      desc.textContent = `ניסיון חבילת ${PLAN_LABELS[s.plan]} — נותרו ${days} ימים. אפשר לעבור למנוי בתשלום כבר עכשיו.`;
-      btn.textContent = `המשך בתשלום — ₪49/חודש`;
-      btn.classList.remove("hidden");
-      btn.onclick = () => startCheckout(s.plan);
+      desc.textContent = `ניסיון חבילת ${PLAN_LABELS[s.plan]} — נותרו ${days} ימים.` + (canSell ? " אפשר לעבור למנוי בתשלום כבר עכשיו." : "");
+      if (canSell) {
+        btn.textContent = `המשך בתשלום — ₪49/חודש`;
+        btn.classList.remove("hidden");
+        btn.onclick = () => startCheckout(s.plan);
+      }
     } else if (s.plan !== "free" && !s.active) {
       // trial ended / payment failed / canceled — the stored plan is kept but
       // limits fell back to free; invite them back.
       badge.textContent = "לא פעיל";
       desc.textContent = s.status === "past_due"
-        ? "התשלום האחרון נכשל, אז החבילה הושהתה. חדשי את המנוי כדי לחזור לכל היכולות."
-        : `הניסיון של חבילת ${PLAN_LABELS[s.plan]} הסתיים. רוצה להמשיך? המנוי מחזיר את כל היכולות.`;
-      btn.textContent = `חזרה לחבילת ${PLAN_LABELS[s.plan]}`;
-      btn.classList.remove("hidden");
-      btn.onclick = () => startCheckout(s.plan);
+        ? "התשלום האחרון נכשל, אז החבילה הושהתה." + (canSell ? " חדשי את המנוי כדי לחזור לכל היכולות." : "")
+        : `הניסיון של חבילת ${PLAN_LABELS[s.plan]} הסתיים.` + (canSell ? " רוצה להמשיך? המנוי מחזיר את כל היכולות." : "");
+      if (canSell) {
+        btn.textContent = `חזרה לחבילת ${PLAN_LABELS[s.plan]}`;
+        btn.classList.remove("hidden");
+        btn.onclick = () => startCheckout(s.plan);
+      }
     } else if (s.plan === "free") {
-      desc.textContent = "חבילה חינמית: צ'אט, משימות ותזכורות, ותיבת מייל אחת. שדרגי כדי לחבר את כל התיבות, לקבל הצעות יזומות ודוחות.";
-      btn.textContent = "התחל 14 יום ניסיון חינם";
-      btn.classList.remove("hidden");
-      btn.onclick = startTrial;
+      desc.textContent = "חבילה חינמית: צ'אט, משימות ותזכורות, ותיבת מייל אחת." + (canSell ? " שדרגי כדי לחבר את כל התיבות, לקבל הצעות יזומות ודוחות." : "");
+      if (canSell) {
+        btn.textContent = "התחל 14 יום ניסיון חינם";
+        btn.classList.remove("hidden");
+        btn.onclick = startTrial;
+      }
     } else {
       desc.textContent = `חבילת ${PLAN_LABELS[s.plan]} פעילה. תודה שאת/ה איתנו 💛`;
     }
@@ -1927,109 +2022,112 @@ async function showApp(session) {
   if (!myProfile?.onboarded_at) { enterOnboarding(); }
 }
 
-// ── phone login (primary, ATRA pattern): SMS code via Twilio Verify ──
-$("mode-toggle").onclick = () => {
-  const phoneMode = $("phone-flow").classList.toggle("hidden");
-  $("email-flow").classList.toggle("hidden", !phoneMode);
-  $("mode-toggle").textContent = T(phoneMode ? "login_use_phone" : "login_use_email");
-  $("login-note").textContent = "";
-};
-$("send-sms").onclick = async () => {
-  const phone = $("phone").value.trim();
-  if (!phone) return;
-  const btn = $("send-sms"), label = btn.textContent;
+// ── Login (ATRA structural pattern): one smart field — email OR phone,
+//    auto-detected; the matching OTP channel sends a code; the code step
+//    appears inside the same card. No mode toggle.
+const LOGIN_LANGS = [
+  { code: "he", label: "עברית", flag: "🇮🇱" },
+  { code: "en", label: "English", flag: "🇬🇧" },
+  { code: "ar", label: "العربية", flag: "🇸🇦" },
+  { code: "ru", label: "Русский", flag: "🇷🇺" },
+  { code: "es", label: "Español", flag: "🇪🇸" },
+];
+function renderLoginLangs() {
+  const row = $("login-langs");
+  if (!row) return;
+  row.innerHTML = "";
+  for (const l of LOGIN_LANGS) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "lg-lang" + (LOCALE === l.code ? " on" : "");
+    b.innerHTML = `<span aria-hidden="true">${l.flag}</span>${l.label}`;
+    b.onclick = () => { applyLocale(l.code); renderLoginLangs(); };
+    row.appendChild(b);
+  }
+}
+renderLoginLangs();
+
+let otpMode = null; // "email" | "phone" — set by the send step
+const isEmailIdent = (v) => v.includes("@");
+
+$("send-code").onclick = async () => {
+  const ident = $("ident").value.trim();
+  if (!ident) return;
+  const btn = $("send-code"), label = T("login_send_code");
   btn.disabled = true;
   $("login-note").textContent = T("login_sending");
-  try {
-    const res = await fetch(SUPABASE_URL + "/functions/v1/send-phone-otp", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone }),
-    });
-    const data = await res.json();
-    if (!data.ok) {
-      $("login-note").textContent = "⚠ " + T(data.error === "bad_phone" ? "login_phone_bad" : "action_failed");
-      btn.disabled = false; return;
-    }
-    $("sms-box").classList.remove("hidden");
-    $("sms-code").focus();
-    $("login-note").textContent = T("login_sms_sent");
+  const cooldown = () => {
+    // Each new send invalidates the previous code + burns rate limit — 45s lock.
     let s = 45;
     (function tick() {
       if (s <= 0) { btn.disabled = false; btn.textContent = label; return; }
       btn.textContent = label + " (" + s + ")"; s--; setTimeout(tick, 1000);
     })();
+  };
+  try {
+    if (isEmailIdent(ident)) {
+      const { error } = await sb.auth.signInWithOtp({
+        email: ident.toLowerCase(),
+        options: { emailRedirectTo: window.location.href.split("#")[0] },
+      });
+      if (error) { $("login-note").textContent = "⚠ " + error.message; btn.disabled = false; return; }
+      otpMode = "email";
+    } else {
+      const res = await fetch(SUPABASE_URL + "/functions/v1/send-phone-otp", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: ident }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        $("login-note").textContent = "⚠ " + T(data.error === "bad_phone" ? "login_phone_bad" : "action_failed");
+        btn.disabled = false; return;
+      }
+      otpMode = "phone";
+    }
+    $("code-step").classList.remove("hidden");
+    $("login-code").focus();
+    $("login-note").textContent = T(otpMode === "phone" ? "login_sms_sent" : "login_sent");
+    cooldown();
   } catch {
     $("login-note").textContent = "⚠ " + T("action_failed");
     btn.disabled = false;
   }
 };
-$("sms-verify").onclick = async () => {
-  const phone = $("phone").value.trim();
-  const code = $("sms-code").value.replace(/\D/g, "");
-  if (!phone || code.length < 4) return;
-  const btn = $("sms-verify"); btn.disabled = true;
+
+$("verify-login").onclick = async () => {
+  const ident = $("ident").value.trim();
+  const code = $("login-code").value.replace(/\D/g, "");
+  if (!ident || !otpMode || code.length < 4) return;
+  const btn = $("verify-login"); btn.disabled = true;
   $("login-note").textContent = T("login_sending");
   try {
-    const res = await fetch(SUPABASE_URL + "/functions/v1/verify-phone-otp", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, code }),
-    });
-    const data = await res.json();
-    if (!data.ok) {
-      $("login-note").textContent = "⚠ " + T(data.error === "bad_code" ? "login_code_bad" : "action_failed");
-      btn.disabled = false; return;
+    if (otpMode === "email") {
+      const { error } = await sb.auth.verifyOtp({ email: ident.toLowerCase(), token: code, type: "email" });
+      if (error) { $("login-note").textContent = "⚠ " + T("login_code_bad"); btn.disabled = false; return; }
+    } else {
+      const res = await fetch(SUPABASE_URL + "/functions/v1/verify-phone-otp", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: ident, code }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        $("login-note").textContent = "⚠ " + T(data.error === "bad_code" ? "login_code_bad" : "action_failed");
+        btn.disabled = false; return;
+      }
+      // Session minted server-side — adopt it; onAuthStateChange runs showApp.
+      const { error } = await sb.auth.setSession({
+        access_token: data.accessToken, refresh_token: data.refreshToken,
+      });
+      if (error) { $("login-note").textContent = "⚠ " + T("action_failed"); btn.disabled = false; return; }
     }
-    // Session minted server-side — adopt it; onAuthStateChange runs showApp.
-    const { error } = await sb.auth.setSession({
-      access_token: data.accessToken, refresh_token: data.refreshToken,
-    });
-    if (error) { $("login-note").textContent = "⚠ " + T("action_failed"); btn.disabled = false; return; }
-    $("sms-code").value = "";
+    $("login-code").value = ""; btn.disabled = false;
   } catch {
     $("login-note").textContent = "⚠ " + T("action_failed");
     btn.disabled = false;
   }
 };
-$("sms-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("sms-verify").click(); });
-
-$("send-link").onclick = async () => {
-  const email = $("email").value.trim();
-  if (!email) return;
-  const btn = $("send-link");
-  const label = btn.textContent;
-  btn.disabled = true;
-  $("login-note").textContent = T("login_sending");
-  const { error } = await sb.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.href.split("#")[0] },
-  });
-  if (error) { $("login-note").textContent = "⚠ " + error.message; btn.disabled = false; return; }
-  $("otp-code").focus();
-  $("login-note").textContent = T("login_sent");
-  // Cooldown: each new send invalidates the previous code, so block re-taps for
-  // 45s (also eases the built-in email rate limit). The code field is always
-  // visible, so a code already in hand can be entered without re-sending.
-  let s = 45;
-  (function tick() {
-    if (s <= 0) { btn.disabled = false; btn.textContent = label; return; }
-    btn.textContent = label + " (" + s + ")"; s--; setTimeout(tick, 1000);
-  })();
-};
-
-// Verify the 8-digit code straight inside the app — no browser round-trip.
-$("verify-code").onclick = async () => {
-  const email = $("email").value.trim();
-  const token = $("otp-code").value.replace(/\D/g, "");
-  if (!email || token.length < 6) return;
-  const btn = $("verify-code"); btn.disabled = true;
-  $("login-note").textContent = T("login_sending");
-  const { error } = await sb.auth.verifyOtp({ email, token, type: "email" });
-  btn.disabled = false;
-  if (error) { $("login-note").textContent = "⚠ " + T("login_code_bad"); return; }
-  // success → onAuthStateChange fires showApp(); clear the field just in case.
-  $("otp-code").value = "";
-};
-$("otp-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("verify-code").click(); });
+$("login-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("verify-login").click(); });
+$("ident").addEventListener("keydown", (e) => { if (e.key === "Enter") $("send-code").click(); });
 
 $("logout").onclick = async () => {
   try {
