@@ -254,13 +254,13 @@
     flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center;
     justify-content: flex-start; gap: 0; padding: 26px 18px 24px;
   }
-  .lg-langs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 20px; }
-  .lg-lang {
-    display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 11px;
-    border-radius: 16px; border: 1px solid var(--line); background: #fff;
-    font-size: 12px; font-weight: 700; color: #5F6678; cursor: pointer; font-family: inherit;
+  .lg-langrow { display: flex; align-items: center; gap: 7px; margin-bottom: 20px; font-size: 15px; }
+  .lg-langsel {
+    height: 32px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line);
+    background: #fff; font-size: 12.5px; font-weight: 700; color: var(--navy);
+    font-family: inherit; cursor: pointer; outline: none;
   }
-  .lg-lang.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .lg-langsel:focus { border-color: var(--navy); }
   .lg-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
   .lg-logocard {
     background: #fff; border: 1px solid var(--line); border-radius: 6px;
@@ -303,8 +303,11 @@
   </header>
 
   <div id="login">
-    <!-- language switcher (ATRA line #1) -->
-    <div class="lg-langs" id="login-langs" role="group" aria-label="Language"></div>
+    <!-- language switcher: compact dropdown, all 15 locales -->
+    <div class="lg-langrow">
+      <span aria-hidden="true">🌐</span>
+      <select id="login-lang" class="lg-langsel" data-i18n="lang_label" data-i18n-attr="aria-label"></select>
+    </div>
 
     <!-- brand block: logo card → name → tagline → hairline rule -->
     <div class="lg-brand">
@@ -741,6 +744,9 @@ function applyLocale(loc) {
     else el.innerHTML = html;
   });
   document.title = T("app_name") + " — " + T("tagline");
+  // keep the login language dropdown in sync with whoever changed the locale
+  const lsel = document.getElementById("login-lang");
+  if (lsel && lsel.value !== LOCALE) lsel.value = LOCALE;
 }
 
 // Narrow public hook: the native shell pushes the device language in here on
@@ -2025,27 +2031,18 @@ async function showApp(session) {
 // ── Login (ATRA structural pattern): one smart field — email OR phone,
 //    auto-detected; the matching OTP channel sends a code; the code step
 //    appears inside the same card. No mode toggle.
-const LOGIN_LANGS = [
-  { code: "he", label: "עברית", flag: "🇮🇱" },
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "ar", label: "العربية", flag: "🇸🇦" },
-  { code: "ru", label: "Русский", flag: "🇷🇺" },
-  { code: "es", label: "Español", flag: "🇪🇸" },
-];
-function renderLoginLangs() {
-  const row = $("login-langs");
-  if (!row) return;
-  row.innerHTML = "";
-  for (const l of LOGIN_LANGS) {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "lg-lang" + (LOCALE === l.code ? " on" : "");
-    b.innerHTML = `<span aria-hidden="true">${l.flag}</span>${l.label}`;
-    b.onclick = () => { applyLocale(l.code); renderLoginLangs(); };
-    row.appendChild(b);
+// Language dropdown on the login screen — all 15 locales, native names.
+(function initLoginLang() {
+  const sel = $("login-lang");
+  if (!sel) return;
+  for (const code of I18N_LANGS) {
+    const o = document.createElement("option");
+    o.value = code; o.textContent = LANG_NAMES[code] || code;
+    sel.appendChild(o);
   }
-}
-renderLoginLangs();
+  sel.value = LOCALE;
+  sel.onchange = () => { applyLocale(sel.value); sel.value = LOCALE; };
+})();
 
 let otpMode = null; // "email" | "phone" — set by the send step
 const isEmailIdent = (v) => v.includes("@");
