@@ -272,13 +272,28 @@
     <div class="logo">👩🏻‍💼</div>
     <h2><span data-i18n="app_name"></span> — <span data-i18n="login_title"></span></h2>
     <p data-i18n="login_sub"></p>
-    <input id="email" type="email" data-i18n="login_email_aria" data-i18n-attr="aria-label" placeholder="you@example.com" autocomplete="email">
-    <button id="send-link" data-i18n="login_btn"></button>
-    <div id="otp-box" style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px;margin-top:10px">
-      <div style="font-size:12.5px;color:#8A6E2F;text-align:center" data-i18n="login_code_hint"></div>
-      <input id="otp-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*"
-        data-i18n="login_code_ph" data-i18n-attr="placeholder" style="letter-spacing:6px;text-align:center;font-size:20px">
-      <button id="verify-code" data-i18n="login_verify"></button>
+    <!-- phone flow (primary, like ATRA): phone → SMS code → session -->
+    <div id="phone-flow" style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px">
+      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" data-i18n="login_phone_aria" data-i18n-attr="aria-label"
+        placeholder="050-1234567" style="direction:ltr;text-align:center">
+      <button id="send-sms" data-i18n="login_send_code"></button>
+      <div id="sms-box" class="hidden" style="display:flex;flex-direction:column;gap:10px">
+        <input id="sms-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]*"
+          data-i18n="login_code_ph6" data-i18n-attr="placeholder" style="letter-spacing:6px;text-align:center;font-size:20px">
+        <button id="sms-verify" data-i18n="login_verify"></button>
+      </div>
+    </div>
+    <button type="button" id="mode-toggle" style="background:none;border:none;color:#8A6E2F;font-size:13.5px;cursor:pointer;font-family:inherit;padding:6px" data-i18n="login_use_email"></button>
+    <!-- email flow (fallback / desktop) -->
+    <div id="email-flow" class="hidden" style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px">
+      <input id="email" type="email" data-i18n="login_email_aria" data-i18n-attr="aria-label" placeholder="you@example.com" autocomplete="email">
+      <button id="send-link" data-i18n="login_btn"></button>
+      <div id="otp-box" style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:4px">
+        <div style="font-size:12.5px;color:#8A6E2F;text-align:center" data-i18n="login_code_hint"></div>
+        <input id="otp-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*"
+          data-i18n="login_code_ph" data-i18n-attr="placeholder" style="letter-spacing:6px;text-align:center;font-size:20px">
+        <button id="verify-code" data-i18n="login_verify"></button>
+      </div>
     </div>
     <div class="note" id="login-note" role="status"></div>
     <div style="font-size:12px;color:#99a;margin-top:8px">
@@ -544,12 +559,19 @@ const I18N = {
   "nav_inbox": ["דואר","Inbox","الوارد","Входящие","Bandeja","Boîte","Posteingang","Caixa","In arrivo","Inbox","Skrzynka","Gelen","Вхідні","इनबॉक्स","收件箱"],
   "nav_settings": ["חיבורים","Settings","الإعدادات","Настройки","Ajustes","Réglages","Einstellungen","Ajustes","Impostazioni","Instellingen","Ustawienia","Ayarlar","Налаштування","सेटिंग्स","设置"],
   "login_title": ["המנהלת האישית שלך","Your personal manager","مديرتك الشخصية","Ваш личный менеджер","Tu gestora personal","Votre manager personnelle","Deine persönliche Managerin","Sua gestora pessoal","La tua manager personale","Je persoonlijke manager","Twoja osobista menedżerka","Kişisel yöneticin","Ваша особиста менеджерка","आपकी निजी प्रबंधक","你的私人管家"],
-  "login_sub": ["הכנס את המייל שלך ונשלח לך קישור כניסה — בלי סיסמאות.","Enter your email and we'll send a sign-in link — no passwords.","أدخل بريدك وسنرسل رابط دخول — بلا كلمات مرور.","Введите e-mail — пришлём ссылку для входа, без паролей.","Escribe tu email y te enviamos un enlace de acceso, sin contraseñas.","Saisissez votre e-mail : nous envoyons un lien de connexion, sans mot de passe.","E-Mail eingeben — wir senden einen Login-Link, ganz ohne Passwort.","Digite seu e-mail e enviamos um link de acesso — sem senhas.","Inserisci l'email e ti inviamo un link di accesso, senza password.","Vul je e-mail in; we sturen een inloglink — geen wachtwoorden.","Podaj e-mail, wyślemy link logowania — bez haseł.","E-postanı gir, giriş bağlantısı gönderelim — şifre yok.","Введіть e-mail — надішлемо посилання для входу, без паролів.","अपना ईमेल दें, हम साइन-इन लिंक भेजेंगे — कोई पासवर्ड नहीं।","输入邮箱，我们发送登录链接——无需密码。"],
+  "login_sub": ["הכנס מספר טלפון ונשלח לך קוד כניסה — בלי סיסמאות.","Enter your phone number and we'll text you a sign-in code — no passwords.","أدخل رقم هاتفك وسنرسل رمز دخول — بلا كلمات مرور.","Введите номер телефона — пришлём код для входа, без паролей.","Escribe tu teléfono y te enviamos un código de acceso, sin contraseñas.","Saisissez votre numéro : nous envoyons un code de connexion, sans mot de passe.","Telefonnummer eingeben — wir senden einen Login-Code, ganz ohne Passwort.","Digite seu telefone e enviamos um código de acesso — sem senhas.","Inserisci il numero e ti inviamo un codice di accesso, senza password.","Vul je nummer in; we sturen een inlogcode — geen wachtwoorden.","Podaj numer telefonu, wyślemy kod logowania — bez haseł.","Telefon numaranı gir, giriş kodu gönderelim — şifre yok.","Введіть номер телефону — надішлемо код для входу, без паролів.","अपना फ़ोन नंबर दें, हम साइन-इन कोड भेजेंगे — कोई पासवर्ड नहीं।","输入手机号，我们发送登录验证码——无需密码。"],
   "login_btn": ["שלח לי קישור","Send me a link","أرسل لي رابطًا","Отправить ссылку","Enviarme un enlace","Envoyez-moi un lien","Link senden","Enviar link","Inviami un link","Stuur me een link","Wyślij link","Bağlantı gönder","Надіслати посилання","मुझे लिंक भेजें","发送登录链接"],
   "login_sent": ["✓ נשלח! הזן את הקוד מהמייל (או הקש על הקישור)","✓ Sent! Enter the code from the email (or tap the link)","✓ أُرسل! أدخل الرمز من البريد (أو اضغط الرابط)","✓ Отправлено! Введите код из письма (или нажмите ссылку)","✓ ¡Enviado! Introduce el código del correo (o pulsa el enlace)","✓ Envoyé ! Saisissez le code du message (ou touchez le lien)","✓ Gesendet! Gib den Code aus der E-Mail ein (oder tippe den Link)","✓ Enviado! Digite o código do e-mail (ou toque no link)","✓ Inviato! Inserisci il codice dall'email (o tocca il link)","✓ Verstuurd! Voer de code uit de e-mail in (of tik op de link)","✓ Wysłano! Wpisz kod z e-maila (lub kliknij link)","✓ Gönderildi! E-postadaki kodu gir (veya bağlantıya dokun)","✓ Надіслано! Введіть код з листа (або натисніть посилання)","✓ भेजा गया! ईमेल से कोड डालें (या लिंक पर टैप करें)","✓ 已发送！输入邮件中的代码（或点击链接）"],
   "login_code_ph": ["קוד בן 8 ספרות","8-digit code","رمز من 8 أرقام","8-значный код","Código de 8 dígitos","Code à 8 chiffres","8-stelliger Code","Código de 8 dígitos","Codice a 8 cifre","8-cijferige code","8-cyfrowy kod","8 haneli kod","8-значний код","8-अंकों का कोड","8 位代码"],
   "login_verify": ["כניסה","Sign in","دخول","Войти","Entrar","Se connecter","Anmelden","Entrar","Accedi","Inloggen","Zaloguj","Giriş","Увійти","साइन इन","登录"],
   "login_code_hint": ["כבר קיבלת קוד? הזן אותו כאן","Got a code? Enter it here","لديك رمز؟ أدخله هنا","Есть код? Введите его","¿Tienes un código? Introdúcelo","Vous avez un code ? Saisissez-le","Code erhalten? Hier eingeben","Tem um código? Digite aqui","Hai un codice? Inseriscilo","Code ontvangen? Voer hem hier in","Masz kod? Wpisz go tutaj","Kodun mu var? Buraya gir","Є код? Введіть його","कोड मिला? यहाँ डालें","收到验证码？在此输入"],
+  "login_phone_aria": ["מספר טלפון","Phone number","رقم الهاتف","Номер телефона","Número de teléfono","Numéro de téléphone","Telefonnummer","Número de telefone","Numero di telefono","Telefoonnummer","Numer telefonu","Telefon numarası","Номер телефону","फ़ोन नंबर","电话号码"],
+  "login_send_code": ["שלח לי קוד ב-SMS","Text me a code","أرسل لي رمزًا في SMS","Отправить код по SMS","Envíame un código por SMS","Envoyez-moi un code par SMS","Code per SMS senden","Envie um código por SMS","Inviami un codice via SMS","Sms me een code","Wyślij kod SMS-em","Bana SMS ile kod gönder","Надіслати код у SMS","SMS से कोड भेजें","短信发送验证码"],
+  "login_sms_sent": ["✓ נשלח! הזן את הקוד מה-SMS","✓ Sent! Enter the code from the SMS","✓ أُرسل! أدخل الرمز من الرسالة","✓ Отправлено! Введите код из SMS","✓ ¡Enviado! Introduce el código del SMS","✓ Envoyé ! Saisissez le code du SMS","✓ Gesendet! Code aus der SMS eingeben","✓ Enviado! Digite o código do SMS","✓ Inviato! Inserisci il codice dall'SMS","✓ Verstuurd! Voer de code uit de sms in","✓ Wysłano! Wpisz kod z SMS-a","✓ Gönderildi! SMS'teki kodu gir","✓ Надіслано! Введіть код із SMS","✓ भेजा गया! SMS से कोड डालें","✓ 已发送！输入短信中的验证码"],
+  "login_use_email": ["כניסה עם אימייל","Sign in with email","الدخول بالبريد الإلكتروني","Войти по эл. почте","Entrar con correo","Se connecter par e-mail","Mit E-Mail anmelden","Entrar com e-mail","Accedi con email","Inloggen met e-mail","Zaloguj przez e-mail","E-posta ile giriş","Увійти через e-mail","ईमेल से साइन इन","用邮箱登录"],
+  "login_use_phone": ["כניסה עם טלפון","Sign in with phone","الدخول بالهاتف","Войти по телефону","Entrar con teléfono","Se connecter par téléphone","Mit Telefon anmelden","Entrar com telefone","Accedi con telefono","Inloggen met telefoon","Zaloguj przez telefon","Telefon ile giriş","Увійти через телефон","फ़ोन से साइन इन","用手机登录"],
+  "login_phone_bad": ["מספר טלפון לא תקין","Invalid phone number","رقم هاتف غير صالح","Неверный номер телефона","Número de teléfono no válido","Numéro de téléphone invalide","Ungültige Telefonnummer","Número de telefone inválido","Numero di telefono non valido","Ongeldig telefoonnummer","Nieprawidłowy numer telefonu","Geçersiz telefon numarası","Невірний номер телефону","अमान्य फ़ोन नंबर","无效的电话号码"],
+  "login_code_ph6": ["קוד בן 6 ספרות","6-digit code","رمز من 6 أرقام","6-значный код","Código de 6 dígitos","Code à 6 chiffres","6-stelliger Code","Código de 6 dígitos","Codice a 6 cifre","6-cijferige code","6-cyfrowy kod","6 haneli kod","6-значний код","6-अंकों का कोड","6 位验证码"],
   "login_code_bad": ["קוד שגוי או שפג תוקפו","Wrong or expired code","رمز خاطئ أو منتهي","Неверный или просроченный код","Código incorrecto o caducado","Code incorrect ou expiré","Falscher oder abgelaufener Code","Código incorreto ou expirado","Codice errato o scaduto","Onjuiste of verlopen code","Błędny lub wygasły kod","Yanlış veya süresi dolmuş kod","Невірний або прострочений код","गलत या समाप्त कोड","代码错误或已过期"],
   "login_sending": ["שולח...","Sending...","جارٍ الإرسال...","Отправляем...","Enviando...","Envoi...","Senden...","Enviando...","Invio...","Versturen...","Wysyłanie...","Gönderiliyor...","Надсилаємо...","भेज रहे हैं...","发送中..."],
   "chat_ph": ["כתבו לנוגה...","Write to Noga...","اكتب لنوغا...","Напишите Ноге...","Escribe a Noga...","Écrivez à Noga...","Schreib an Noga...","Escreva para a Noga...","Scrivi a Noga...","Schrijf naar Noga...","Napisz do Nogi...","Noga'ya yaz...","Напишіть Нозі...","नोगा को लिखें...","给 Noga 留言..."],
@@ -1904,6 +1926,71 @@ async function showApp(session) {
   // Brand-new account (server-authoritative flag) → first-run takeover.
   if (!myProfile?.onboarded_at) { enterOnboarding(); }
 }
+
+// ── phone login (primary, ATRA pattern): SMS code via Twilio Verify ──
+$("mode-toggle").onclick = () => {
+  const phoneMode = $("phone-flow").classList.toggle("hidden");
+  $("email-flow").classList.toggle("hidden", !phoneMode);
+  $("mode-toggle").textContent = T(phoneMode ? "login_use_phone" : "login_use_email");
+  $("login-note").textContent = "";
+};
+$("send-sms").onclick = async () => {
+  const phone = $("phone").value.trim();
+  if (!phone) return;
+  const btn = $("send-sms"), label = btn.textContent;
+  btn.disabled = true;
+  $("login-note").textContent = T("login_sending");
+  try {
+    const res = await fetch(SUPABASE_URL + "/functions/v1/send-phone-otp", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone }),
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      $("login-note").textContent = "⚠ " + T(data.error === "bad_phone" ? "login_phone_bad" : "action_failed");
+      btn.disabled = false; return;
+    }
+    $("sms-box").classList.remove("hidden");
+    $("sms-code").focus();
+    $("login-note").textContent = T("login_sms_sent");
+    let s = 45;
+    (function tick() {
+      if (s <= 0) { btn.disabled = false; btn.textContent = label; return; }
+      btn.textContent = label + " (" + s + ")"; s--; setTimeout(tick, 1000);
+    })();
+  } catch {
+    $("login-note").textContent = "⚠ " + T("action_failed");
+    btn.disabled = false;
+  }
+};
+$("sms-verify").onclick = async () => {
+  const phone = $("phone").value.trim();
+  const code = $("sms-code").value.replace(/\D/g, "");
+  if (!phone || code.length < 4) return;
+  const btn = $("sms-verify"); btn.disabled = true;
+  $("login-note").textContent = T("login_sending");
+  try {
+    const res = await fetch(SUPABASE_URL + "/functions/v1/verify-phone-otp", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, code }),
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      $("login-note").textContent = "⚠ " + T(data.error === "bad_code" ? "login_code_bad" : "action_failed");
+      btn.disabled = false; return;
+    }
+    // Session minted server-side — adopt it; onAuthStateChange runs showApp.
+    const { error } = await sb.auth.setSession({
+      access_token: data.accessToken, refresh_token: data.refreshToken,
+    });
+    if (error) { $("login-note").textContent = "⚠ " + T("action_failed"); btn.disabled = false; return; }
+    $("sms-code").value = "";
+  } catch {
+    $("login-note").textContent = "⚠ " + T("action_failed");
+    btn.disabled = false;
+  }
+};
+$("sms-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("sms-verify").click(); });
 
 $("send-link").onclick = async () => {
   const email = $("email").value.trim();
