@@ -227,7 +227,7 @@
   #app.onboarding > .view:not(#view-onboard) { display: none !important; }
   #view-onboard { flex: 1; overflow-y: auto; align-items: center; justify-content: center; padding: 24px; text-align: center; }
   .ob { width: 100%; max-width: 380px; margin: auto; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .ob-logo { font-size: 46px; line-height: 1; }
+  .ob-logo { width: 72px; height: 72px; border-radius: 18px; filter: drop-shadow(0 0 14px rgba(240,201,122,.3)); }
   .ob-h { color: var(--navy); font-size: 23px; font-weight: 800; line-height: 1.25; text-wrap: balance; }
   .ob-sub { color: #5F6678; font-size: 14.5px; line-height: 1.55; max-width: 330px; }
   .ob-form { width: 100%; display: flex; flex-direction: column; gap: 10px; }
@@ -247,28 +247,40 @@
   .sheet-no { background: none; border: none; color: #9aa; font-size: 13.5px; cursor: pointer; font-family: inherit; }
   .sheet-note { font-size: 12.5px; font-weight: 600; color: var(--gold); min-height: 15px; text-align: center; }
 
-  /* ── login — ATRA structural language (Noga palette): lang chips, brand
-        block w/ logo card + hairline rule, tagged bordered form card, labeled
-        input, primary button, info line, footer ── */
+  /* ── login — ATRA structural language, Noga's night-sky world: the brand's
+        "נקודת אור" — deep night gradient, faint stars, a gold glow behind the
+        Venus mark. Cards stay white so the form pops. ── */
   #login {
-    flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center;
-    justify-content: flex-start; gap: 0; padding: 26px 18px 24px;
+    flex: 1; min-height: 100dvh; overflow-y: auto; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0; padding: 30px 18px 34px;
+    background:
+      radial-gradient(circle at 50% 22%, rgba(240,201,122,.16), transparent 34%),
+      radial-gradient(1.5px 1.5px at 18% 12%, rgba(234,223,196,.8), transparent 55%),
+      radial-gradient(1.5px 1.5px at 78% 8%, rgba(234,223,196,.6), transparent 55%),
+      radial-gradient(1px 1px at 64% 18%, rgba(234,223,196,.7), transparent 55%),
+      radial-gradient(1px 1px at 30% 26%, rgba(234,223,196,.5), transparent 55%),
+      radial-gradient(1.5px 1.5px at 88% 30%, rgba(234,223,196,.45), transparent 55%),
+      radial-gradient(1px 1px at 10% 38%, rgba(234,223,196,.4), transparent 55%),
+      linear-gradient(170deg, #25335E 0%, #16203A 45%, #0F1729 100%);
   }
-  .lg-langrow { display: flex; align-items: center; gap: 7px; margin-bottom: 20px; font-size: 15px; }
+  .lg-logo {
+    width: 88px; height: 88px; border-radius: 20px;
+    filter: drop-shadow(0 0 18px rgba(240,201,122,.35));
+  }
+  .lg-langrow { display: flex; align-items: center; gap: 7px; margin-bottom: 20px; font-size: 14px; opacity: .92; }
   .lg-langsel {
-    height: 32px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line);
-    background: #fff; font-size: 12.5px; font-weight: 700; color: var(--navy);
+    height: 32px; padding: 0 10px; border-radius: 6px;
+    border: 1px solid rgba(234,223,196,.28); background: rgba(255,255,255,.07);
+    font-size: 12.5px; font-weight: 700; color: #EADFC4;
     font-family: inherit; cursor: pointer; outline: none;
+    -webkit-appearance: none; appearance: none;
   }
-  .lg-langsel:focus { border-color: var(--navy); }
+  .lg-langsel option { color: #1C2338; background: #fff; }
+  .lg-langsel:focus { border-color: var(--gold); }
   .lg-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
-  .lg-logocard {
-    background: #fff; border: 1px solid var(--line); border-radius: 6px;
-    padding: 14px 30px; font-size: 46px; line-height: 1;
-  }
-  .lg-appname { font-size: 22px; font-weight: 800; color: var(--navy); margin-top: 13px; letter-spacing: -0.2px; }
-  .lg-tagline { font-size: 13px; font-weight: 600; color: #5F6678; margin-top: 1px; }
-  .lg-rule { width: 40px; height: 1px; background: var(--line); margin-top: 12px; }
+  .lg-appname { font-size: 23px; font-weight: 800; color: #F2EEE4; margin-top: 13px; letter-spacing: -0.2px; }
+  .lg-tagline { font-size: 13px; font-weight: 600; color: #AEB6CE; margin-top: 1px; }
+  .lg-rule { width: 40px; height: 1px; background: rgba(212,169,78,.55); margin-top: 12px; }
   .lg-card {
     width: 100%; max-width: 360px; background: #fff; border: 1px solid var(--line);
     border-radius: 6px; padding: 16px 18px 14px; text-align: start;
@@ -291,8 +303,9 @@
   .lg-btn:disabled { opacity: .55; }
   .lg-info { font-size: 11px; font-weight: 600; color: #5F6678; text-align: center; margin-top: 12px; }
   #login .note { color: var(--gold); font-weight: 600; min-height: 20px; font-size: 13px; text-align: center; margin-top: 8px; }
-  .lg-helper { font-size: 12px; color: #99a; text-align: center; margin-top: 16px; line-height: 1.6; max-width: 320px; }
-  .lg-footer { font-size: 10px; font-weight: 600; letter-spacing: .1em; color: #9AA1B3; text-align: center; margin-top: 22px; text-transform: uppercase; }
+  .lg-helper { font-size: 12px; color: #8E97AD; text-align: center; margin-top: 16px; line-height: 1.6; max-width: 320px; }
+  .lg-helper a { color: var(--gold-hi) !important; }
+  .lg-footer { font-size: 10px; font-weight: 600; letter-spacing: .1em; color: #6E7890; text-align: center; margin-top: 22px; text-transform: uppercase; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -311,7 +324,7 @@
 
     <!-- brand block: logo card → name → tagline → hairline rule -->
     <div class="lg-brand">
-      <div class="lg-logocard" aria-hidden="true">👩🏻‍💼</div>
+      <img class="lg-logo" src="icon.svg" alt="" aria-hidden="true" width="88" height="88">
       <div class="lg-appname" data-i18n="app_name"></div>
       <div class="lg-tagline" data-i18n="tagline"></div>
       <div class="lg-rule"></div>
@@ -352,7 +365,7 @@
       <!-- first-run onboarding: one real action, then hand to Noga's chat interview -->
       <section class="view hidden" id="view-onboard">
         <div class="ob">
-          <div class="ob-logo" aria-hidden="true">👩🏻‍💼</div>
+          <img class="ob-logo" src="icon.svg" alt="" aria-hidden="true" width="72" height="72">
           <h2 class="ob-h" id="ob-title" data-i18n="ob_title"></h2>
           <p class="ob-sub" data-i18n="ob_sub"></p>
           <form id="ob-form" class="ob-form">
